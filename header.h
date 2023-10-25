@@ -1,8 +1,31 @@
-#include <stlib.h>
+#include <fcntl.h>
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+struct configuracao{
+	
+	int quantidadePessoasParque;
+	int tempoEsperaEntrada;
+	int numeroAtracoes;
+	int tempoEsperaAtracao1;
+	int tempoEsperaAtracao2;
+	int tempoEsperaAtracao3;
+	int tempoEsperaAtracao4;
+	int tempoEsperaAtracao5; 
+	int tamanhoFilaAtracao1; 
+	int tamanhoFilaAtracao2; 
+	int tamanhoFilaAtracao3; 
+	int tamanhoFilaAtracao4; 
+	int tamanhoFilaAtracao5;
+	float probabilidadeMagoar;
+	float probabilidadeDesistir;
+	int tempoSimulacao;
+};
+
 
 struct atracao {
 
@@ -13,7 +36,7 @@ struct atracao {
 	int alturaMinima; //Altura mínima para aceder à atração
 	int tempoMaxAtracao;
 	float probMagoar; //Probabilidade de se magoar na atração
-}
+};
 
 struct pessoa {
 
@@ -27,4 +50,4 @@ struct pessoa {
 	int atracaoAtual; //Id da atração atual (0 - Não está em nenhuma atração / ...)
 	int tempoMaxEspera; //Tempo máximo de espera numa fila (em ciclos)
 
-}
+};

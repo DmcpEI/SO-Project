@@ -1,39 +1,47 @@
 #include "header.h"
 
-int main(int argc, char *argv[]) {
-    // Verifica se o número de argumentos é válido
-    if (argc != 3) {
-        printf("Deve escrever como argumentos: %s <ficheiro> <texto>\n", argv[0]);
-        return 1;
-    }
+void socketMonitor () 
+{
 
-    char *nomeFicheiro = argv[1];
-    char *texto = argv[2];
+	int sockfd, newsockfd;
+	int cli_size, server_size;
+	struct sockaddr_un serv_end, serv_addr;
 
-    // Verifica se o arquivo já existe
-    FILE *verificador = fopen(nomeFicheiro, "r");
-    
-    if (!verificador) {
-        printf("Criou ficheiro %s.\n", nomeFicheiro);
-    }
+	// Verifica a criacao do socket
+	if ((sockfd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0) {
+        	printf("Erro ao criar o Socket\n");
+	}
 
-    // Abre o arquivo no modo de acrescentar ou criar
-    FILE *ficheiro = fopen(nomeFicheiro, "a");
+	// Incializa os valores do buffer a zero
+    	bzero((char *)&serv_addr, sizeof(serv_addr));
+    	serv_addr.sun_family = AF_UNIX;
+    	strcpy(serv_addr.sun_path, UNIXSTR_PATH);
+    	server_size = strlen(serv_addr.sun_path) + sizeof(serv_addr.sun_family);
+    	unlink(UNIXSTR_PATH);
 
-    // Verifica se o arquivo foi aberto com sucesso
-    if (ficheiro == NULL) {
-        printf("Erro ao abrir o ficheiro.\n");
-        return 1;
-    }
-    else {
-        // Escreve o texto no arquivo
-        fprintf(ficheiro, "%s\n", texto);
+	// Liga o socket a um endereco
+    	if (bind(sockfd, (struct sockaddr *)&serv_addr, server_size) < 0) {
+        	printf("erro: nao foi possivel ligar o socket a um endereco. \n");
+   	 }
 
-        // Fecha o arquivo
-        fclose(ficheiro);
+    	// Espera a conexao com o simulador
+    	printf("Começando a simulacao. Espera pelo simulador...\n");
 
-        printf("Texto adicionado com sucesso em %s.\n", nomeFicheiro);
+   	 //servidor espera para aceitar 1 cliente para o socket stream
+    	listen(sockfd, 1);
 
-        return 0;
-    }
+    	// Criacao de um novo scoket
+    	cli_size = sizeof(serv_end);
+    	newsockfd = accept (sockfd, (struct sockaddr *) &serv_end, &cli_size);
+
+    	if (newsockfd < 0) {        //verifica se houve erro na aceitacao da ligacao
+        	printf("erro: nao foi possivel aceitar a ligacao. \n");
+    	}
+}
+
+int main (void)
+{
+
+socketMonitor();
+
 }

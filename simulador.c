@@ -1,7 +1,39 @@
 #include "header.h"
-#include <stdlib.h>
 
-int main(int argc, char* argv[]){
+void socketSimulador ()
+{
+
+	int sockfd, servlen;
+	struct sockaddr_un serv_addr;
+
+	if ((sockfd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0){
+		printf("Erro ao abrir o Socket");
+	}
+
+	bzero((char *)$serv_addr,sizeof(serv_addr));
+	serv_addr.sun_family = AF_UNIX;
+	strcpy(serv_addr.sun_path, UNIXSTR_PATH);
+	servlen = strlen(serv_addr.sun_path) + sizeof(serv_addr.sun_family);
+
+	if(connect(sockfd, (struct sockaddr *)&serv_addr, servlen) < 0){
+		printf("Não consegue conectar ao monitor");
+	}
+
+	str_cli("Conectou", sockfd);
+
+	close(sockfd);
+	exit(0);
+}
+
+int main()
+{
+
+socketSimulador();
+
+}
+
+/*
+	int main(int argc, char* argv[]){
 
     if(argc == 2){
 
@@ -82,3 +114,4 @@ int main(int argc, char* argv[]){
 	perror("É preciso como argumento o ficheiro de configuração.");
 	return 1;
 }
+*/

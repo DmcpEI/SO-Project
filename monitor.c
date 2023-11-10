@@ -43,7 +43,6 @@ void socketMonitor ()
 
         printf("Espera concluída, conectado com sucesso!\n");
 }
-}
 
 int main (void)
 {

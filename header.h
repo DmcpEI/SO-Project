@@ -91,9 +91,9 @@ extern void str_echo(int sockfd);
 //Simulador
 void socketSimulador();
 struct pessoa criarPessoa();
-void enviarDados(char* dados);
+//void enviarDados(char* dados);
 
 //Monitor
 void socketMonitor();
-void escreveDados(char* dados);
+//void escreveDados(char* dados);
 

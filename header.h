@@ -13,15 +13,21 @@
 #include <stdbool.h>
 #include <semaphore.h>
 
+#define TRUE 1
+#define False 0
+
 #define UNIXSTR_PATH "/tmp/s.unixstr"
 #define UNIXDG_PATH  "/tmp/s.unixdgx"
 #define UNIXDG_TMP   "/tmp/dgXXXXXXX"
 
+<<<<<<< HEAD
 #define TRUE 1
 #define FALSE 0
 
 #define TAMANHO_BUFFER 1024
 
+=======
+>>>>>>> f6e1d90b0088d30b647ae97763ac8e85849520d8
 //zona
 #define BILHETERIA 0
 #define NATACAO 1
@@ -30,8 +36,11 @@
 #define ENFERMARIA 4
 #define RESTAURACAO 5
 #define BALNEARIOS 6
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> f6e1d90b0088d30b647ae97763ac8e85849520d8
 struct configuracao{
 	
 	int quantidadePessoasParque;
@@ -67,6 +76,7 @@ struct configuracao{
 // Restauração
 // Balnearios
 // Parque de estacionamento(talvez)
+
 struct zona {
 
 	int idZona; //Id da zona (Começa em 1)
@@ -116,5 +126,5 @@ void simulador(char* config)
 //Monitor
 void socketMonitor();
 void recebeDados(int newsockfd);
-void escreveDados(char* dados);
+void imprimeDados();
 

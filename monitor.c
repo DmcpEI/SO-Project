@@ -132,7 +132,8 @@ void imprimeDados(){
 }
 
 int main (void) {
-	socketMonitor();
+	while (!finalSim)
+	{
+		socketMonitor();
+	}
 }
-
-

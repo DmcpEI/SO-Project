@@ -17,6 +17,17 @@
 #define UNIXDG_PATH  "/tmp/s.unixdgx"
 #define UNIXDG_TMP   "/tmp/dgXXXXXXX"
 
+#define TAMANHO_BUFFER 1024
+
+#define BILHETERIA 1
+#define NATACAO 2
+#define MERGULHO 3
+#define TOBOGAS 4
+#define ENFERMARIA 5
+#define RESTAURACAO 6
+#define BALNEARIOS 7
+
+
 struct configuracao{
 	
 	int quantidadePessoasParque;
@@ -38,8 +49,10 @@ struct configuracao{
 	//int tamanhoFilaParqueEstacionamento;
 	float probabilidadeMagoar;
 	float probabilidadeDesistir; //Não devia de estar em pessoa?
-	//float probabilidadeMembro (Probabilidade der ser membro do parque e passar sempre a frente nas filas, pode ser uma boa politica)
-	int tempoSimulacao;
+	float probabilidadeVIP; //Probabilidade der ser VIP do parque e passar sempre a frente nas filas
+	int tempoEsperaMax; //Tempo máximo que uma pessoa pode esperar numa fila antes de desistir
+	int tempoSimulacao; //Tempo da simulação
+	int tempoChegadaPessoas; //Tempo entre a chegada de uma pessoa e da próxima ao parque
 };
 
 // Bilheteria
@@ -92,6 +105,7 @@ extern void str_echo(int sockfd);
 void socketSimulador();
 struct pessoa criarPessoa();
 void enviarDados(char* dados);
+void simulador(char* config)
 
 //Monitor
 void socketMonitor();

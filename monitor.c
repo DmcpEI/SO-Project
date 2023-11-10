@@ -1,7 +1,5 @@
 #include "header.h"
 
-#define TAMANHO_BUFFER 1024
-
 //final da simulação
 int finalSim = FALSE;
 

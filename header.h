@@ -71,7 +71,7 @@ struct pessoa {
 	int onParque; //Se está no parque (0 - Não está / 1 - Está)
 	int vip; //Se é VIP do parque ou não (passa à frente) (0 - Não é VIP / 1 - É VIP)
 	int magoar; //Se se magoou ou não (0 - Não se magoou / 1 - Magoou-se)
-	int zonaAtual; //Id da atração atual (0 - Não está em nenhuma atração / ...)
+	int zonaAtual; //Id da zona atual (0 - Não está em nenhuma atração / ...)
 	int tempoMaxEspera; //Tempo máximo de espera numa fila (em ciclos)
 
 };

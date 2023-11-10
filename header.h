@@ -13,10 +13,21 @@
 #include <stdbool.h>
 #include <semaphore.h>
 
+#define TRUE 1
+#define False 0
+
 #define UNIXSTR_PATH "/tmp/s.unixstr"
 #define UNIXDG_PATH  "/tmp/s.unixdgx"
 #define UNIXDG_TMP   "/tmp/dgXXXXXXX"
 
+//zona
+#define BILHETERIA 0
+#define NATACAO 1
+#define MERGULHO 2
+#define TOBOGAS 3
+#define ENFERMARIA 4
+#define RESTAURACAO 5
+#define BALNEARIOS 6
 struct configuracao{
 	
 	int quantidadePessoasParque;
@@ -50,6 +61,7 @@ struct configuracao{
 // Restauração
 // Balnearios
 // Parque de estacionamento(talvez)
+
 struct zona {
 
 	int idZona; //Id da zona (Começa em 1)
@@ -96,5 +108,5 @@ void enviarDados(char* dados);
 //Monitor
 void socketMonitor();
 void recebeDados(int newsockfd);
-void escreveDados(char* dados);
+void imprimeDados();
 

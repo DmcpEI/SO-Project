@@ -7,19 +7,22 @@ void socketSimulador ()
 	struct sockaddr_un serv_addr;
 
 	if ((sockfd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0){
-		printf("Erro ao abrir o Socket");
+			printf("Erro ao abrir o Socket\n");
 	}
 
-	bzero((char *)$serv_addr,sizeof(serv_addr));
+	bzero((char *)&serv_addr,sizeof(serv_addr));
 	serv_addr.sun_family = AF_UNIX;
 	strcpy(serv_addr.sun_path, UNIXSTR_PATH);
 	servlen = strlen(serv_addr.sun_path) + sizeof(serv_addr.sun_family);
 
 	if(connect(sockfd, (struct sockaddr *)&serv_addr, servlen) < 0){
-		printf("Não consegue conectar ao monitor");
+			printf("Não consegue conectar ao monitor\n");
+			close(sockfd);
+			exit(-1);
 	}
 
-	str_cli("Conectou", sockfd);
+	//str_cli("Conectou", sockfd);
+	printf("Conectado com sucesso\n");
 
 	close(sockfd);
 	exit(0);

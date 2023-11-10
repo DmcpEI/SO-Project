@@ -17,15 +17,19 @@
 #define UNIXDG_PATH  "/tmp/s.unixdgx"
 #define UNIXDG_TMP   "/tmp/dgXXXXXXX"
 
+#define TRUE 1
+#define FALSE 0
+
 #define TAMANHO_BUFFER 1024
 
-#define BILHETERIA 1
-#define NATACAO 2
-#define MERGULHO 3
-#define TOBOGAS 4
-#define ENFERMARIA 5
-#define RESTAURACAO 6
-#define BALNEARIOS 7
+//zona
+#define BILHETERIA 0
+#define NATACAO 1
+#define MERGULHO 2
+#define TOBOGAS 3
+#define ENFERMARIA 4
+#define RESTAURACAO 5
+#define BALNEARIOS 6
 
 
 struct configuracao{
@@ -81,7 +85,6 @@ struct pessoa {
 	int genero; //Gênero da pessoa (0 - Mulher / 1 - Homem)
 	int idade; //Idade da pessoa
 	int altura; //Altura da pessoa em centímetros
-	int onParque; //Se está no parque (0 - Não está / 1 - Está)
 	int vip; //Se é VIP do parque ou não (passa à frente) (0 - Não é VIP / 1 - É VIP)
 	int magoar; //Se se magoou ou não (0 - Não se magoou / 1 - Magoou-se)
 	int zonaAtual; //Id da zona atual (0 - Não está em nenhuma atração / ...)
@@ -103,6 +106,9 @@ extern void str_echo(int sockfd);
 
 //Simulador
 void socketSimulador();
+int configuracao (argv[1]);
+int serVIP(float probabilidade);
+int randomEntreNumeros(int min, int max);
 struct pessoa criarPessoa();
 void enviarDados(char* dados);
 void simulador(char* config)

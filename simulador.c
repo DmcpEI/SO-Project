@@ -139,7 +139,6 @@ struct pessoa criarPessoa() {
 	person.genero = randomEntreNumeros(0,1);
 	person.idade = randomEntreNumeros(0,90);
 	person.altura = randomEntreNumeros(60,220);
-	person.onParque = 0;
 	person.vip = serVIP(conf.probabilidadeVIP);
 	person.zonaAtual = NULL;
 	person.tempoMaxEspera = randomEntreNumeros((conf.tempoEsperaMax / 2),conf.tempoEsperaMax);

@@ -1,23 +1,25 @@
 #include "header.h"
 
-int socketFD = 0;
-int idPessoa = 1; //Id para a pessoa criada, que começa a 1 e vai incrementando
-int tempoSimulado = 0; //Tempo de Simulação
+int socketFD;
+//int idPessoa = 1; //Id para a pessoa criada, que começa a 1 e vai incrementando
+//int tempoSimulado = 0; //Tempo de Simulação
 //int tempoParque = 0; //Tempo que o parque está aberto
+//int pessoasParque = 0;
+
+struct configuracao conf;
 
 pthread_mutex_t mutexPessoa;
 pthread_mutex_t mutexDados;
 pthread_mutex_t mutexSimulacao;
 
-pthread_t idThread;
+pthread_t idThread[TAMANHO_TASK];
+//struct pessoa *pessoasCriadas[100000];
 
-int socketSimulador ()
-{
-
-	int sockfd, servlen;
+int socketSimulador(){
+	int servlen;
 	struct sockaddr_un serv_addr;
 
-	if ((sockfd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0){
+	if ((socketFD = socket(AF_UNIX, SOCK_STREAM, 0)) < 0){
 		printf("Erro ao criar o Socket\n");
 	}
 
@@ -26,23 +28,24 @@ int socketSimulador ()
 	strcpy(serv_addr.sun_path, UNIXSTR_PATH); 
 	servlen = strlen(serv_addr.sun_path) + sizeof(serv_addr.sun_family);
 
-	if(connect(sockfd, (struct sockaddr *)&serv_addr, servlen) < 0){
+	if(connect(socketFD, (struct sockaddr *)&serv_addr, servlen) < 0){
 		printf("Execute o monitor primeiro\n");
-		close(sockfd);
+		close(socketFD);
 		exit(-1);
 	}
 
 	printf("Conectado com sucesso\n");
-	return sockfd;
+	return socketFD;
 }
 
+/*
+
 //Função que lê o ficheiro de configuração
-int configuracao (argv[1]){
+int configuracao(char* file){
 
 	if(argc == 2){
 
-		struct configuracao conf;
-		FILE *ficheiro = fopen(argv[1], "r");
+		FILE *ficheiro = fopen(file, "r");
 
 		if(ficheiro == NULL){
 			perror("Erro ao abrir o ficheiro");
@@ -125,7 +128,7 @@ int randomEntreNumeros(int min, int max)
 		max = temp;
 	}
 
-	return (rand() % (max - min +1) + min)
+	return (rand() % (max - min +1) + min);
 }
 
 struct pessoa criarPessoa() {
@@ -149,9 +152,9 @@ struct pessoa criarPessoa() {
 
 }
 
-void enviaDados(int sockfd, int idPessoa) {
+void enviaDados(int socketFD, int idPessoa) {
 
-	pthread_mutex_lock(mutexDados);
+	pthread_mutex_lock(&mutexDados);
 
     char buffer[TAMANHO_BUFFER];
     int bytesEnviados;
@@ -160,14 +163,14 @@ void enviaDados(int sockfd, int idPessoa) {
     snprintf(buffer, TAMANHO_BUFFER, "%d", idPessoa);
 
     // Envia os dados no buffer para o cliente
-    bytesEnviados = send(sockfd, buffer, strlen(buffer), 0);
+    bytesEnviados = send(socketFD, buffer, strlen(buffer), 0);
 
     if (bytesEnviados == -1) {
         perror("Error sending data");
         // Trate o erro conforme necessário
     }
 
-	pthread_mutex_unlock(mutexDados);
+	pthread_mutex_unlock(&mutexDados);
 
 }
 
@@ -183,12 +186,12 @@ void simulador(char* config)
 
 		if(tempoSimulado % conf.tempoChegadaPessoas == 0){
 			// Cria uma nova thread para representar uma pessoa
-			pthread_mutex_lock(mutexSimulacao);
+			pthread_mutex_lock(&mutexSimulacao);
             if (pthread_create(&idThread[idPessoa], NULL, criaPessoa, &idPessoa) != 0) {
                 perror("Erro na criação da thread");
                 exit(1);
             }
-			pthread_mutex_unlock(mutexSimulacao);
+			pthread_mutex_unlock(&mutexSimulacao);
 		}
 
 		sleep(1);
@@ -196,12 +199,18 @@ void simulador(char* config)
 
 }
 
+*/
+
 int main(int argc, char *argv[])
 {
 
 socketFD = socketSimulador();
+
+/*
 simulador(argv[1]);
 close(socketFD);
 return 0;
+
+*/
 
 }

@@ -20,14 +20,12 @@
 #define UNIXDG_PATH  "/tmp/s.unixdgx"
 #define UNIXDG_TMP   "/tmp/dgXXXXXXX"
 
-<<<<<<< HEAD
 #define TRUE 1
 #define FALSE 0
 
 #define TAMANHO_BUFFER 1024
+#define TAMANHO_TASK 1000000
 
-=======
->>>>>>> f6e1d90b0088d30b647ae97763ac8e85849520d8
 //zona
 #define BILHETERIA 0
 #define NATACAO 1
@@ -36,11 +34,8 @@
 #define ENFERMARIA 4
 #define RESTAURACAO 5
 #define BALNEARIOS 6
-<<<<<<< HEAD
 
 
-=======
->>>>>>> f6e1d90b0088d30b647ae97763ac8e85849520d8
 struct configuracao{
 	
 	int quantidadePessoasParque;
@@ -116,7 +111,7 @@ extern void str_echo(int sockfd);
 
 //Simulador
 void socketSimulador();
-int configuracao (argv[1]);
+int configuracao (char file);
 int serVIP(float probabilidade);
 int randomEntreNumeros(int min, int max);
 struct pessoa criarPessoa();

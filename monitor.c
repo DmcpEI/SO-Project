@@ -90,7 +90,7 @@ void recebeDados(int newsockfd){
 		//converte a string para um número inteiro e 
 		sscanf(buffer,"%d", &idPessoa); 
 
-		printf("Entrou uma pessoa no Parque, o seu ID é: ", idPessoa);
+		printf("Entrou uma pessoa no Parque, o seu ID é: %d\n", idPessoa);
 		numPessoas++;
 
 		imprimeDados();

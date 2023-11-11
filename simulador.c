@@ -143,7 +143,7 @@ struct pessoa criarPessoa() {
 
 }
 
-void enviaDados() {
+void enviaDados(int pessoaID) {
 
 	pthread_mutex_lock(&mutexDados);
 
@@ -151,7 +151,7 @@ void enviaDados() {
     int bytesEnviados;
 
     // Formata os dados como strings no buffer
-    snprintf(buffer, TAMANHO_BUFFER, "%d", idPessoa);
+    snprintf(buffer, TAMANHO_BUFFER, "%d", pessoaID);
 
     // Envia os dados no buffer para o cliente
     bytesEnviados = send(socketFD, buffer, strlen(buffer), 0);
@@ -169,8 +169,8 @@ void enviarPessoa(void *ptr)
 {
 	struct pessoa person = criarPessoa();
 	pessoas[person.idPessoa] = &person;
-
-	enviaDados();
+	printf("Chegou uma pessoa ao parque com id %d\n", person.idPessoa);
+	enviaDados(person.idPessoa);
 }
 
 void exclusaoMutua() 

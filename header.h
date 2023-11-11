@@ -112,7 +112,7 @@ int configuracao (char *file);
 int serVIP(float probabilidade);
 int randomEntreNumeros(int min, int max);
 struct pessoa criarPessoa();
-void enviaDados();
+void enviaDados(int pessoaID);
 void enviarPessoa(void *ptr);
 void simulador(char* config);
 

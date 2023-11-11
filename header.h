@@ -13,9 +13,6 @@
 #include <stdbool.h>
 #include <semaphore.h>
 
-#define TRUE 1
-#define False 0
-
 #define UNIXSTR_PATH "/tmp/s.unixstr"
 #define UNIXDG_PATH  "/tmp/s.unixdgx"
 #define UNIXDG_TMP   "/tmp/dgXXXXXXX"

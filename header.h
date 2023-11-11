@@ -74,7 +74,7 @@ struct configuracao{
 
 struct zona {
 
-	int idZona; //Id da zona (Começa em 1)
+	int idZona; //Id da zona
 	int numeroMaximoPessoas; //Número máximo de pessoas na zona
 	int numeroAtualPessoas; //Número atual de pessoas na zona
 	int idadeMinima; //Idade mínima para aceder à zona
@@ -92,7 +92,7 @@ struct pessoa {
 	int altura; //Altura da pessoa em centímetros
 	int vip; //Se é VIP do parque ou não (passa à frente) (0 - Não é VIP / 1 - É VIP)
 	int magoar; //Se se magoou ou não (0 - Não se magoou / 1 - Magoou-se)
-	int zonaAtual; //Id da zona atual (0 - Não está em nenhuma atração / ...)
+	int zonaAtual; //Id da zona atual (0 - Bilheteria / ...)
 	int tempoMaxEspera; //Tempo máximo de espera numa fila (em ciclos)
 
 };
@@ -110,13 +110,14 @@ extern void str_echo(int sockfd);
 //Métodos
 
 //Simulador
-void socketSimulador();
-int configuracao (char file);
+int socketSimulador();
+int configuracao (char *file);
 int serVIP(float probabilidade);
 int randomEntreNumeros(int min, int max);
 struct pessoa criarPessoa();
-void enviarDados(char* dados);
-void simulador(char* config)
+void enviaDados();
+void enviarPessoa(void *ptr);
+void simulador(char* config);
 
 //Monitor
 void socketMonitor();

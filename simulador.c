@@ -183,7 +183,7 @@ void enviarPessoa(void *ptr)
 	char bufferEnviar[TAMANHO_BUFFER];
 	snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", person.idPessoa, 0);
 	enviarDados(bufferEnviar);
-	bilheteria
+	bilheteria.numeroAtualPessoas++;
 
 	printf("Chegou uma pessoa ao parque com id %d\n", person.idPessoa);
 
@@ -238,7 +238,9 @@ void simulador(char* config)
 
 	if (conf.tempoSimulacao <= tempoSimulado){
 		printf("Acabou a simulação\n");
-		enviarDados(0, 1);
+		char bufferEnviar[TAMANHO_BUFFER];
+		snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", 0, 1);
+		enviarDados(bufferEnviar);
 	}
 
 }

@@ -72,12 +72,11 @@ struct configuracao{
 
 struct zona {
 
-	int idZona; //Id da zona
 	int numeroAtualPessoas; //Número atual de pessoas na zona
-	int idadeMinima; //Idade mínima para aceder à zona
-	int alturaMinima; //Altura mínima para aceder à zona
-	int tempoMaxZona;
-	float probMagoar; //Probabilidade de se magoar na zona
+	//int idadeMinima; //Idade mínima para aceder à zona
+	//int alturaMinima; //Altura mínima para aceder à zona
+	//int tempoMaxZona;
+	//float probMagoar; //Probabilidade de se magoar na zona
 	//sem_t fila //Fila de espera da zona 
 };
 

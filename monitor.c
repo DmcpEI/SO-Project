@@ -95,11 +95,10 @@ void recebeDados(int newsockfd){
 		sscanf(buffer,"%d %d", &idPessoa, &acabou); 
 
 		printf("Chegou uma pessoa ao Parque, o seu ID é: %d\n", idPessoa);
-		printf("%d\n",acabou);
 		numPessoas++;
 		numBilheteria++;
 
-		if(acabou == 1){
+		if(acabou != 0){
 			finalSim = TRUE;
 		}
 

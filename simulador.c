@@ -1,20 +1,22 @@
 #include "header.h"
 
-int socketFD = 0;
+int socketFD;
 int idPessoa = 1; //Id para a pessoa criada, que começa a 1 e vai incrementando
 int tempoSimulado = 0; //Tempo de Simulação
 //int tempoParque = 0; //Tempo que o parque está aberto
+//int pessoasParque = 0;
+
+struct configuracao conf;
 
 pthread_mutex_t mutexPessoa;
 pthread_mutex_t mutexDados;
 pthread_mutex_t mutexSimulacao;
 
-pthread_t idThread;
+pthread_t idThread[TAMANHO_TASK];
+struct pessoa *pessoas[100000];
 
-int socketSimulador ()
-{
-
-	int sockfd, servlen;
+int socketSimulador(){
+	int servlen, sockfd;
 	struct sockaddr_un serv_addr;
 
 	if ((sockfd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0){
@@ -37,79 +39,70 @@ int socketSimulador ()
 }
 
 //Função que lê o ficheiro de configuração
-int configuracao (argv[1]){
+int configuracao(char *file) {
+    FILE *ficheiro = fopen(file, "r");
 
-	if(argc == 2){
+    if (ficheiro == NULL) {
+        perror("Erro ao abrir o ficheiro");
+        return 1;
+    } else if (strcmp(file, "simulador.conf") != 0) {
+        perror("Ficheiro de configuração não existe.");
+        return 1;
+    }
 
-		struct configuracao conf;
-		FILE *ficheiro = fopen(argv[1], "r");
+    fseek(ficheiro, 0, SEEK_END);
+    long tamanhoFicheiro = ftell(ficheiro);
+    rewind(ficheiro);
+    char buffer[tamanhoFicheiro];
+    fread(buffer, 1, tamanhoFicheiro, ficheiro);
+    fclose(ficheiro);
 
-		if(ficheiro == NULL){
-			perror("Erro ao abrir o ficheiro");
-			return 1;
-		}else if (strcmp(argv[1], "simulador.conf") != 0){
-		perror("Ficheiro de configuração não existe.");
-		return 1;
-		}
+    int linhaAtual = 0;
+    char *filtrada = strtok(buffer, "\n");
+    char *linhas[40];
+    while (filtrada != NULL) {
+        linhas[linhaAtual++] = filtrada;
+        filtrada = strtok(NULL, "\n");
+    }
 
-		fseek(ficheiro, 0, SEEK_END);
-			long tamanhoFicheiro = ftell(ficheiro);
-			rewind(ficheiro);
-			char buffer[tamanhoFicheiro];
-			fread(buffer, 1, tamanhoFicheiro, ficheiro);
-			fclose(ficheiro);
+    char *fim;
+    char *array[2];
+    char *valores[21];
+    for (int index = 0; index < 21; index++) {
+        char *aux = strtok(linhas[index], ":");
+        int i = 0;
+        while (aux != NULL) {
+            array[i++] = aux;
+            aux = strtok(NULL, ":");
+        }
+        valores[index] = array[1];
+    }
 
-			int linhaAtual = 0;
-			char *filtrada = strtok(buffer, "\n");
-			char *linhas[40];
-			while(filtrada != NULL){
-			linhas[linhaAtual++] = filtrada;
-			filtrada = strtok(NULL, "\n");
-			}
+    conf.quantidadePessoasParque = atoi(valores[0]);
+    conf.numeroAtracoes = atoi(valores[1]);
+    conf.tempoEsperaBilheteria = atoi(valores[2]);
+    conf.tempoEsperaNatação = atoi(valores[3]);
+    conf.tamanhoFilaNatação = atoi(valores[4]);
+    conf.tempoEsperaMergulho = atoi(valores[5]);
+    conf.tamanhoFilaMergulho = atoi(valores[6]);
+    conf.tempoEsperaTobogãs = atoi(valores[7]);
+    conf.tamanhoFilaTobogãs = atoi(valores[8]);
+    conf.tempoEsperaEnfermaria = atoi(valores[9]);
+    conf.tamanhoFilaEnfermaria = atoi(valores[10]);
+    conf.tempoEsperaRestauração = atoi(valores[11]);
+    conf.tamanhoFilaRestauração = atoi(valores[12]);
+    conf.tempoEsperaBalnearios = atoi(valores[13]);
+    conf.tamanhoFilaBalnearios = atoi(valores[14]);
+    conf.probabilidadeMagoar = strtof(valores[15], &fim);
+    conf.probabilidadeDesistir = strtof(valores[16], &fim);
+    conf.probabilidadeVIP = strtof(valores[17], &fim);
+    conf.tempoEsperaMax = atoi(valores[18]);
+    conf.tempoSimulacao = atoi(valores[19]);
+    conf.tempoChegadaPessoas = atoi(valores[20]);
 
-		char *fim;
-			char *array[2];
-		char *valores[21];
-		for(int index = 0; index < 21; index++){
-			char *aux = strtok(linhas[index], ":");
-			int i = 0;
-			while (aux != NULL){
-			array[i++] = aux;
-			aux = strtok(NULL, ":");
-			}
-			valores[index] = array[1];
-		}
-		
-		conf.quantidadePessoasParque = atoi(valores[0]);
-		conf.numeroAtracoes = atoi(valores[1]);
-		conf.tempoEsperaBilheteria = atoi(valores[2]);
-		conf.tempoEsperaNatação = atoi(valores[3]);
-		conf.tamanhoFilaNatação = atoi(valores[4]);
-		conf.tempoEsperaMergulho = atoi(valores[5]);
-		conf.tamanhoFilaMergulho = atoi(valores[6]); 
-		conf.tempoEsperaTobogãs = atoi(valores[7]); 
-		conf.tamanhoFilaTobogãs = atoi(valores[8]); 
-		conf.tempoEsperaEnfermaria = atoi(valores[9]); 
-		conf.tamanhoFilaEnfermaria = atoi(valores[10]); 
-		conf.tempoEsperaRestauração = atoi(valores[11]);
-		conf.tamanhoFilaRestauração = atoi(valores[12]);
-		conf.tempoEsperaBalnearios = atoi(valores[13]);
-		conf.tamanhoFilaBalnearios = atoi(valores[14]);
-		conf.probabilidadeMagoar = strtof(valores[15], &fim);
-		conf.probabilidadeDesistir = strtof(valores[16], &fim);
-		conf.probabilidadeVIP= strtof(valores[17], &fim);
-		conf.tempoEsperaMax= atoi(valores[18]);
-		conf.tempoSimulacao = atoi(valores[19]);
-		conf.tempoChegadaPessoas = atoi(valores[20]);
-		
-		return 0;
-	}else{
-		perror("É preciso como argumento o ficheiro de configuração.");
-		return 1;
-	}
-
-	return 0;
+    return 0;
 }
+
 
 int serVIP(float probabilidade)
 {
@@ -125,7 +118,7 @@ int randomEntreNumeros(int min, int max)
 		max = temp;
 	}
 
-	return (rand() % (max - min +1) + min)
+	return (rand() % (max - min +1) + min);
 }
 
 struct pessoa criarPessoa() {
@@ -136,11 +129,12 @@ struct pessoa criarPessoa() {
 
 	person.idPessoa = idPessoa;
 	idPessoa++;
-	person.genero = randomEntreNumeros(0,1);
-	person.idade = randomEntreNumeros(0,90);
-	person.altura = randomEntreNumeros(60,220);
+	person.genero = randomEntreNumeros(0,1); //0 - Mulher / 1 - Homem
+	person.idade = randomEntreNumeros(0,90); //Idade randomizada entre 0 e 90 anos
+	person.altura = randomEntreNumeros(60,220); //Altura randomizada entre 60 e 220 centímetros
 	person.vip = serVIP(conf.probabilidadeVIP);
-	person.zonaAtual = NULL;
+	person.magoar = 0; //Pessoa ainda não se magoo pois acabou de ser criada
+	person.zonaAtual = 0; //Bilheteria
 	person.tempoMaxEspera = randomEntreNumeros((conf.tempoEsperaMax / 2),conf.tempoEsperaMax);
 
 	pthread_mutex_unlock(&mutexPessoa);
@@ -149,9 +143,9 @@ struct pessoa criarPessoa() {
 
 }
 
-void enviaDados(int sockfd, int idPessoa) {
+void enviaDados() {
 
-	pthread_mutex_lock(mutexDados);
+	pthread_mutex_lock(&mutexDados);
 
     char buffer[TAMANHO_BUFFER];
     int bytesEnviados;
@@ -160,17 +154,24 @@ void enviaDados(int sockfd, int idPessoa) {
     snprintf(buffer, TAMANHO_BUFFER, "%d", idPessoa);
 
     // Envia os dados no buffer para o cliente
-    bytesEnviados = send(sockfd, buffer, strlen(buffer), 0);
+    bytesEnviados = send(socketFD, buffer, strlen(buffer), 0);
 
     if (bytesEnviados == -1) {
         perror("Error sending data");
         // Trate o erro conforme necessário
     }
 
-	pthread_mutex_unlock(mutexDados);
+	pthread_mutex_unlock(&mutexDados);
 
 }
 
+void enviarPessoa(void *ptr)
+{
+	struct pessoa person = criarPessoa();
+	pessoas[person.idPessoa] = &person;
+
+	enviaDados();
+}
 
 void simulador(char* config)
 {
@@ -183,12 +184,12 @@ void simulador(char* config)
 
 		if(tempoSimulado % conf.tempoChegadaPessoas == 0){
 			// Cria uma nova thread para representar uma pessoa
-			pthread_mutex_lock(mutexSimulacao);
-            if (pthread_create(&idThread[idPessoa], NULL, criaPessoa, &idPessoa) != 0) {
+			pthread_mutex_lock(&mutexSimulacao);
+            if (pthread_create(&idThread[idPessoa], NULL, enviarPessoa, NULL) != 0) {
                 perror("Erro na criação da thread");
                 exit(1);
             }
-			pthread_mutex_unlock(mutexSimulacao);
+			pthread_mutex_unlock(&mutexSimulacao);
 		}
 
 		sleep(1);
@@ -199,9 +200,10 @@ void simulador(char* config)
 int main(int argc, char *argv[])
 {
 
-socketFD = socketSimulador();
-simulador(argv[1]);
-close(socketFD);
-return 0;
+	socketFD = socketSimulador();
+
+	simulador(argv[1]);
+	close(socketFD);
+	return 0;
 
 }

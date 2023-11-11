@@ -173,10 +173,29 @@ void enviarPessoa(void *ptr)
 	enviaDados();
 }
 
+void exclusaoMutua() 
+{
+    if (pthread_mutex_init(&mutexPessoa, NULL) != 0) {
+        perror("Erro na inicialização do mutexPessoa");
+        exit(1);
+    }
+
+    if (pthread_mutex_init(&mutexDados, NULL) != 0) {
+        perror("Erro na inicialização do mutexDados");
+        exit(1);
+    }
+
+    if (pthread_mutex_init(&mutexSimulacao, NULL) != 0) {
+        perror("Erro na inicialização do mutexSimulacao");
+        exit(1);
+    }
+}
+
 void simulador(char* config)
 {
 
 	configuracao(config);
+	exclusaoMutua();
 
 	while(conf.tempoSimulacao != tempoSimulado){
 

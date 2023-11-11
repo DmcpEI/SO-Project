@@ -3,6 +3,9 @@
 //final da simulação
 int finalSim = FALSE;
 
+//arquivo do relatorio
+FILE *relatorioFicheiro;
+
 //contadores de pessoas nas zonas
 int numPessoas = 0, numDesistencias = 0,  numBilheteria = 0, numNatacao = 0, numTobogas = 0, numEnfermaria = 0, 
 	numRestauracao = 0, numBalnearios = 0;
@@ -105,39 +108,65 @@ void recebeDados(int newsockfd){
 
 }
 
+//EXPORTAÇÃO PARA O FICHEIRO
+void limpaFicheiro(){
+	fclose(fopen("Relatorio.txt","w"));
+}
 
-void imprimeDados(){
+void escreveFicheiro(char *informacao){
 
-	printf("======================================\n");
-    printf("           PARQUE AQUATICO           \n");
-    printf("======================================\n");
+	limpaFicheiro();
 
-	printf("Estade de execucao --> "); 
-	if(!finalSim){
-		printf("A decorrer\n");
-	} else {
-		printf("Finalizado\n");
+	relatorioFicheiro = fopen("Relatorio.txt","a");
+	if(relatorioFicheiro == NULL){
+		perror("Nao foi possivel abrir o ficheiro");
 	}
-	printf("--------------------------------------\n");
-	printf("Pessoas no Parque:		%d\n", numPessoas);
-	printf("Desistencias:			%d\n", numDesistencias);
-	printf("--------------------------------------\n");
-	printf("Pessoas na zona:\n");
-	printf("---> Bilheteria:		%d\n", numBilheteria);
-	printf("---> Natacao:			%d\n", numNatacao);
-	printf("---> Tobogas:			%d\n", numTobogas);
-	printf("---> Enfermaria: 		%d\n", numEnfermaria);
-	printf("---> Restauracao: 		%d\n", numRestauracao);
-	printf("---> Balnearios: 		%d\n", numBalnearios);
-	printf("--------------------------------------\n");
-	printf("Pessoas a espera na zona:\n");
-	printf("---> Bilheteria: 		%d\n", espBilheteria);
-	printf("---> Natacao: 			%d\n", espNatacao);
-	printf("---> Tobogas: 			%d\n", espTobogas);
-	printf("---> Enfermaria: 		%d\n", espEnfermaria);
-	printf("---> Restauracao: 		%d\n", espRestauracao);
-	printf("---> Balnearios: 		%d\n", espBalnearios);
-	printf("--------------------------------------\n");;
+	fprintf(relatorioFicheiro,"%s", informacao);
+	fclose(relatorioFicheiro);
+}
+
+
+
+void imprimeDados() {
+
+	//poderá ser preciso mudar o 1000 caso se acrescente mais informação
+    char informacao[1000]; 
+
+    sprintf(informacao,
+        "======================================\n"
+        "            PARQUE AQUATICO\n"
+        "======================================\n"
+        "Estado de execucao --> %s\n"
+        "--------------------------------------\n"
+        "Pessoas no Parque:		%d\n"
+        "Desistencias:			%d\n"
+        "--------------------------------------\n"
+        "Pessoas na zona:\n"
+        "---> Bilheteria:		%d\n"
+        "---> Natacao:			%d\n"
+        "---> Tobogas:			%d\n"
+        "---> Enfermaria:		%d\n"
+        "---> Restauracao:		%d\n"
+        "---> Balnearios:		%d\n"
+        "--------------------------------------\n"
+        "Pessoas a espera na zona:\n"
+        "---> Bilheteria:		%d\n"
+        "---> Natacao:			%d\n"
+        "---> Tobogas:			%d\n"
+        "---> Enfermaria:		%d\n"
+        "---> Restauracao:		%d\n"
+        "---> Balnearios:		%d\n"
+        "--------------------------------------\n",
+        (!finalSim) ? "A decorrer" : "Finalizado",
+        numPessoas, numDesistencias,
+        numBilheteria, numNatacao, numTobogas, numEnfermaria, numRestauracao, numBalnearios,
+        espBilheteria, espNatacao, espTobogas, espEnfermaria, espRestauracao, espBalnearios);
+
+    //escreve no ficheiro a informação
+    escreveFicheiro(informacao);
+
+    // Imprime a informação na consosa
+    printf("%s", informacao);
 }
 
 int main (void) {

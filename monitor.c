@@ -90,7 +90,7 @@ void recebeDados(int newsockfd){
 		//converte a string para um número inteiro e 
 		sscanf(buffer,"%d", &idPessoa); 
 
-		printf("Entrou uma pessoa no Parque, o seu ID é: "; idPessoa);
+		printf("Entrou uma pessoa no Parque, o seu ID é: ", idPessoa);
 		numPessoas++;
 
 		imprimeDados();
@@ -103,31 +103,31 @@ void imprimeDados(){
 
 	printf("--------------------------------\n");
 
-	printf("Estade de execucao --> ") 
+	printf("Estade de execucao --> "); 
 	if(!finalSim){
 		printf("A decorrer\n");
 	} else {
 		printf("Finalizado\n");
 	}
 	printf("--------------------------------\n");
-	printf("Pessoas no Parque: %d\n"; numPessoas);
-	printf("Desistencias: %d\n"; numDesistencias);
+	printf("Pessoas no Parque: %d\n", numPessoas);
+	printf("Desistencias: %d\n", numDesistencias);
 	printf("--------------------------------\n");
 	printf("Pessoas na zona:\n");
-	printf("---> Bilheteria: %d\n"; numBilheteria);
-	printf("---> Natacao: %d\n"; numNatacao);
-	printf("---> Tobogas: %d\n"; numTobogas);
-	printf("---> Enfermaria: %d\n"; numEnfermaria);
-	printf("---> Restauracao: %d\n"; numRestauracao);
-	printf("---> Balnearios: %d\n"; numBalnearios);
+	printf("---> Bilheteria: %d\n", numBilheteria);
+	printf("---> Natacao: %d\n", numNatacao);
+	printf("---> Tobogas: %d\n", numTobogas);
+	printf("---> Enfermaria: %d\n", numEnfermaria);
+	printf("---> Restauracao: %d\n", numRestauracao);
+	printf("---> Balnearios: %d\n", numBalnearios);
 	printf("--------------------------------\n");
 	printf("Pessoas a espera na zona:\n");
-	printf("---> Bilheteria: %d\n"; espBilheteria);
-	printf("---> Natacao: %d\n"; espNatacao);
-	printf("---> Tobogas: %d\n"; espTobogas);
-	printf("---> Enfermaria: %d\n"; espEnfermaria);
-	printf("---> Restauracao: %d\n"; espRestauracao);
-	printf("---> Balnearios: %d\n"; espBalnearios);
+	printf("---> Bilheteria: %d\n", espBilheteria);
+	printf("---> Natacao: %d\n", espNatacao);
+	printf("---> Tobogas: %d\n", espTobogas);
+	printf("---> Enfermaria: %d\n", espEnfermaria);
+	printf("---> Restauracao: %d\n", espRestauracao);
+	printf("---> Balnearios: %d\n", espBalnearios);
 	printf("--------------------------------\n");
 }
 

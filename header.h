@@ -120,4 +120,6 @@ void simulador(char* config);
 void socketMonitor();
 void recebeDados(int newsockfd);
 void imprimeDados();
+void limpaFicheiro();
+void escreveFicheiro(char *informacao);
 

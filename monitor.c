@@ -92,15 +92,17 @@ void recebeDados(int newsockfd){
 		recebido = recv(newsockfd, buffer, (TAMANHO_BUFFER-1) , 0);
 
 		//converte a string para um número inteiro e 
-		sscanf(buffer,"%d %d", &idPessoa, &acabou); 
-
-		printf("Chegou uma pessoa ao Parque, o seu ID é: %d\n", idPessoa);
-		numPessoas++;
-		numBilheteria++;
+		sscanf(buffer,"%d %d", &idPessoa, &acabou);
 
 		if(acabou != 0){
 			finalSim = TRUE;
 		}else{
+
+		    printf("Chegou uma pessoa ao Parque, o seu ID é: %d\n", idPessoa);
+
+		    numPessoas++;
+		    numBilheteria++;
+
 		    imprimeDados();
 		}
 	}

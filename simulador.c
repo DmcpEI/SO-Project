@@ -1,18 +1,29 @@
 #include "header.h"
 
+//Variáveis globais
 int socketFD;
 int idPessoa = 1; //Id para a pessoa criada, que começa a 1 e vai incrementando
 int tempoSimulado = 0; //Tempo de Simulação
 //int tempoParque = 0; //Tempo que o parque está aberto
 //int pessoasParque = 0;
 
+//Structs
 struct configuracao conf;
+struct zona bilheteria;
+struct zona natacao;
+struct zona mergulho;
+struct zona enfermaria;
+struct zona restauracao;
+struct zona balnearios;
+//struct zona parqueEstacionamento;
 
+//Semâforos
 pthread_mutex_t mutexPessoa;
 pthread_mutex_t mutexPessoaEnviar;
 pthread_mutex_t mutexDados;
 pthread_mutex_t mutexSimulacao;
 
+//Tarefas
 pthread_t idThread[TAMANHO_TASK];
 struct pessoa *pessoas[100000];
 
@@ -68,8 +79,8 @@ int configuracao(char *file) {
 
     char *fim;
     char *array[2];
-    char *valores[21];
-    for (int index = 0; index < 21; index++) {
+    char *valores[TAMANHO_CONFIG];
+    for (int index = 0; index < TAMANHO_CONFIG; index++) {
         char *aux = strtok(linhas[index], ":");
         int i = 0;
         while (aux != NULL) {
@@ -144,36 +155,37 @@ struct pessoa criarPessoa() {
 
 }
 
-void enviarDados(int pessoaID, int acabou) {
+void enviarDados(char *bufferEnviar) {
 
 	pthread_mutex_lock(&mutexDados);
 
     char buffer[TAMANHO_BUFFER];
-    int bytesEnviados;
 
-    // Formata os dados como strings no buffer
-    snprintf(buffer, TAMANHO_BUFFER, "%d %d", pessoaID, acabou);
+	if (strcpy(buffer, bufferEnviar) != 0){
 
-    // Envia os dados no buffer para o cliente
-    bytesEnviados = send(socketFD, buffer, strlen(buffer), 0);
-
-    if (bytesEnviados == -1) {
-        perror("Error sending data");
-        // Trate o erro conforme necessário
+		if (send(socketFD, buffer, strlen(buffer), 0) == -1) {
+			perror("Error sending data");
+		}
     }
-
+	usleep(500);
 	pthread_mutex_unlock(&mutexDados);
 
 }
 
+//Falta desenvolver
 void enviarPessoa(void *ptr)
 {
 	pthread_mutex_lock(&mutexPessoaEnviar);
 
 	struct pessoa person = criarPessoa();
 	pessoas[person.idPessoa] = &person;
+
+	char bufferEnviar[TAMANHO_BUFFER];
+	snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", person.idPessoa, 0);
+	enviarDados(bufferEnviar);
+	bilheteria
+
 	printf("Chegou uma pessoa ao parque com id %d\n", person.idPessoa);
-	enviarDados(person.idPessoa, 0);
 
 	pthread_mutex_unlock(&mutexPessoaEnviar);
 }
@@ -225,6 +237,7 @@ void simulador(char* config)
 	}
 
 	if (conf.tempoSimulacao <= tempoSimulado){
+		printf("Acabou a simulação\n");
 		enviarDados(0, 1);
 	}
 
@@ -233,10 +246,14 @@ void simulador(char* config)
 int main(int argc, char *argv[])
 {
 
-	socketFD = socketSimulador();
-
-	simulador(argv[1]);
-	close(socketFD);
-	return 0;
+	if (argc == 2){
+		socketFD = socketSimulador();
+		simulador(argv[1]);
+		close(socketFD);
+		return 0;
+	}else{
+		printf("É preciso passar como argumento o ficheiro de configuração.\n");
+        return -1;
+	}
 
 }

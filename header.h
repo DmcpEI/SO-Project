@@ -20,6 +20,7 @@
 #define TRUE 1
 #define FALSE 0
 
+#define TAMANHO_CONFIG 21
 #define TAMANHO_BUFFER 1024
 #define TAMANHO_TASK 1000000
 
@@ -72,7 +73,6 @@ struct configuracao{
 struct zona {
 
 	int idZona; //Id da zona
-	int numeroMaximoPessoas; //Número máximo de pessoas na zona
 	int numeroAtualPessoas; //Número atual de pessoas na zona
 	int idadeMinima; //Idade mínima para aceder à zona
 	int alturaMinima; //Altura mínima para aceder à zona
@@ -112,7 +112,7 @@ int configuracao (char *file);
 int serVIP(float probabilidade);
 int randomEntreNumeros(int min, int max);
 struct pessoa criarPessoa();
-void enviarDados(int pessoaID, int acabou);
+void enviarDados(char *bufferEnviar);
 void enviarPessoa(void *ptr);
 void simulador(char* config);
 

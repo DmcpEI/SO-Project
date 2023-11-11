@@ -120,12 +120,12 @@ void imprimeDados(){
 	}
 	printf("--------------------------------------\n");
 	printf("Pessoas no Parque:		%d\n", numPessoas);
-	printf("Desistencias:           %d\n", numDesistencias);
+	printf("Desistencias:			%d\n", numDesistencias);
 	printf("--------------------------------------\n");
 	printf("Pessoas na zona:\n");
 	printf("---> Bilheteria:		%d\n", numBilheteria);
 	printf("---> Natacao:			%d\n", numNatacao);
-	printf("---> Tobogas: 		    %d\n", numTobogas);
+	printf("---> Tobogas:			%d\n", numTobogas);
 	printf("---> Enfermaria: 		%d\n", numEnfermaria);
 	printf("---> Restauracao: 		%d\n", numRestauracao);
 	printf("---> Balnearios: 		%d\n", numBalnearios);

@@ -100,9 +100,9 @@ void recebeDados(int newsockfd){
 
 		if(acabou != 0){
 			finalSim = TRUE;
+		}else{
+		    imprimeDados();
 		}
-
-		imprimeDados();
 	}
 
 }

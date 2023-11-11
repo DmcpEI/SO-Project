@@ -95,6 +95,10 @@ void recebeDados(int newsockfd){
 		numBilheteria++;
 
 		imprimeDados();
+
+		if(idPessoa>=50){
+			finalSim = TRUE;
+		}
 	}
 
 }

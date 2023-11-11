@@ -9,6 +9,7 @@ int tempoSimulado = 0; //Tempo de Simulação
 struct configuracao conf;
 
 pthread_mutex_t mutexPessoa;
+pthread_mutex_t mutexPessoaEnviar;
 pthread_mutex_t mutexDados;
 pthread_mutex_t mutexSimulacao;
 
@@ -143,7 +144,7 @@ struct pessoa criarPessoa() {
 
 }
 
-void enviaDados(int pessoaID) {
+void enviarDados(int pessoaID, int acabou) {
 
 	pthread_mutex_lock(&mutexDados);
 
@@ -151,7 +152,7 @@ void enviaDados(int pessoaID) {
     int bytesEnviados;
 
     // Formata os dados como strings no buffer
-    snprintf(buffer, TAMANHO_BUFFER, "%d", pessoaID);
+    snprintf(buffer, TAMANHO_BUFFER, "%d %d", pessoaID, acabou);
 
     // Envia os dados no buffer para o cliente
     bytesEnviados = send(socketFD, buffer, strlen(buffer), 0);
@@ -167,16 +168,25 @@ void enviaDados(int pessoaID) {
 
 void enviarPessoa(void *ptr)
 {
+	pthread_mutex_lock(&mutexPessoaEnviar);
+
 	struct pessoa person = criarPessoa();
 	pessoas[person.idPessoa] = &person;
 	printf("Chegou uma pessoa ao parque com id %d\n", person.idPessoa);
-	enviaDados(person.idPessoa);
+	enviarDados(person.idPessoa, 0);
+
+	pthread_mutex_unlock(&mutexPessoaEnviar);
 }
 
 void exclusaoMutua() 
 {
     if (pthread_mutex_init(&mutexPessoa, NULL) != 0) {
         perror("Erro na inicialização do mutexPessoa");
+        exit(1);
+    }
+
+	if (pthread_mutex_init(&mutexPessoaEnviar, NULL) != 0) {
+        perror("Erro na inicialização do mutexPessoaEnviar");
         exit(1);
     }
 
@@ -211,7 +221,11 @@ void simulador(char* config)
 			pthread_mutex_unlock(&mutexSimulacao);
 		}
 
-		sleep(1);
+		usleep(4000);
+	}
+
+	if (conf.tempoSimulacao <= tempoSimulado){
+		enviarDados(0, 1);
 	}
 
 }

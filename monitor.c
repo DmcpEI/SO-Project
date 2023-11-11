@@ -77,6 +77,7 @@ void socketMonitor () {
 void recebeDados(int newsockfd){
 
 	int idPessoa = 0;
+	int acabou = 0;
 	int recebido = 0;
 
 	while (!finalSim)
@@ -88,17 +89,18 @@ void recebeDados(int newsockfd){
 		recebido = recv(newsockfd, buffer, (TAMANHO_BUFFER-1) , 0);
 
 		//converte a string para um número inteiro e 
-		sscanf(buffer,"%d", &idPessoa); 
+		sscanf(buffer,"%d %d", &idPessoa, &acabou); 
 
 		printf("Chegou uma pessoa ao Parque, o seu ID é: %d\n", idPessoa);
+		printf("%d\n",acabou);
 		numPessoas++;
 		numBilheteria++;
 
-		imprimeDados();
-
-		if(idPessoa>=50){
+		if(acabou == 1){
 			finalSim = TRUE;
 		}
+
+		imprimeDados();
 	}
 
 }
@@ -106,7 +108,9 @@ void recebeDados(int newsockfd){
 
 void imprimeDados(){
 
-	printf("--------------------------------\n");
+	printf("======================================\n");
+    printf("           PARQUE AQUATICO           \n");
+    printf("======================================\n");
 
 	printf("Estade de execucao --> "); 
 	if(!finalSim){
@@ -114,26 +118,26 @@ void imprimeDados(){
 	} else {
 		printf("Finalizado\n");
 	}
-	printf("--------------------------------\n");
-	printf("Pessoas no Parque: %d\n", numPessoas);
-	printf("Desistencias: %d\n", numDesistencias);
-	printf("--------------------------------\n");
+	printf("--------------------------------------\n");
+	printf("Pessoas no Parque:		%d\n", numPessoas);
+	printf("Desistencias:           %d\n", numDesistencias);
+	printf("--------------------------------------\n");
 	printf("Pessoas na zona:\n");
-	printf("---> Bilheteria: %d\n", numBilheteria);
-	printf("---> Natacao: %d\n", numNatacao);
-	printf("---> Tobogas: %d\n", numTobogas);
-	printf("---> Enfermaria: %d\n", numEnfermaria);
-	printf("---> Restauracao: %d\n", numRestauracao);
-	printf("---> Balnearios: %d\n", numBalnearios);
-	printf("--------------------------------\n");
+	printf("---> Bilheteria:		%d\n", numBilheteria);
+	printf("---> Natacao:			%d\n", numNatacao);
+	printf("---> Tobogas: 		    %d\n", numTobogas);
+	printf("---> Enfermaria: 		%d\n", numEnfermaria);
+	printf("---> Restauracao: 		%d\n", numRestauracao);
+	printf("---> Balnearios: 		%d\n", numBalnearios);
+	printf("--------------------------------------\n");
 	printf("Pessoas a espera na zona:\n");
-	printf("---> Bilheteria: %d\n", espBilheteria);
-	printf("---> Natacao: %d\n", espNatacao);
-	printf("---> Tobogas: %d\n", espTobogas);
-	printf("---> Enfermaria: %d\n", espEnfermaria);
-	printf("---> Restauracao: %d\n", espRestauracao);
-	printf("---> Balnearios: %d\n", espBalnearios);
-	printf("--------------------------------\n");
+	printf("---> Bilheteria: 		%d\n", espBilheteria);
+	printf("---> Natacao: 			%d\n", espNatacao);
+	printf("---> Tobogas: 			%d\n", espTobogas);
+	printf("---> Enfermaria: 		%d\n", espEnfermaria);
+	printf("---> Restauracao: 		%d\n", espRestauracao);
+	printf("---> Balnearios: 		%d\n", espBalnearios);
+	printf("--------------------------------------\n");;
 }
 
 int main (void) {

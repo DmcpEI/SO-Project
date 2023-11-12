@@ -64,7 +64,7 @@ void socketMonitor () {
 		exit(-1);
 	}
 	else if(pFilho > 0){
-		printf("Começando a simulacao. Espera pelo simulador...\n");
+		printf("Começando a simulacao.\n");
 	} 
 	else if( pFilho == 0 ) {	
 		close(sockfd);

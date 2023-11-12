@@ -208,9 +208,6 @@ void imprimeDados() {
 
 int main (void) {
 	//monitor irá acabar quando o simulador disser que acabou
-	while (!finalSim)
-	{
-		socketMonitor();
-	}
+	socketMonitor();
 	return 0;
 }

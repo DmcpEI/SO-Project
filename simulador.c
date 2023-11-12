@@ -28,11 +28,11 @@ pthread_t idThread[TAMANHO_TASK];
 struct pessoa *pessoas[100000];
 
 int socketSimulador() {
-    int servlen, sockfd; 
+    int servlen; 
     struct sockaddr_un serv_addr; 
 
     // Verifica a criação do socket 
-    if ((sockfd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0) {
+    if ((socketFD = socket(AF_UNIX, SOCK_STREAM, 0)) < 0) {
         printf("Erro ao criar o Socket\n"); 
         exit(-1); 
     }
@@ -43,14 +43,14 @@ int socketSimulador() {
     servlen = strlen(serv_addr.sun_path) + sizeof(serv_addr.sun_family); // Calcula o tamanho da estrutura serv_addr
 
     // Tenta estabelecer uma conexão com o servidor
-    if (connect(sockfd, (struct sockaddr *)&serv_addr, servlen) < 0) {
+    if (connect(socketFD, (struct sockaddr *)&serv_addr, servlen) < 0) {
         printf("Execute o monitor primeiro\n"); 
-        close(sockfd); 
+        close(socketFD); 
         exit(-1);
     }
 
     printf("Conectado com sucesso\n");
-    return sockfd; // Retorna o descritor do socket conectado
+    return socketFD; // Retorna o descritor do socket conectado
 }
 
 

@@ -6,6 +6,9 @@ int finalSim = FALSE;
 //Arquivo do relatorio
 FILE *relatorioFicheiro;
 
+//Variavel para aparecer no inicio da execução
+int simulacaoIniciada = 0;
+
 //Contadores de pessoas nas zonas
 int numPessoas = 0, numDesistencias = 0,  numBilheteria = 0, numNatacao = 0, numTobogas = 0, numEnfermaria = 0, 
 	numRestauracao = 0, numBalnearios = 0;
@@ -40,6 +43,11 @@ void socketMonitor () {
 		exit(-1);
    	}
 
+	//só no início da simulação
+	if(!simulacaoIniciada){	
+		printf("Começando a simulacao.\n");
+		simulacaoIniciada = 1;
+	}
 	//Servidor espera para aceitar 1 cliente para o socket stream
 	listen(sockfd, 1);
 
@@ -63,12 +71,10 @@ void socketMonitor () {
 		printf("Erro na criação do processo filho\n");
 		exit(-1);
 	}
-	else if(pFilho > 0){
-		printf("Começando a simulacao.\n");
-	} 
 	else if( pFilho == 0 ) {	
 		close(sockfd);
 		recebeDados(newsockfd);
+		exit(0);
 	}
 	close(newsockfd);
 }
@@ -150,7 +156,7 @@ void escreveFicheiro(char *informacao){
 }
 
 
-
+//Função que imprime na consola e escreve no ficheiro o estado atual da simulação
 void imprimeDados() {
 
 	//poderá ser preciso mudar o 1000 caso se acrescente mais informação

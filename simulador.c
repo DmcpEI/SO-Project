@@ -238,7 +238,7 @@ void simulador(char* config) {
             pthread_mutex_unlock(&mutexSimulacao);
         }
 
-        usleep(4000); // Aguarda um curto período de tempo (microssegundos)
+        usleep(10000); // Aguarda um curto período de tempo (microssegundos)
 
     }
 

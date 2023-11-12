@@ -10,3 +10,7 @@ monitor: monitor.c header.h
 
 clean:
 	rm *.o simulador monitor
+
+fullClean:
+	rm *.o simulador monitor
+	rm *.txt

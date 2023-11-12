@@ -3,8 +3,11 @@
 //Final da simulação
 int finalSim = FALSE;
 
-//Arquivo do relatorio
+//Arquivo do relatório
 FILE *relatorioFicheiro;
+
+//Variável para aparecer no início da execução
+int simulacaoIniciada = 0;
 
 //Contadores de pessoas nas zonas
 int numPessoas = 0, numDesistencias = 0,  numBilheteria = 0, numNatacao = 0, numTobogas = 0, numEnfermaria = 0, 
@@ -21,7 +24,7 @@ void socketMonitor () {
 	int cli_size, server_size;
 	struct sockaddr_un serv_end, serv_addr;
 
-	// Verifica a criacao do socket
+	// Verifica a criação do socket
 	if ((sockfd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0) {
 		printf("Erro ao criar o Socket\n");
 		exit(-1);
@@ -34,20 +37,25 @@ void socketMonitor () {
 	server_size = strlen(serv_addr.sun_path) + sizeof(serv_addr.sun_family);
 	unlink(UNIXSTR_PATH);
 
-	//Liga o socket a um endereco
+	// Liga o socket a um endereço
     if (bind(sockfd, (struct sockaddr *)&serv_addr, server_size) < 0) {
         printf("erro: nao foi possivel ligar o socket a um endereco. \n");
 		exit(-1);
    	}
 
-	//Servidor espera para aceitar 1 cliente para o socket stream
+	// Só no início da simulação
+	if(!simulacaoIniciada){	
+		printf("Começando a simulacao.\n");
+		simulacaoIniciada = 1;
+	}
+	// Servidor espera para aceitar 1 cliente para o socket stream
 	listen(sockfd, 1);
 
 	// Criação de um novo scoket
 	cli_size = sizeof(serv_end);
 	newsockfd = accept (sockfd, (struct sockaddr *) &serv_end, &cli_size);
 
-	//Verifica se houve erro na aceitacao da ligacao
+	// Verifica se houve erro na aceitação da ligação
 	if (newsockfd < 0) {
 		printf("erro: nao foi possivel aceitar a ligacao. \n");
 		exit(-1);
@@ -58,22 +66,20 @@ void socketMonitor () {
 	e o processo pai não pode tratar de um vez a vez*/
 
 	int pFilho;
-	//Caso haja erro na criação do processo filho
+	// Caso haja erro na criação do processo filho
 	if((pFilho=fork()) < 0){
 		printf("Erro na criação do processo filho\n");
 		exit(-1);
 	}
-	else if(pFilho > 0){
-		printf("Começando a simulacao.\n");
-	} 
 	else if( pFilho == 0 ) {	
 		close(sockfd);
 		recebeDados(newsockfd);
+		exit(0);
 	}
 	close(newsockfd);
 }
 
-//Função que recebe os dados do socket
+// Função que recebe os dados do socket
 void recebeDados(int newsockfd){
 
 	int idPessoa = 0;
@@ -81,13 +87,13 @@ void recebeDados(int newsockfd){
 	int recebido = 0;
 
 	while (!finalSim){
-		// necessário criar um buffer para alocar temporariamnete memória 
+		// Necessário criar um buffer para alocar temporariamnete memória 
 		char buffer[TAMANHO_BUFFER];
 		
-		//dados recebidos do socket
+		// Dados recebidos do socket
 		recebido = recv(newsockfd, buffer, (TAMANHO_BUFFER-1) , 0);
 
-		//converte a string para um número inteiro e 
+		// Converte a string para um número inteiro e 
 		sscanf(buffer,"%d %d", &acabou, &idPessoa);
 
 		/*Caso a variável "acabou" seja um número diferente de 0 
@@ -95,10 +101,9 @@ void recebeDados(int newsockfd){
 		e imprime os ultimos dados*/
 
 		switch (acabou){
-			/*Caso a simulação esteja a decorrer este imprime o ID da pessoa que chegou
+		/*Caso a simulação esteja a decorrer este imprime o ID da pessoa que chegou
 		ao Parque e incrementa o número de Pessoas no Parque, como as pessoas começam
-		na bilheteria este também irá incrementar o número de pessoas que estão lá
-		*/
+		na bilheteria este também irá incrementar o número de pessoas que estão lá*/
 		case NAO_ACABOU:
 			printf("Chegou uma pessoa ao Parque, o seu ID é: %d\n", idPessoa);
 
@@ -117,7 +122,7 @@ void recebeDados(int newsockfd){
 	}
 }
 
-//Exportação para o ficheiro
+// Exportação para o ficheiro
 
 /*Função que limpa o ficheiro, 
 usamos "w" pois caso exista algo no ficheiro este elimina o que já existe nele
@@ -127,10 +132,10 @@ void limpaFicheiro(){
 }
 
 
-//Função que escreve no ficheiro
+// Função que escreve no ficheiro
 void escreveFicheiro(char *informacao){
 
-	//começa por limpar o ficheiro pois só queremos os dados quando acabou a simulação
+	// Começa por limpar o ficheiro pois só queremos os dados quando acabou a simulação
 	limpaFicheiro();
 
 	/*Abrimos o ficheiro e este usa "a" para dar append ou seja, 
@@ -139,21 +144,21 @@ void escreveFicheiro(char *informacao){
 
 	relatorioFicheiro = fopen("Relatorio.txt","a");
 
-	//Caso haja um erro o usuario seá notificado
+	// Caso haja um erro o usuario seá notificado
 	if(relatorioFicheiro == NULL){
 		perror("Nao foi possivel abrir o ficheiro");
 	}
 
-	//Irá adicionar o ficherio a informação que queremos e depois irá fechar o ficheiro
+	// Irá adicionar o ficherio a informação que queremos e depois irá fechar o ficheiro
 	fprintf(relatorioFicheiro,"%s", informacao);
 	fclose(relatorioFicheiro);
 }
 
 
-
+// Função que imprime na consola e escreve no ficheiro o estado atual da simulação
 void imprimeDados() {
 
-	//poderá ser preciso mudar o 1000 caso se acrescente mais informação
+	// Poderá ser preciso mudar o 1000 caso se acrescente mais informação
     char informacao[1000]; 
 
 	/*Irá colocar na variavel local informação a seguinte mensagem, 
@@ -189,7 +194,7 @@ void imprimeDados() {
         numBilheteria, numNatacao, numTobogas, numEnfermaria, numRestauracao, numBalnearios,
         espBilheteria, espNatacao, espTobogas, espEnfermaria, espRestauracao, espBalnearios);
 
-   	//escreve no ficheiro a informação
+   	// Escreve no ficheiro a informação
   	escreveFicheiro(informacao);	
 
     // Imprime a informação na consola

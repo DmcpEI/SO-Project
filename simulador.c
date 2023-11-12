@@ -170,7 +170,6 @@ void enviarDados(char *bufferEnviar) {
             perror("Erro ao enviar dados");
         }
     }
-    usleep(500); // Espera um curto período de tempo (microssegundos) antes de desbloquear o mutex
 
     pthread_mutex_unlock(&mutexDados);
 }

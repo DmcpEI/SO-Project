@@ -3,11 +3,11 @@
 ======================================
 Estado de execucao --> Finalizado
 --------------------------------------
-Pessoas no Parque:		25
+Pessoas no Parque:		2
 Desistencias:			0
 --------------------------------------
 Pessoas na zona:
----> Bilheteria:		25
+---> Bilheteria:		2
 ---> Natacao:			0
 ---> Tobogas:			0
 ---> Enfermaria:		0

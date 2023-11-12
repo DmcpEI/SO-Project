@@ -1,16 +1,16 @@
 #include "header.h"
 
-//final da simulação
+//Final da simulação
 int finalSim = FALSE;
 
-//arquivo do relatorio
+//Arquivo do relatorio
 FILE *relatorioFicheiro;
 
-//contadores de pessoas nas zonas
+//Contadores de pessoas nas zonas
 int numPessoas = 0, numDesistencias = 0,  numBilheteria = 0, numNatacao = 0, numTobogas = 0, numEnfermaria = 0, 
 	numRestauracao = 0, numBalnearios = 0;
 
-//contadores de pessoas em espera
+//Contadores de pessoas em espera
 int  espBilheteria=0, espNatacao = 0, espTobogas = 0, espEnfermaria = 0, 
 	 espRestauracao = 0, espBalnearios = 0;
 
@@ -50,7 +50,8 @@ void socketMonitor () {
 	cli_size = sizeof(serv_end);
 	newsockfd = accept (sockfd, (struct sockaddr *) &serv_end, &cli_size);
 
-	if (newsockfd < 0) {        //Verifica se houve erro na aceitacao da ligacao
+	//Verifica se houve erro na aceitacao da ligacao
+	if (newsockfd < 0) {
 		printf("erro: nao foi possivel aceitar a ligacao. \n");
 		exit(-1);
 	}
@@ -59,7 +60,7 @@ void socketMonitor () {
 
 	/*Criação de um processo filho para implementar o codigo 
 	pois irão haver vários clientes simultaneos 
-	e o pai não pode tratar de um vez a vez*/
+	e o processo pai não pode tratar de um vez a vez*/
 
 	int pFilho = fork();
 
@@ -67,6 +68,7 @@ void socketMonitor () {
 		close(sockfd);
 		recebeDados(newsockfd);
 	} 
+	//Caso haja erro na criação do processo filho
 	else if(pFilho == -1){
 		printf("Erro na criação do processo filho\n");
 		exit(-1);
@@ -76,7 +78,7 @@ void socketMonitor () {
 
 }
 
-
+//Função que recebe os dados do socket
 void recebeDados(int newsockfd){
 
 	int idPessoa = 0;
@@ -94,15 +96,25 @@ void recebeDados(int newsockfd){
 		//converte a string para um número inteiro e 
 		sscanf(buffer,"%d %d", &idPessoa, &acabou);
 
+		/*Caso a variável "acabou" seja um número diferente de 0 
+		significa que a simulaçao acabou e sendo assim acaba a simulação 
+		e imprime os ultimos dados*/
+
 		if(acabou != 0){
 
 			finalSim = TRUE;
 			imprimeDados();
 
-			//close(newsockfd);
 			break;
 
-		}else{
+		}
+		
+		/*Caso a simulação esteja a decorrer este imprime o ID da pessoa que chegou
+		ao Parque e incrementa o número de Pessoas no Parque, como as pessoas começam
+		na bilheteria este também irá incrementar o número de pessoas que estão lá
+		*/
+
+		else{
 
 		    printf("Chegou uma pessoa ao Parque, o seu ID é: %d\n", idPessoa);
 
@@ -115,19 +127,34 @@ void recebeDados(int newsockfd){
 
 }
 
-//EXPORTAÇÃO PARA O FICHEIRO
+//Exportação para o ficheiro
+
+/*Função que limpa o ficheiro, 
+usamos "w" pois caso exista algo no ficheiro este elimina o que já existe nele
+caso contrario ele cria o ficheiro*/
 void limpaFicheiro(){
 	fclose(fopen("Relatorio.txt","w"));
 }
 
+
+//Função que escreve no ficheiro
 void escreveFicheiro(char *informacao){
 
+	//começa por limpar o ficheiro pois só queremos os dados quando acabou a simulação
 	limpaFicheiro();
 
+	/*Abrimos o ficheiro e este usa "a" para dar append ou seja, 
+	caso o ficheiro exista este adiciona ao ficheiro o texto que queremos, 
+	caso contrário cria um novo*/
+
 	relatorioFicheiro = fopen("Relatorio.txt","a");
+
+	//Caso haja um erro o usuario seá notificado
 	if(relatorioFicheiro == NULL){
 		perror("Nao foi possivel abrir o ficheiro");
 	}
+
+	//Irá adicionar o ficherio a informação que queremos e depois irá fechar o ficheiro
 	fprintf(relatorioFicheiro,"%s", informacao);
 	fclose(relatorioFicheiro);
 }
@@ -139,6 +166,9 @@ void imprimeDados() {
 	//poderá ser preciso mudar o 1000 caso se acrescente mais informação
     char informacao[1000]; 
 
+	/*Irá colocar na variavel local informação a seguinte mensagem, 
+	decidimos utilizar este formato pois ajuda na visualização da mensagem que 
+	irá aparecer na consola*/
     sprintf(informacao,
         "======================================\n"
         "            PARQUE AQUATICO\n"
@@ -172,15 +202,15 @@ void imprimeDados() {
     //escreve no ficheiro a informação
     escreveFicheiro(informacao);
 
-    // Imprime a informação na consosa
+    // Imprime a informação na consola
     printf("%s", informacao);
 }
 
 int main (void) {
+	//monitor irá acabar quando o simulador disser que acabou
 	while (!finalSim)
 	{
 		socketMonitor();
-		break;
 	}
 	return 0;
 }

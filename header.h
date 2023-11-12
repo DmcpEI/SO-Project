@@ -20,14 +20,16 @@
 #define TRUE 1
 #define FALSE 0
 
+//Acabou a simulação
 #define NAO_ACABOU 0
 #define ACABOU 1
 
+//Tamanhos
 #define TAMANHO_CONFIG 21
 #define TAMANHO_BUFFER 1024
 #define TAMANHO_TASK 1000000
 
-//zona
+//Zonas
 #define BILHETERIA 0
 #define NATACAO 1
 #define MERGULHO 2
@@ -71,8 +73,7 @@ struct configuracao{
 // Enfermaria
 // Restauração
 // Balnearios
-// Parque de estacionamento(talvez)
-
+// Parque de estacionamento (talvez futuramente)
 struct zona {
 
 	int numeroAtualPessoas; //Número atual de pessoas na zona

@@ -2,9 +2,9 @@
 
 //Variáveis globais
 int socketFD;
-int idPessoa = 1; //Id para a pessoa criada, que começa a 1 e vai incrementando
-int tempoSimulado = 0; //Tempo de simulação que já foi simulado
-//int tempoParque = 0; //Tempo que o parque está aberto
+int idPessoa = 1; // Id para a pessoa criada, que começa a 1 e vai incrementando
+int tempoSimulado = 0; // Tempo de simulação que já foi simulado
+//int tempoParque = 0; // Tempo que o parque está aberto
 //int pessoasParque = 0;
 
 //Structs
@@ -17,15 +17,15 @@ struct zona restauracao;
 struct zona balnearios;
 //struct zona parqueEstacionamento;
 
-//Semâforos
+//Tricos
 pthread_mutex_t mutexPessoa;
 pthread_mutex_t mutexPessoaEnviar;
 pthread_mutex_t mutexDados;
 pthread_mutex_t mutexSimulacao;
 
 //Tarefas
-pthread_t idThread[TAMANHO_TASK];
-struct pessoa *pessoas[100000];
+pthread_t idThread[TAMANHO_TASK]; // Array das tarefas
+struct pessoa *pessoas[100000]; // Array de todas as pessoas
 
 int socketSimulador() {
     int servlen; 
@@ -44,7 +44,7 @@ int socketSimulador() {
 
     // Tenta estabelecer uma conexão com o servidor
     if (connect(socketFD, (struct sockaddr *)&serv_addr, servlen) < 0) {
-        printf("Execute o monitor primeiro\n"); 
+        printf("Execute o monitor primeiro\n"); // Exibe uma mensagem de erro se o monitor não foi executado
         close(socketFD); 
         exit(-1);
     }
@@ -93,7 +93,7 @@ int configuracao(char *file) {
             array[i++] = aux; // Armazena as partes em um array
             aux = strtok(NULL, ":");
         }
-        valores[index] = array[1]; // Os valores estão na segunda parte (índice 1)
+        valores[index] = array[1];
     }
 
     // Atribui os valores lidos do arquivo à estrutura de configuração "conf"
@@ -149,16 +149,16 @@ struct pessoa criarPessoa() {
     person.idade = randomEntreNumeros(0, 90); // Idade randomizada entre 0 e 90 anos
     person.altura = randomEntreNumeros(60, 220); // Altura randomizada entre 60 e 220 centímetros
     person.vip = serVIP(conf.probabilidadeVIP);
-    person.magoar = 0; // Pessoa ainda não se machucou, pois acabou de ser criada
-    person.zonaAtual = 0; // Bilheteria
-    person.tempoMaxEspera = randomEntreNumeros((conf.tempoEsperaMax / 2), conf.tempoEsperaMax);
+    person.magoar = 0; // Pessoa ainda não se magoou, pois acabou de ser criada
+    person.zonaAtual = 0; // Começa na bilheteria para esta entrega
+    person.tempoMaxEspera = randomEntreNumeros((conf.tempoEsperaMax / 2), conf.tempoEsperaMax); // Tempo de espera randomizado entre metade do tempo de espera máximo e o tempo de espera máximo
 
     pthread_mutex_unlock(&mutexPessoa);
 
-    return person;
+    return person;// Retorna o descritor do socket conectado
 }
 
-// Função para enviar dados para o socket
+// Função para enviar dados (buffer) para o socket
 void enviarDados(char *bufferEnviar) {
     pthread_mutex_lock(&mutexDados);
 
@@ -167,7 +167,7 @@ void enviarDados(char *bufferEnviar) {
     if (strcpy(buffer, bufferEnviar) != 0) { // Copia o conteúdo de bufferEnviar para buffer
 
         if (send(socketFD, buffer, strlen(buffer), 0) == -1) {
-            perror("Erro ao enviar dados");
+            perror("Erro ao enviar dados"); // Exibe uma mensagem de erro se não conseguir enviar os dados
         }
     }
 
@@ -179,20 +179,20 @@ void enviarPessoa(void *ptr) {
     pthread_mutex_lock(&mutexPessoaEnviar);
 
     struct pessoa person = criarPessoa();
-    pessoas[person.idPessoa] = &person;
+    pessoas[person.idPessoa] = &person; // Adiciona a pessoa criada ao array de todas as pessoas criadas 
 
     printf("Chegou uma pessoa ao parque com ID %d\n", person.idPessoa);
 
     char bufferEnviar[TAMANHO_BUFFER];
-    //Aqui envio primeiro se acabou ou não a simulação e depois o id da pessoa criada
+    // Aqui envio primeiro se acabou ou não a simulação e depois o id da pessoa criada
     snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", NAO_ACABOU, person.idPessoa);
     enviarDados(bufferEnviar);
-    bilheteria.numeroAtualPessoas++;
+    bilheteria.numeroAtualPessoas++; // Adiciona a pessoa à Bilheteria (na próxima entrega iremos melhorar)
 
     pthread_mutex_unlock(&mutexPessoaEnviar);
 }
 
-// Função para inicializar os mutexes
+// Função para inicializar os trincos
 void exclusaoMutua() {
 	// Inicia mutex para criar pessoa
     if (pthread_mutex_init(&mutexPessoa, NULL) != 0) {
@@ -224,7 +224,7 @@ void simulador(char* config) {
     configuracao(config); // Lê as configurações do arquivo e inicializa as variáveis
     exclusaoMutua(); // Inicializa os mutexes
 
-    while (conf.tempoSimulacao != tempoSimulado) { //Enquanto não acaba o tempo de simulação
+    while (conf.tempoSimulacao != tempoSimulado) { // Enquanto não acaba o tempo de simulação
 
         tempoSimulado++;
 
@@ -242,10 +242,10 @@ void simulador(char* config) {
 
     }
 
-    if (conf.tempoSimulacao <= tempoSimulado) { //Chegou ao tempo final da simulação
+    if (conf.tempoSimulacao <= tempoSimulado) { // Chegou ao tempo final da simulação
         printf("Acabou a simulação\n");
         char bufferEnviar[TAMANHO_BUFFER];
-        //Aqui envio que acabou a simulação e não envio nenhuma pessoa
+        // Aqui envio que acabou a simulação e não envio nenhuma pessoa
         snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", ACABOU, 0);
         enviarDados(bufferEnviar);
     }
@@ -254,7 +254,7 @@ void simulador(char* config) {
 // Função principal do programa
 int main(int argc, char *argv[]) {
 
-    if (argc == 2) {
+    if (argc == 2) { // Verifica se o número de argumentos da linha de comando é igual a 2
         socketFD = socketSimulador();
         simulador(argv[1]); // Inicia a simulação com o arquivo de configuração especificado
         close(socketFD);

@@ -115,4 +115,3 @@ void recebeDados(int newsockfd);
 void imprimeDados();
 void limpaFicheiro();
 void escreveFicheiro(char *informacao);
-

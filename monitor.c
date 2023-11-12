@@ -40,8 +40,6 @@ void socketMonitor () {
 		exit(-1);
    	}
 
-	//printf("Esperando Simulador.\n");
-
 	//Servidor espera para aceitar 1 cliente para o socket stream
 	listen(sockfd, 1);
 

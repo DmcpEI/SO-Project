@@ -95,7 +95,13 @@ void recebeDados(int newsockfd){
 		sscanf(buffer,"%d %d", &idPessoa, &acabou);
 
 		if(acabou != 0){
+
 			finalSim = TRUE;
+			imprimeDados();
+
+			//close(newsockfd);
+			break;
+
 		}else{
 
 		    printf("Chegou uma pessoa ao Parque, o seu ID é: %d\n", idPessoa);
@@ -174,5 +180,7 @@ int main (void) {
 	while (!finalSim)
 	{
 		socketMonitor();
+		break;
 	}
+	return 0;
 }

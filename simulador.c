@@ -182,13 +182,13 @@ void enviarPessoa(void *ptr) {
     struct pessoa person = criarPessoa();
     pessoas[person.idPessoa] = &person;
 
+    printf("Chegou uma pessoa ao parque com ID %d\n", person.idPessoa);
+
     char bufferEnviar[TAMANHO_BUFFER];
     //Aqui envio primeiro se acabou ou não a simulação e depois o id da pessoa criada
     snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", NAO_ACABOU, person.idPessoa);
     enviarDados(bufferEnviar);
     bilheteria.numeroAtualPessoas++;
-
-    printf("Chegou uma pessoa ao parque com ID %d\n", person.idPessoa);
 
     pthread_mutex_unlock(&mutexPessoaEnviar);
 }

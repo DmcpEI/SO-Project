@@ -94,7 +94,7 @@ void recebeDados(int newsockfd){
 		recebido = recv(newsockfd, buffer, (TAMANHO_BUFFER-1) , 0);
 
 		//converte a string para um número inteiro e 
-		sscanf(buffer,"%d %d", &idPessoa, &acabou);
+		sscanf(buffer,"%d %d", &acabou, &idPessoa);
 
 		/*Caso a variável "acabou" seja um número diferente de 0 
 		significa que a simulaçao acabou e sendo assim acaba a simulação 

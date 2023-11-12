@@ -45,9 +45,10 @@ void socketMonitor () {
 
 	// Só no início da simulação
 	if(!simulacaoIniciada){	
-		printf("Começando a simulacao.\n");
+		printf("Execute o simulador para começar...\n");
 		simulacaoIniciada = 1;
 	}
+
 	// Servidor espera para aceitar 1 cliente para o socket stream
 	listen(sockfd, 1);
 

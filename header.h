@@ -73,6 +73,7 @@ struct configuracao{
 struct zona {
 
 	int numeroAtualPessoas; //Número atual de pessoas na zona
+	int numeroPessoasNaFila //Numero de pessoas à espera para entrar na zona
 	//int idadeMinima; //Idade mínima para aceder à zona
 	//int alturaMinima; //Altura mínima para aceder à zona
 	//int tempoMaxZona;

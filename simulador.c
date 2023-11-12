@@ -183,7 +183,8 @@ void enviarPessoa(void *ptr) {
     pessoas[person.idPessoa] = &person;
 
     char bufferEnviar[TAMANHO_BUFFER];
-    snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", person.idPessoa, 0);
+    //Aqui envio primeiro se acabou ou não a simulação e depois o id da pessoa criada
+    snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", NAO_ACABOU, person.idPessoa);
     enviarDados(bufferEnviar);
     bilheteria.numeroAtualPessoas++;
 
@@ -231,7 +232,7 @@ void simulador(char* config) {
         if (tempoSimulado % conf.tempoChegadaPessoas == 0) {
             // Cria uma nova thread para representar uma pessoa
             pthread_mutex_lock(&mutexSimulacao);
-            if (pthread_create(&idThread[idPessoa], NULL, enviarPessoa, NULL) != 0) { //Cria tarefas (pessoas)
+            if (pthread_create(&idThread[idPessoa], NULL, enviarPessoa, NULL) != 0) {
                 perror("Erro na criação da thread");
                 exit(1);
             }
@@ -245,7 +246,8 @@ void simulador(char* config) {
     if (conf.tempoSimulacao <= tempoSimulado) { //Chegou ao tempo final da simulação
         printf("Acabou a simulação\n");
         char bufferEnviar[TAMANHO_BUFFER];
-        snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", 0, 1);
+        //Aqui envio que acabou a simulação e não envio nenhuma pessoa
+        snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", ACABOU, 0);
         enviarDados(bufferEnviar);
     }
 }

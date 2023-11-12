@@ -20,6 +20,9 @@
 #define TRUE 1
 #define FALSE 0
 
+#define NAO_ACABOU 0
+#define ACABOU 1
+
 #define TAMANHO_CONFIG 21
 #define TAMANHO_BUFFER 1024
 #define TAMANHO_TASK 1000000

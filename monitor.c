@@ -40,9 +40,6 @@ void socketMonitor () {
 		exit(-1);
    	}
 
-    //Espera a conexao com o simulador
-	printf("Começando a simulacao. Espera pelo simulador...\n");
-
 	//Servidor espera para aceitar 1 cliente para o socket stream
 	listen(sockfd, 1);
 
@@ -56,26 +53,24 @@ void socketMonitor () {
 		exit(-1);
 	}
 
-	printf("Espera concluída, conectado com sucesso!\n");
-
 	/*Criação de um processo filho para implementar o codigo 
 	pois irão haver vários clientes simultaneos 
 	e o processo pai não pode tratar de um vez a vez*/
 
-	int pFilho = fork();
-
-	if(pFilho == 0){
-		close(sockfd);
-		recebeDados(newsockfd);
-	} 
+	int pFilho;
 	//Caso haja erro na criação do processo filho
-	else if(pFilho == -1){
+	if((pFilho=fork()) < 0){
 		printf("Erro na criação do processo filho\n");
 		exit(-1);
 	}
-
+	else if(pFilho > 0){
+		printf("Começando a simulacao. Espera pelo simulador...\n");
+	} 
+	else if( pFilho == 0 ) {	
+		close(sockfd);
+		recebeDados(newsockfd);
+	}
 	close(newsockfd);
-
 }
 
 //Função que recebe os dados do socket
@@ -85,8 +80,7 @@ void recebeDados(int newsockfd){
 	int acabou = 0;
 	int recebido = 0;
 
-	while (!finalSim)
-	{
+	while (!finalSim){
 		// necessário criar um buffer para alocar temporariamnete memória 
 		char buffer[TAMANHO_BUFFER];
 		
@@ -100,31 +94,27 @@ void recebeDados(int newsockfd){
 		significa que a simulaçao acabou e sendo assim acaba a simulação 
 		e imprime os ultimos dados*/
 
-		if(acabou != 0){
-
-			finalSim = TRUE;
-			imprimeDados();
-
-			break;
-
-		}
-		
-		/*Caso a simulação esteja a decorrer este imprime o ID da pessoa que chegou
+		switch (acabou){
+			/*Caso a simulação esteja a decorrer este imprime o ID da pessoa que chegou
 		ao Parque e incrementa o número de Pessoas no Parque, como as pessoas começam
 		na bilheteria este também irá incrementar o número de pessoas que estão lá
 		*/
+		case NAO_ACABOU:
+			printf("Chegou uma pessoa ao Parque, o seu ID é: %d\n", idPessoa);
 
-		else{
+			numPessoas++;
+			numBilheteria++;
 
-		    printf("Chegou uma pessoa ao Parque, o seu ID é: %d\n", idPessoa);
+			imprimeDados();
+			break;
 
-		    numPessoas++;
-		    numBilheteria++;
-
-		    imprimeDados();
+		case ACABOU:
+			finalSim = TRUE;
+			imprimeDados();
+			break;
 		}
+		
 	}
-
 }
 
 //Exportação para o ficheiro
@@ -199,17 +189,15 @@ void imprimeDados() {
         numBilheteria, numNatacao, numTobogas, numEnfermaria, numRestauracao, numBalnearios,
         espBilheteria, espNatacao, espTobogas, espEnfermaria, espRestauracao, espBalnearios);
 
-    //escreve no ficheiro a informação
-    escreveFicheiro(informacao);
+   	//escreve no ficheiro a informação
+  	escreveFicheiro(informacao);	
 
     // Imprime a informação na consola
     printf("%s", informacao);
 }
 
 int main (void) {
-	//monitor irá acabar quando o simulador disser que acabou
-	while (!finalSim)
-	{
+	while (!finalSim){
 		socketMonitor();
 	}
 	return 0;

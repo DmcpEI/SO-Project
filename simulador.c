@@ -150,12 +150,97 @@ struct pessoa criarPessoa() {
     person.altura = randomEntreNumeros(60, 220); // Altura randomizada entre 60 e 220 centímetros
     person.vip = serVIP(conf.probabilidadeVIP);
     person.magoar = 0; // Pessoa ainda não se magoou, pois acabou de ser criada
-    person.zonaAtual = 0; // Começa na bilheteria para esta entrega
+    person.zonaAtual = BILHETERIA; // Começa na bilheteria para esta entrega
     person.tempoMaxEspera = randomEntreNumeros((conf.tempoEsperaMax / 2), conf.tempoEsperaMax); // Tempo de espera randomizado entre metade do tempo de espera máximo e o tempo de espera máximo
 
     pthread_mutex_unlock(&mutexPessoa);
 
     return person;// Retorna o descritor do socket conectado
+}
+
+void Fila (struct pessoa *pessoa) {
+    
+    char buffer[TAMANHO_BUFFER];
+    int tempo = tempoSimulado;
+    int tempoDeEspera, valorDoSemaforo;
+    
+    if(pessoa->zonaAtual == BILHETERIA){
+
+        pthread_mutex_lock(&mutexFilas);
+        int pessoasNaFila = bilheteria.numeroPessoasNaFila;
+        pthread_mutex_unlock(&mutexFilas);
+
+    }else if (pessoa->zonaAtual == NATACAO){
+
+        pthread_mutex_lock(&mutexFilas);
+        int pessoasNaFila = natacao.numeroPessoasNaFila;
+        pthread_mutex_unlock(&mutexFilas);
+
+        if(pessoasNaFila < configuracao.tamanhoFilaNatação){
+            printf("A pessoa com ID %d chegou à fila da zona de Natação", pessoa->idPessoa);
+
+            pessoa->tempoDeChegadaFila = tempo;
+
+            pthread_mutex_lock(&mutexFilas);
+            natacao.numeroPessoasNaFila++;
+            pthread_mutex_unlock(&mutexFilas);
+
+            sem_wait(&natacao.fila);
+            pthread_mutex_lock(&mutexFilas);
+            tempoDeEspera = tempoSimulado - pessoa->tempoDeChegadaFila;
+            pthread_mutex_unlock(&mutexFilas);
+            
+            if(tempoDeEspera > pessoa->tempoMaxEspera){
+                pessoa->desistir = TRUE;
+                pthread_mutex_lock(&mutexFilas);
+                natacao.numeroPessoasNaFila--;
+
+                sem_getvalue(&natacao.fila, &valorDoSemaforo);
+                if(valorDoSemaforo < natacao.numeroAtualPessoas) {
+                    sem_post(&natacao.fila);
+                }
+                pthread_mutex_unlock(&mutexFilas);
+
+                printf("A pessoa com ID %d desistiu da zona de Natação pois esperou muito tempo", pessoa->idPessoa);
+            } else {
+                printf("A pessoa com ID %d entrou na zona de Natação", pessoa->idPessoa);
+                pthread_mutex_lock(&mutexFilas);
+                natacao.numeroAtualPessoas++;
+                pthread_mutex_unlock(&mutexFilas);
+            }
+        }
+
+    }else if (pessoa->zonaAtual == MERGULHO){
+
+        pthread_mutex_lock(&mutexFilas);
+        int pessoasNaFila = mergulho.numeroPessoasNaFila;
+        pthread_mutex_unlock(&mutexFilas);
+
+    }else if (pessoa->zonaAtual == TOBOGAS){
+
+        pthread_mutex_lock(&mutexFilas);
+        int pessoasNaFila = tobogas.numeroPessoasNaFila;
+        pthread_mutex_unlock(&mutexFilas);
+        
+    }else if (pessoa->zonaAtual == ENFERMARIA){
+
+        pthread_mutex_lock(&mutexFilas);
+        int pessoasNaFila = enfermaria.numeroPessoasNaFila;
+        pthread_mutex_unlock(&mutexFilas);
+        
+    }else if (pessoa->zonaAtual == RESTAURACAO){
+
+        pthread_mutex_lock(&mutexFilas);
+        int pessoasNaFila = restauracao.numeroPessoasNaFila;
+        pthread_mutex_unlock(&mutexFilas);
+        
+    }else{
+
+        pthread_mutex_lock(&mutexFilas);
+        int pessoasNaFila = balnearios.numeroPessoasNaFila;
+        pthread_mutex_unlock(&mutexFilas);
+
+    }   
 }
 
 // Função para enviar dados (buffer) para o socket
@@ -197,6 +282,12 @@ void exclusaoMutua() {
 	// Inicia mutex para criar pessoa
     if (pthread_mutex_init(&mutexPessoa, NULL) != 0) {
         perror("Erro na inicialização do mutexPessoa");
+        exit(1);
+    }
+
+    // Inicia mutex para filas
+    if (pthread_mutex_init(&mutexFilas, NULL) != 0) {
+        perror("Erro na inicialização do mutexFilas");
         exit(1);
     }
 

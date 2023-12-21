@@ -56,8 +56,6 @@ struct configuracao{
 	int tamanhoFilaRestauração;
 	int tempoEsperaBalnearios;
 	int tamanhoFilaBalnearios;
-	//int tempoEsperaParqueEstacionamento;
-	//int tamanhoFilaParqueEstacionamento;
 	float probabilidadeMagoar;
 	float probabilidadeDesistir; //Não devia de estar em pessoa?
 	float probabilidadeVIP; //Probabilidade der ser VIP do parque e passar sempre a frente nas filas
@@ -73,17 +71,66 @@ struct configuracao{
 // Enfermaria
 // Restauração
 // Balnearios
-// Parque de estacionamento (talvez futuramente)
-struct zona {
 
-	int numeroAtualPessoas; //Número atual de pessoas na zona
-	int numeroPessoasNaFila //Numero de pessoas à espera para entrar na zona
+struct bilhetaria{
+	int numeroAtualPessoas; //Número atual de pessoas na bilheteria
+	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na bilheteria
+	//int tempoMaxZona;
+	sem_t fila; //Fila de espera da bilheteria 
+}
+
+struct natacao{
+	int numeroAtualPessoas; //Número atual de pessoas na zona de natacao
+	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona de natacao
+	//int idadeMinima; //Idade mínima para aceder à natacao
+	//int alturaMinima; //Altura mínima para aceder à natacao
+	//int tempoMaxZona;
+	//float probMagoar; //Probabilidade de se magoar na natacao
+	sem_t fila; //Fila de espera da natacao 
+}
+
+struct mergulho{
+	int numeroAtualPessoas; //Número atual de pessoas na zona de mergulho
+	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona de mergulho
 	//int idadeMinima; //Idade mínima para aceder à zona
 	//int alturaMinima; //Altura mínima para aceder à zona
 	//int tempoMaxZona;
 	//float probMagoar; //Probabilidade de se magoar na zona
-	//sem_t fila //Fila de espera da zona 
-};
+	sem_t fila; //Fila de espera da zona 
+}
+
+struct tobogas{
+	int numeroAtualPessoas; //Número atual de pessoas na zona de tobogas
+	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona de tobogas
+	//int idadeMinima; //Idade mínima para aceder aos tobogas
+	//int alturaMinima; //Altura mínima para aceder aos tobogas
+	//int tempoMaxZona;
+	//float probMagoar; //Probabilidade de se magoar nos tobogas
+	sem_t fila; //Fila de espera da zona de tobogas
+}
+
+struct enfermaria{
+	int numeroAtualPessoas; //Número atual de pessoas na zona da enfermaria
+	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona da enfermaria
+	//int tempoMaxZona;
+	sem_t fila; //Fila de espera da zona da enfermaria 
+}
+
+struct restauracao{
+	int numeroAtualPessoas; //Número atual de pessoas na zona de restauração
+	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona de restauração
+	//int tempoMaxZona;
+	//float probMagoar; //Probabilidade de se magoar na zona de restauração
+	sem_t fila; //Fila de espera da zona 
+}
+
+struct balnearios{
+	int numeroAtualPessoas; //Número atual de pessoas na zona de balneários
+	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona de balneários
+	//int tempoMaxZona;
+	//float probMagoar; //Probabilidade de se magoar na zona de balneários
+	sem_t fila; //Fila de espera da zona de balneários
+}
 
 struct pessoa {
 
@@ -95,6 +142,8 @@ struct pessoa {
 	int magoar; //Se se magoou ou não (0 - Não se magoou / 1 - Magoou-se)
 	int zonaAtual; //Id da zona atual (0 - Bilheteria / ...)
 	int tempoMaxEspera; //Tempo máximo de espera numa fila (em ciclos)
+	int tempoDeChegadaFila; //Tempo que a pessoa está na fila à espera 
+	int desistir; //Se a pessoa desistiu da zona em que esta (0 - não desistiu / 1 - desistiu)
 
 };
 

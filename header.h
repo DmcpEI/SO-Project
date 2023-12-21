@@ -25,12 +25,12 @@
 #define ACABOU 1
 
 //Tamanhos
-#define TAMANHO_CONFIG 21
+#define TAMANHO_CONFIG 27
 #define TAMANHO_BUFFER 1024
 #define TAMANHO_TASK 1000000
 
 //Zonas
-#define BILHETERIA 0
+#define PRACA 0
 #define NATACAO 1
 #define MERGULHO 2
 #define TOBOGAS 3
@@ -43,19 +43,25 @@ struct configuracao{
 	
 	int quantidadePessoasParque; //Quantidade máxima de pessoas no parque
 	int numeroAtracoes;
-	int tempoEsperaBilheteria;
+	int tempoEsperaParque;
 	int tempoEsperaNatação;
 	int tamanhoFilaNatação;	
+	int numeroMaximoNatação;
 	int tempoEsperaMergulho;
 	int tamanhoFilaMergulho;
+	int numeroMaximoMergulho;
 	int tempoEsperaTobogãs;
 	int tamanhoFilaTobogãs;	
+	int numeroMaximoTobogãs;
 	int tempoEsperaEnfermaria;
 	int tamanhoFilaEnfermaria;	
+	int numeroMaximoEnfermaria;
 	int tempoEsperaRestauração;
 	int tamanhoFilaRestauração;
+	int numeroMaximoRestauração;
 	int tempoEsperaBalnearios;
 	int tamanhoFilaBalnearios;
+	int numeroMaximoBalnearios;
 	float probabilidadeMagoar;
 	float probabilidadeDesistir; //Não devia de estar em pessoa?
 	float probabilidadeVIP; //Probabilidade der ser VIP do parque e passar sempre a frente nas filas
@@ -64,7 +70,7 @@ struct configuracao{
 	int tempoChegadaPessoas; //Tempo entre a chegada de uma pessoa e da próxima ao parque
 };
 
-// Bilheteria
+// Praça
 // Natação
 // Mergulho
 // Tobogãs
@@ -72,12 +78,12 @@ struct configuracao{
 // Restauração
 // Balnearios
 
-struct bilhetaria{
-	int numeroAtualPessoas; //Número atual de pessoas na bilheteria
-	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na bilheteria
+struct praca{
+	int numeroAtualPessoas; //Número atual de pessoas na parça
+	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na praça do parque
 	//int tempoMaxZona;
-	sem_t fila; //Fila de espera da bilheteria 
-}
+	sem_t fila; //Fila de espera do Parque
+};
 
 struct natacao{
 	int numeroAtualPessoas; //Número atual de pessoas na zona de natacao
@@ -87,7 +93,7 @@ struct natacao{
 	//int tempoMaxZona;
 	//float probMagoar; //Probabilidade de se magoar na natacao
 	sem_t fila; //Fila de espera da natacao 
-}
+};
 
 struct mergulho{
 	int numeroAtualPessoas; //Número atual de pessoas na zona de mergulho
@@ -97,7 +103,7 @@ struct mergulho{
 	//int tempoMaxZona;
 	//float probMagoar; //Probabilidade de se magoar na zona
 	sem_t fila; //Fila de espera da zona 
-}
+};
 
 struct tobogas{
 	int numeroAtualPessoas; //Número atual de pessoas na zona de tobogas
@@ -107,14 +113,14 @@ struct tobogas{
 	//int tempoMaxZona;
 	//float probMagoar; //Probabilidade de se magoar nos tobogas
 	sem_t fila; //Fila de espera da zona de tobogas
-}
+};
 
 struct enfermaria{
 	int numeroAtualPessoas; //Número atual de pessoas na zona da enfermaria
 	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona da enfermaria
 	//int tempoMaxZona;
 	sem_t fila; //Fila de espera da zona da enfermaria 
-}
+};
 
 struct restauracao{
 	int numeroAtualPessoas; //Número atual de pessoas na zona de restauração
@@ -122,7 +128,7 @@ struct restauracao{
 	//int tempoMaxZona;
 	//float probMagoar; //Probabilidade de se magoar na zona de restauração
 	sem_t fila; //Fila de espera da zona 
-}
+};
 
 struct balnearios{
 	int numeroAtualPessoas; //Número atual de pessoas na zona de balneários
@@ -130,7 +136,7 @@ struct balnearios{
 	//int tempoMaxZona;
 	//float probMagoar; //Probabilidade de se magoar na zona de balneários
 	sem_t fila; //Fila de espera da zona de balneários
-}
+};
 
 struct pessoa {
 

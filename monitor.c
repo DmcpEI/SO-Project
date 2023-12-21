@@ -10,11 +10,11 @@ FILE *relatorioFicheiro;
 int simulacaoIniciada = 0;
 
 //Contadores de pessoas nas zonas
-int numPessoas = 0, numDesistencias = 0,  numBilheteria = 0, numNatacao = 0, numTobogas = 0, numEnfermaria = 0, 
+int numPessoas = 0, numDesistencias = 0,  numPraca = 0, numNatacao = 0, numTobogas = 0, numEnfermaria = 0, 
 	numRestauracao = 0, numBalnearios = 0;
 
 //Contadores de pessoas em espera
-int  espBilheteria=0, espNatacao = 0, espTobogas = 0, espEnfermaria = 0, 
+int  espPraca=0, espNatacao = 0, espTobogas = 0, espEnfermaria = 0, 
 	 espRestauracao = 0, espBalnearios = 0;
 
 
@@ -104,12 +104,12 @@ void recebeDados(int newsockfd){
 		switch (acabou){
 		/*Caso a simulação esteja a decorrer este imprime o ID da pessoa que chegou
 		ao Parque e incrementa o número de Pessoas no Parque, como as pessoas começam
-		na bilheteria este também irá incrementar o número de pessoas que estão lá*/
+		na praça este também irá incrementar o número de pessoas que estão lá*/
 		case NAO_ACABOU:
 			printf("Chegou uma pessoa ao Parque, o seu ID é: %d\n", idPessoa);
 
 			numPessoas++;
-			numBilheteria++;
+			numPraca++;
 
 			imprimeDados();
 			break;
@@ -175,7 +175,7 @@ void imprimeDados() {
         "Desistencias:			%d\n"
         "--------------------------------------\n"
         "Pessoas na zona:\n"
-        "---> Bilheteria:		%d\n"
+        "---> Praça:		        %d\n"
         "---> Natacao:			%d\n"
         "---> Tobogas:			%d\n"
         "---> Enfermaria:		%d\n"
@@ -183,7 +183,7 @@ void imprimeDados() {
         "---> Balnearios:		%d\n"
         "--------------------------------------\n"
         "Pessoas a espera na zona:\n"
-        "---> Bilheteria:		%d\n"
+        "---> Praça:		        %d\n"
         "---> Natacao:			%d\n"
         "---> Tobogas:			%d\n"
         "---> Enfermaria:		%d\n"
@@ -192,8 +192,8 @@ void imprimeDados() {
         "--------------------------------------\n",
         (!finalSim) ? "A decorrer" : "Finalizado",
         numPessoas, numDesistencias,
-        numBilheteria, numNatacao, numTobogas, numEnfermaria, numRestauracao, numBalnearios,
-        espBilheteria, espNatacao, espTobogas, espEnfermaria, espRestauracao, espBalnearios);
+        numPraca, numNatacao, numTobogas, numEnfermaria, numRestauracao, numBalnearios,
+        espPraca, espNatacao, espTobogas, espEnfermaria, espRestauracao, espBalnearios);
 
    	// Escreve no ficheiro a informação
   	escreveFicheiro(informacao);	

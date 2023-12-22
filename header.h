@@ -25,18 +25,19 @@
 #define ACABOU 1
 
 //Tamanhos
-#define TAMANHO_CONFIG 27
+#define TAMANHO_CONFIG 28
 #define TAMANHO_BUFFER 1024
 #define TAMANHO_TASK 1000000
 
 //Zonas
-#define PRACA 0
-#define NATACAO 1
-#define MERGULHO 2
-#define TOBOGAS 3
-#define ENFERMARIA 4
+#define FORADOPARQUE 0
+#define PRACA 1
+#define NATACAO 2
+#define MERGULHO 3
+#define TOBOGAS 4
 #define RESTAURACAO 5
 #define BALNEARIOS 6
+#define ENFERMARIA 7
 
 
 struct configuracao{
@@ -44,6 +45,7 @@ struct configuracao{
 	int quantidadePessoasParque; //Quantidade máxima de pessoas no parque
 	int numeroAtracoes;
 	int tempoEsperaParque;
+	int tamanhoFilaParque;	
 	int tempoEsperaNatação;
 	int tamanhoFilaNatação;	
 	int numeroMaximoNatação;
@@ -79,7 +81,6 @@ struct configuracao{
 // Balnearios
 
 struct praca{
-	int numeroAtualPessoas; //Número atual de pessoas na parça
 	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na praça do parque
 	//int tempoMaxZona;
 	sem_t fila; //Fila de espera do Parque
@@ -149,7 +150,9 @@ struct pessoa {
 	int zonaAtual; //Id da zona atual (0 - Bilheteria / ...)
 	int tempoMaxEspera; //Tempo máximo de espera numa fila (em ciclos)
 	int tempoDeChegadaFila; //Tempo que a pessoa está na fila à espera 
-	int desistir; //Se a pessoa desistiu da zona em que esta (0 - não desistiu / 1 - desistiu)
+	int desistir; //Se a pessoa desistiu da fila em que está (0 - não desistiu / 1 - desistiu)
+	int visitas[5];
+	int totalVisitadas;
 
 };
 

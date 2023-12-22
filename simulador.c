@@ -4,8 +4,13 @@
 int socketFD;
 int idPessoa = 1; // Id para a pessoa criada, que começa a 1 e vai incrementando
 int tempoSimulado = 0; // Tempo de simulação que já foi simulado
+//int minutosParque = 0; // Tempo de simulação que já foi simulado em minutos
 //int tempoParque = 0; // Tempo que o parque está aberto
 int pessoasParque = 0;
+
+int zonas[5] = {NATACAO, MERGULHO, TOBOGAS, RESTAURACAO, BALNEARIOS};
+
+int quantidadeZonas = sizeof(zonas)/sizeof(int);
 
 //Structs
 struct configuracao conf;
@@ -23,6 +28,8 @@ pthread_mutex_t mutexPessoaEnviar;
 pthread_mutex_t mutexDados;
 pthread_mutex_t mutexSimulacao;
 pthread_mutex_t mutexFilas;
+sem_t semaforoParque;
+sem_t semaforoBalneario;
 
 //Tarefas
 pthread_t idThread[TAMANHO_TASK]; // Array das tarefas
@@ -101,30 +108,31 @@ int configuracao(char *file) {
     conf.quantidadePessoasParque = atoi(valores[0]);
     conf.numeroAtracoes = atoi(valores[1]);
     conf.tempoEsperaParque = atoi(valores[2]);
-    conf.tempoEsperaNatação = atoi(valores[3]);
-    conf.tamanhoFilaNatação = atoi(valores[4]);
-    conf.numeroMaximoNatação = atoi(valores[5]);
-    conf.tempoEsperaMergulho = atoi(valores[6]);
-    conf.tamanhoFilaMergulho = atoi(valores[7]);
-    conf.numeroMaximoMergulho = atoi(valores[8]);
-    conf.tempoEsperaTobogãs = atoi(valores[9]);
-    conf.tamanhoFilaTobogãs = atoi(valores[10]);
-    conf.numeroMaximoTobogãs = atoi(valores[11]);
-    conf.tempoEsperaEnfermaria = atoi(valores[12]);
-    conf.tamanhoFilaEnfermaria = atoi(valores[13]);
-    conf.numeroMaximoEnfermaria = atoi(valores[14]);
-    conf.tempoEsperaRestauração = atoi(valores[15]);
-    conf.tamanhoFilaRestauração = atoi(valores[16]);
-    conf.numeroMaximoRestauração = atoi(valores[17]);
-    conf.tempoEsperaBalnearios = atoi(valores[18]);
-    conf.tamanhoFilaBalnearios = atoi(valores[19]);
-    conf.numeroMaximoBalnearios = atoi(valores[20]);
-    conf.probabilidadeMagoar = strtof(valores[21], &fim);
-    conf.probabilidadeDesistir = strtof(valores[22], &fim);
-    conf.probabilidadeVIP = strtof(valores[23], &fim);
-    conf.tempoEsperaMax = atoi(valores[24]);
-    conf.tempoSimulacao = atoi(valores[25]);
-    conf.tempoChegadaPessoas = atoi(valores[26]);
+    conf.tamanhoFilaParque = atoi(valores[3]);
+    conf.tempoEsperaNatação = atoi(valores[4]);
+    conf.tamanhoFilaNatação = atoi(valores[5]);
+    conf.numeroMaximoNatação = atoi(valores[6]);
+    conf.tempoEsperaMergulho = atoi(valores[7]);
+    conf.tamanhoFilaMergulho = atoi(valores[8]);
+    conf.numeroMaximoMergulho = atoi(valores[9]);
+    conf.tempoEsperaTobogãs = atoi(valores[10]);
+    conf.tamanhoFilaTobogãs = atoi(valores[11]);
+    conf.numeroMaximoTobogãs = atoi(valores[12]);
+    conf.tempoEsperaEnfermaria = atoi(valores[13]);
+    conf.tamanhoFilaEnfermaria = atoi(valores[14]);
+    conf.numeroMaximoEnfermaria = atoi(valores[15]);
+    conf.tempoEsperaRestauração = atoi(valores[16]);
+    conf.tamanhoFilaRestauração = atoi(valores[17]);
+    conf.numeroMaximoRestauração = atoi(valores[18]);
+    conf.tempoEsperaBalnearios = atoi(valores[19]);
+    conf.tamanhoFilaBalnearios = atoi(valores[20]);
+    conf.numeroMaximoBalnearios = atoi(valores[21]);
+    conf.probabilidadeMagoar = strtof(valores[22], &fim);
+    conf.probabilidadeDesistir = strtof(valores[23], &fim);
+    conf.probabilidadeVIP = strtof(valores[24], &fim);
+    conf.tempoEsperaMax = atoi(valores[25]);
+    conf.tempoSimulacao = atoi(valores[26]);
+    conf.tempoChegadaPessoas = atoi(valores[27]);
 
     return 0; // Retorna 0 para indicar sucesso
 }
@@ -155,8 +163,12 @@ struct pessoa criarPessoa() {
     person.altura = randomEntreNumeros(60, 220); // Altura randomizada entre 60 e 220 centímetros
     person.vip = serVIP(conf.probabilidadeVIP);
     person.magoar = 0; // Pessoa ainda não se magoou, pois acabou de ser criada
-    person.zonaAtual = PRACA; // Começa na bilheteria para esta entrega
+    person.zonaAtual = FORADOPARQUE;
     person.tempoMaxEspera = randomEntreNumeros((conf.tempoEsperaMax / 2), conf.tempoEsperaMax); // Tempo de espera randomizado entre metade do tempo de espera máximo e o tempo de espera máximo
+    for (int i = 0; i < NUM_ATRACOES; i++) {
+        person.visitas[i] = 0;
+    }
+    person.totalVisitadas = 0;
 
     pthread_mutex_lock(&mutexPessoa);
     idPessoa++;
@@ -167,104 +179,139 @@ struct pessoa criarPessoa() {
     return person;// Retorna o descritor do socket conectado
 }
 
+// Visitando as atrações
+int visitarProximaAtracao(struct pessoa *pessoa) {
+
+    if (pessoa->totalVisitadas < quantidadeZonas) {
+        int indice;
+        do {
+            indice = rand() % quantidadeZonas;
+        } while (pessoa->visitas[indice] == 1);
+
+        pessoa->visitas[indice] = 1;
+        pessoa->totalVisitadas++;
+        //printf("Visitando atração %d\n", indice + NATACAO);
+        return indice + NATACAO; // Retorna o número da atração visitada
+    } else {
+        int indice = rand() % quantidadeZonas;
+        //printf("Visitando atração %d novamente\n", indice + NATACAO);
+        return indice + NATACAO; // Retorna número da atração visitada repetidamente
+    }
+}
+
 void Fila (struct pessoa *pessoa) {
     
     char buffer[TAMANHO_BUFFER];
-    int tempo = tempoSimulado;
+    //int tempo = tempoSimulado;
     int tempoDeEspera, valorDoSemaforo;
     
-    if(pessoa->zonaAtual == PRACA){
-
-        printf("A pessoa com ID %d chegou à fila para entrar no parque \n", pessoa->idPessoa);
+    if(pessoa->zonaAtual == FORADOPARQUE){
 
         if(pessoasParque < conf.quantidadePessoasParque){
-            sem_wait(&praca.fila);
+            sem_wait(&semaforoParque);
             pthread_mutex_lock(&mutexFilas);
             pessoasParque++;
             pthread_mutex_unlock(&mutexFilas);
-            printf("A pessoa com ID %d entrou no parque \n", pessoa->idPessoa);
-            sem_post(&praca.fila);
+            pessoa->zonaAtual = PRACA;
+            printf("\033[0;32m A pessoa com ID %d entrou no parque \n\033[0m", pessoa->idPessoa);
+            //enviarInformação
         } else {
-            printf("A pessoa com ID %d ficou na fila para entrar no parque \n", pessoa->idPessoa);
-            pessoa->desistir = TRUE;
-            sem_wait(&praca.fila);
-        }
-    } /*else if (pessoa->zonaAtual == NATACAO){
 
-        pthread_mutex_lock(&mutexFilas);
-        int pessoasNaFila = natacao.numeroPessoasNaFila;
-        pthread_mutex_unlock(&mutexFilas);
+            if (praca.numeroPessoasNaFila < conf.tamanhoFilaParque) {
 
-        if(pessoasNaFila < conf.tamanhoFilaNatação){
-            printf("A pessoa com ID %d chegou à fila da zona de Natação", pessoa->idPessoa);
+                sem_wait(&praca.fila);
+                printf("\033[0;33mA pessoa com ID %d chegou à fila para entrar no parque\n\033[0m", pessoa->idPessoa);
 
-            pessoa->tempoDeChegadaFila = tempo;
-
-            pthread_mutex_lock(&mutexFilas);
-            natacao.numeroPessoasNaFila++;
-            pthread_mutex_unlock(&mutexFilas);
-
-            sem_wait(&natacao.fila);
-            pthread_mutex_lock(&mutexFilas);
-            tempoDeEspera = tempoSimulado - pessoa->tempoDeChegadaFila;
-            pthread_mutex_unlock(&mutexFilas);
-            
-            if(tempoDeEspera > pessoa->tempoMaxEspera){
-                pessoa->desistir = TRUE;
-                sem_post(&natacao.fila);
                 pthread_mutex_lock(&mutexFilas);
-                natacao.numeroPessoasNaFila--;
+                //pessoa->tempoDeChegadaFila = tempoSimulado;
+                praca.numeroPessoasNaFila++;
+                pthread_mutex_unlock(&mutexFilas);
 
-                sem_getvalue(&natacao.fila, &valorDoSemaforo);
-                if(valorDoSemaforo < natacao.numeroAtualPessoas) {
-                    sem_post(&natacao.fila);
+                printf("Pessoas na fila: %d\n", praca.numeroPessoasNaFila);
+
+                pthread_mutex_lock(&mutexSimulacao);
+                //Fazer dependendo do tempo que chegou e de quantas pessoas estão na fila!!!!!!
+                tempoDeEspera = randomEntreNumeros(conf.tempoEsperaParque, conf.tempoEsperaMax);
+                pthread_mutex_unlock(&mutexSimulacao);
+
+                printf("Tempo de Espera: %d\n", tempoDeEspera);
+                printf("Tempo máximo de espera: %d\n", pessoa->tempoMaxEspera);
+                
+                if (tempoDeEspera > pessoa->tempoMaxEspera) {
+
+                    sem_post(&praca.fila);
+                    pthread_mutex_lock(&mutexFilas);
+                    praca.numeroPessoasNaFila--;
+                    pthread_mutex_unlock(&mutexFilas);
+                    printf("\033[0;31mA pessoa com ID %d desistiu de entrar no parque\n\033[0m", pessoa->idPessoa);
+                    pessoa->desistir = TRUE;
+                    //enviarInformação
+
+                } else {
+                    sem_wait(&semaforoParque);
+                    sem_post(&praca.fila);
+                    pthread_mutex_lock(&mutexFilas);
+                    praca.numeroPessoasNaFila--;
+                    pthread_mutex_unlock(&mutexFilas);
+                    pessoa->zonaAtual = PRACA;
+                    printf("\033[0;32m A pessoa com ID %d entrou no parque depois de esperar na fila\n\033[0m", pessoa->idPessoa);
+                    //enviarInformação
                 }
 
+            }
+        }
+    } else if (pessoa->zonaAtual == BALNEARIOS) {
+
+        if(balnearios.numeroAtualPessoas < conf.numeroMaximoBalnearios){
+            sem_wait(&semaforoBalneario);
+            pthread_mutex_lock(&mutexFilas);
+            balnearios.numeroAtualPessoas++;
+            pthread_mutex_unlock(&mutexFilas);
+            //pessoa->zonaAtual = BALNEARIOS;
+            printf("\033[0;32m A pessoa com ID %d entrou nos balneários \n\033[0m", pessoa->idPessoa);
+            //enviarInformação
+        } else {
+
+            if (balnearios.numeroPessoasNaFila < conf.tamanhoFilaBalnearios) {
+
+                sem_wait(&balnearios.fila);
+                printf("\033[0;33mA pessoa com ID %d chegou à fila para entrar nos balneários\n\033[0m", pessoa->idPessoa);
+
+                pthread_mutex_lock(&mutexFilas);
+                //pessoa->tempoDeChegadaFila = tempoSimulado;
+                balnearios.numeroPessoasNaFila++;
                 pthread_mutex_unlock(&mutexFilas);
 
-                printf("A pessoa com ID %d desistiu da zona de Natação pois esperou muito tempo", pessoa->idPessoa);
-            } else {
-                //if(natacao.numeroAtualPessoas < conf.numeroMaximoNatação){
-                printf("A pessoa com ID %d entrou na zona de Natação", pessoa->idPessoa);
-                pthread_mutex_lock(&mutexFilas);
-                natacao.numeroPessoasNaFila--;
-                natacao.numeroAtualPessoas++;
-                pthread_mutex_unlock(&mutexFilas);
+                pthread_mutex_lock(&mutexSimulacao);
+                //Fazer dependendo do tempo que chegou e de quantas pessoas estão na fila!!!!!!
+                tempoDeEspera = randomEntreNumeros(conf.tempoEsperaBalnearios, conf.tempoEsperaMax);
+                pthread_mutex_unlock(&mutexSimulacao);
+                
+                if (tempoDeEspera > pessoa->tempoMaxEspera) {
+
+                    sem_post(&balnearios.fila);
+                    pthread_mutex_lock(&mutexFilas);
+                    balnearios.numeroPessoasNaFila--;
+                    pthread_mutex_unlock(&mutexFilas);
+                    printf("\033[0;31mA pessoa com ID %d desistiu de entrar nos balneários\n\033[0m", pessoa->idPessoa);
+                    pessoa->zonaAtual = PRACA;
+                    //enviarInformação
+
+                } else {
+
+                    sem_wait(&semaforoBalneario;
+                    sem_post(&balnearios.fila);
+                    pthread_mutex_lock(&mutexFilas);
+                    balnearios.numeroPessoasNaFila--;
+                    pthread_mutex_unlock(&mutexFilas);
+                    printf("\033[0;32m A pessoa com ID %d entrou nos balneários depois de esperar na fila\n\033[0m", pessoa->idPessoa);
+                    //enviarInformação
+
+                }
             }
         }
 
-    }else if (pessoa->zonaAtual == MERGULHO){
-
-        pthread_mutex_lock(&mutexFilas);
-        int pessoasNaFila = mergulho.numeroPessoasNaFila;
-        pthread_mutex_unlock(&mutexFilas);
-
-    }else if (pessoa->zonaAtual == TOBOGAS){
-
-        pthread_mutex_lock(&mutexFilas);
-        int pessoasNaFila = tobogas.numeroPessoasNaFila;
-        pthread_mutex_unlock(&mutexFilas);
-        
-    }else if (pessoa->zonaAtual == ENFERMARIA){
-
-        pthread_mutex_lock(&mutexFilas);
-        int pessoasNaFila = enfermaria.numeroPessoasNaFila;
-        pthread_mutex_unlock(&mutexFilas);
-        
-    }else if (pessoa->zonaAtual == RESTAURACAO){
-
-        pthread_mutex_lock(&mutexFilas);
-        int pessoasNaFila = restauracao.numeroPessoasNaFila;
-        pthread_mutex_unlock(&mutexFilas);
-        
-    }else{
-
-        pthread_mutex_lock(&mutexFilas);
-        int pessoasNaFila = balnearios.numeroPessoasNaFila;
-        pthread_mutex_unlock(&mutexFilas);
-
-    }   
-    */
+    }
 }
 
 // Função para enviar dados (buffer) para o socket
@@ -291,38 +338,21 @@ void enviarPessoa(void *ptr) {
     int time = tempoSimulado;
 
     while(TRUE){
-
         Fila(&person);
         usleep(100);
-        printf("Entrou aqui com ID %d\n", person.idPessoa);
+        //break;
         if(person.desistir == FALSE){
+            if(person.zonaAtual == PRACA) {
 
-            printf("Entrou aqui com ID %d\n", person.idPessoa);
+                visitarProximaAtracao(&person);
 
-            if (person.zonaAtual == PRACA) {
-                sem_post(&praca.fila);
+                //ifs
+
+                //Se quer ir ao balneario
+                //Escolhe a zona que quer ir 
+                //Volta a dar o ciclo
+                
             }
-            if (person.zonaAtual == NATACAO) {
-                sem_post(&natacao.fila);
-            }
-            if (person.zonaAtual == MERGULHO) {
-                sem_post(&mergulho.fila);
-            }
-            if (person.zonaAtual == TOBOGAS) {
-                sem_post(&tobogas.fila);
-            }
-            if (person.zonaAtual == ENFERMARIA) {
-                sem_post(&enfermaria.fila);
-            }
-            if (person.zonaAtual == RESTAURACAO) {
-                sem_post(&restauracao.fila);
-            }
-            if (person.zonaAtual == BALNEARIOS) {
-                sem_post(&balnearios.fila);
-            }
-            printf("A pessoa com ID %d saiu do parque", person.idPessoa);
-            //enviaInformacao(sockfd, people.id, timestamp, 1, 3, people.zona);
-            person.desistir == TRUE;
 
         } else {
             break;
@@ -390,7 +420,10 @@ void exclusaoMutua() {
         exit(1);
     }
 
-    sem_init(&praca.fila, 0, 1);
+    sem_init(&praca.fila, 0, conf.tamanhoFilaParque);
+    sem_init(&semaforoParque, 0, conf.quantidadePessoasParque);
+    sem_init(&balnearios.fila, 0, conf.tamanhoFilaBalnearios);
+    sem_init(&semaforoBalneario, 0, conf.numeroMaximoBalnearios);
 }
 
 // Função principal do simulador
@@ -418,6 +451,8 @@ void simulador(char* config) {
 
     if (conf.tempoSimulacao <= tempoSimulado) { // Chegou ao tempo final da simulação
         printf("Acabou a simulação\n");
+        printf("Pessoas no parque: %d\n", pessoasParque);
+        printf("Pessoas na fila: %d\n", praca.numeroPessoasNaFila);
         char bufferEnviar[TAMANHO_BUFFER];
         // Aqui envio que acabou a simulação e não envio nenhuma pessoa
         snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", ACABOU, 0);
@@ -427,6 +462,8 @@ void simulador(char* config) {
 
 // Função principal do programa
 int main(int argc, char *argv[]) {
+
+    srand(time(NULL));
 
     if (argc == 2) { // Verifica se o número de argumentos da linha de comando é igual a 2
         socketFD = socketSimulador();

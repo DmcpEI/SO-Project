@@ -178,7 +178,7 @@ struct pessoa criarPessoa() {
     idPessoa++;
     pthread_mutex_unlock(&mutexPessoa);
 
-    printf("Criou uma pessoa ao parque com ID %d\n", person.idPessoa);
+    printf("Chegou uma pessoa ao parque com ID %d\n", person.idPessoa);
 
     return person;// Retorna o descritor do socket conectado
 }
@@ -194,11 +194,11 @@ int visitarProximaAtracao(struct pessoa *pessoa) {
 
         pessoa->visitas[indice] = 1;
         pessoa->totalVisitadas++;
-        //printf("Visitando atração %d\n", indice + NATACAO);
+        //printf("Pessoa com ID: %d visitando atração %d\n", pessoa->idPessoa, indice + NATACAO);
         return indice + NATACAO; // Retorna o número da atração visitada
     } else {
         int indice = rand() % conf.numeroAtracoes;
-        //printf("Visitando atração %d novamente\n", indice + NATACAO);
+        //printf("Pessoa com ID: %d Visitando atração %d novamente\n", pessoa->idPessoa,indice + NATACAO);
         return indice + NATACAO; // Retorna número da atração visitada repetidamente
     }
 }

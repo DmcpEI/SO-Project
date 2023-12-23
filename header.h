@@ -46,27 +46,27 @@ struct configuracao{
 	int numeroAtracoes;
 	int tempoEsperaParque;
 	int tamanhoFilaParque;	
-	int tempoEsperaNatação;
-	int tamanhoFilaNatação;	
-	int numeroMaximoNatação;
+	int tempoEsperaNatacao;
+	int tamanhoFilaNatacao;	
+	int numeroMaximoNatacao;
 	int tempoEsperaMergulho;
 	int tamanhoFilaMergulho;
 	int numeroMaximoMergulho;
-	int tempoEsperaTobogãs;
-	int tamanhoFilaTobogãs;	
-	int numeroMaximoTobogãs;
+	int tempoEsperaTobogas;
+	int tamanhoFilaTobogas;	
+	int numeroMaximoTobogas;
 	int tempoEsperaEnfermaria;
 	int tamanhoFilaEnfermaria;	
 	int numeroMaximoEnfermaria;
-	int tempoEsperaRestauração;
-	int tamanhoFilaRestauração;
-	int numeroMaximoRestauração;
+	int tempoEsperaRestauracao;
+	int tamanhoFilaRestauracao;
+	int numeroMaximoRestauracao;
 	int tempoEsperaBalnearios;
 	int tamanhoFilaBalnearios;
 	int numeroMaximoBalnearios;
 	float probabilidadeMagoar;
 	float probabilidadeDesistir; //Não devia de estar em pessoa?
-	float probabilidadeVIP; //Probabilidade der ser VIP do parque e passar sempre a frente nas filas
+	float probabilidadeMudarZona; //Probabilidade de querer mudar de zona depois de ter andado na atração
 	int tempoEsperaMax; //Tempo máximo que uma pessoa pode esperar numa fila antes de desistir
 	int tempoSimulacao; //Tempo da simulação
 	int tempoChegadaPessoas; //Tempo entre a chegada de uma pessoa e da próxima ao parque
@@ -145,7 +145,6 @@ struct pessoa {
 	int genero; //Gênero da pessoa (0 - Mulher / 1 - Homem)
 	int idade; //Idade da pessoa
 	int altura; //Altura da pessoa em centímetros
-	int vip; //Se é VIP do parque ou não (passa à frente) (0 - Não é VIP / 1 - É VIP)
 	int magoar; //Se se magoou ou não (0 - Não se magoou / 1 - Magoou-se)
 	int zonaAtual; //Id da zona atual (0 - Bilheteria / ...)
 	int tempoMaxEspera; //Tempo máximo de espera numa fila (em ciclos)
@@ -153,6 +152,7 @@ struct pessoa {
 	int desistir; //Se a pessoa desistiu da fila em que está (0 - não desistiu / 1 - desistiu)
 	int visitas[5];
 	int totalVisitadas;
+	bool dentroParque;
 
 };
 

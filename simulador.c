@@ -27,6 +27,8 @@ pthread_mutex_t mutexDados;
 pthread_mutex_t mutexSimulacao;
 pthread_mutex_t mutexFilas;
 pthread_mutex_t mutexZonas;
+pthread_mutex_t mutexParque;
+sem_t semaforoCriar;
 sem_t semaforoParque;
 sem_t semaforoBalneario;
 sem_t semaforoNatacao;
@@ -137,13 +139,45 @@ int configuracao(char *file) {
     conf.tempoEsperaMax = atoi(valores[25]);
     conf.tempoSimulacao = atoi(valores[26]);
     conf.tempoChegadaPessoas = atoi(valores[27]);
+    conf.pessoasCriar = atoi(valores[28]);
 
     return 0; // Retorna 0 para indicar sucesso
 }
 
-int calculaProbabilidade(float probabilidade) {
+int calculaProbabilidadeMudar(float probabilidade, struct pessoa *pessoa) {
+
     float random_value = (float)rand() / RAND_MAX; // Normaliza o valor entre 0 e 1
+
+    // Aumenta a probabilidade linearmente com o número de visitas
+    if (pessoa->totalVisitadas > 4) {
+        probabilidade = probabilidade - (pessoa->totalVisitadas * 0.05);
+    }
+
+    // Verifica se a probabilidade não ultrapassa 1.0
+    if (probabilidade > 1.0) {
+        probabilidade = 1.0;
+    }
+
+    printf("Probabilidade de mudar da pessoa com ID %d: %f\n", pessoa->idPessoa ,probabilidade);
     return random_value < probabilidade;
+}
+
+int calculaProbabilidadeDesistir(float probabilidade, struct pessoa *pessoa) {
+
+    float random_value = (float)rand() / RAND_MAX; // Normaliza o valor entre 0 e 1
+
+    // Aumenta a probabilidade linearmente com o número de visitas
+    if (pessoa->totalVisitadas > 4) {
+        probabilidade = probabilidade - (pessoa->totalVisitadas * 0.05);
+    }
+
+    // Verifica se a probabilidade não ultrapassa 1.0
+    if (probabilidade > 1.0) {
+        probabilidade = 1.0;
+    }
+
+    printf("Probabilidade de desistir da pessoa com ID %d: %f\n", pessoa->idPessoa ,probabilidade);
+    return random_value > probabilidade;
 }
 
 // Gera um número aleatório entre dois valores
@@ -255,6 +289,7 @@ void Fila (struct pessoa *pessoa) {
                 sem_post(&praca.fila);
                 pthread_mutex_lock(&mutexFilas);
                 praca.numeroPessoasNaFila--;
+                pessoasParque++;
                 pthread_mutex_unlock(&mutexFilas);
                 pessoa->zonaAtual = PRACA;
                 pessoa->dentroParque = TRUE;
@@ -306,6 +341,7 @@ void Fila (struct pessoa *pessoa) {
                     sem_post(&balnearios.fila);
                     pthread_mutex_lock(&mutexFilas);
                     balnearios.numeroPessoasNaFila--;
+                    balnearios.numeroAtualPessoas++;
                     pthread_mutex_unlock(&mutexFilas);
                     printf("\033[0;32m A pessoa com ID %d entrou nos balneários depois de esperar na fila\n\033[0m", pessoa->idPessoa);
                     //enviarInformação
@@ -362,6 +398,7 @@ void Fila (struct pessoa *pessoa) {
                     sem_post(&natacao.fila);
                     pthread_mutex_lock(&mutexFilas);
                     natacao.numeroPessoasNaFila--;
+                    natacao.numeroAtualPessoas++;
                     pthread_mutex_unlock(&mutexFilas);
                     printf("\033[0;32m A pessoa com ID %d entrou na atração de natação depois de esperar na fila\n\033[0m", pessoa->idPessoa);
                     //enviarInformação
@@ -418,6 +455,7 @@ void Fila (struct pessoa *pessoa) {
                     sem_post(&mergulho.fila);
                     pthread_mutex_lock(&mutexFilas);
                     mergulho.numeroPessoasNaFila--;
+                    mergulho.numeroAtualPessoas++;
                     pthread_mutex_unlock(&mutexFilas);
                     printf("\033[0;32m A pessoa com ID %d entrou na atração de mergulho depois de esperar na fila\n\033[0m", pessoa->idPessoa);
                     //enviarInformação
@@ -473,6 +511,7 @@ void Fila (struct pessoa *pessoa) {
                     sem_post(&tobogas.fila);
                     pthread_mutex_lock(&mutexFilas);
                     tobogas.numeroPessoasNaFila--;
+                    tobogas.numeroAtualPessoas++;
                     pthread_mutex_unlock(&mutexFilas);
                     printf("\033[0;32m A pessoa com ID %d entrou na atração de tobogãs depois de esperar na fila\n\033[0m", pessoa->idPessoa);
                     //enviarInformação
@@ -528,6 +567,7 @@ void Fila (struct pessoa *pessoa) {
                     sem_post(&restauracao.fila);
                     pthread_mutex_lock(&mutexFilas);
                     restauracao.numeroPessoasNaFila--;
+                    restauracao.numeroAtualPessoas++;
                     pthread_mutex_unlock(&mutexFilas);
                     printf("\033[0;32m A pessoa com ID %d entrou na restauração depois de esperar na fila\n\033[0m", pessoa->idPessoa);
                     //enviarInformação
@@ -566,9 +606,24 @@ void enviarPessoa(void *ptr) {
     struct pessoa person = criarPessoa();
     pessoas[person.idPessoa] = &person; // Adiciona a pessoa criada ao array de todas as pessoas criadas 
 
+    /*
+    for (int index = 0; index < TAMANHO_CONFIG; index++) { //Loop para criar todas as pessoas de uma vez
+
+        struct pessoa person = criarPessoa();
+        pessoas[person.idPessoa] = &person; // Adiciona a pessoa criada ao array de todas as pessoas criadas 
+
+        //char bufferEnviar[TAMANHO_BUFFER];
+        // Aqui envio primeiro se acabou ou não a simulação e depois o id da pessoa criada
+        //snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", NAO_ACABOU, person.idPessoa);
+        //enviarDados(bufferEnviar);
+        //praca.numeroAtualPessoas++; // Adiciona a pessoa à Bilheteria (na próxima entrega iremos melhorar)
+    }
+    */
+
     int time = tempoSimulado;
 
     while(TRUE){
+
         if (!person.dentroParque) { //Se a pessoa entra no parque
             Fila(&person);
         } else if (person.dentroParque && person.zonaAtual != PRACA) { //Se a pessoa vai da praça para uma atração ou quer ficar na mesma atração
@@ -581,44 +636,55 @@ void enviarPessoa(void *ptr) {
 
                 //break;
 
-                //Se nao quer desistir do parque
+                if (calculaProbabilidadeDesistir(conf.probabilidadeDesistir, &person)) {
 
-                int proximaAtracao = visitarProximaAtracao(&person);
-                person.zonaAtual = proximaAtracao;
+                    int proximaAtracao = visitarProximaAtracao(&person);
+                    person.zonaAtual = proximaAtracao;
 
-                if (proximaAtracao == BALNEARIOS) {
+                    if (proximaAtracao == BALNEARIOS) {
 
-                    sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d está na Praça vai para os balneários \n", person.idPessoa);
-                    //enviaInformação
+                        sem_post(&semaforoParque);
+                        printf("A pessoa com ID %d está na Praça vai para os balneários \n", person.idPessoa);
+                        //usleep(1000000000);
+                        //enviaInformação
 
-                } else if (proximaAtracao == NATACAO) {
+                    } else if (proximaAtracao == NATACAO) {
 
-                    sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d está na Praça vai para a atração de natação \n", person.idPessoa);
-                    //enviaInformação
+                        sem_post(&semaforoParque);
+                        printf("A pessoa com ID %d está na Praça vai para a atração de natação \n", person.idPessoa);
+                        //usleep(1000000000);
+                        //enviaInformação
 
-                } else if (proximaAtracao == MERGULHO) {
+                    } else if (proximaAtracao == MERGULHO) {
 
-                    sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d está na Praça vai para a atração de mergulho \n", person.idPessoa);
-                    //enviaInformação
-                    
-                } else if (proximaAtracao == TOBOGAS) {
+                        sem_post(&semaforoParque);
+                        printf("A pessoa com ID %d está na Praça vai para a atração de mergulho \n", person.idPessoa);
+                        //usleep(1000000000);
+                        //enviaInformação
+                        
+                    } else if (proximaAtracao == TOBOGAS) {
 
-                    sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d está na Praça vai para a atração dos tobogãs \n", person.idPessoa);
-                    //enviaInformação
-                    
-                } else if (proximaAtracao == RESTAURACAO) {
+                        sem_post(&semaforoParque);
+                        printf("A pessoa com ID %d está na Praça vai para a atração dos tobogãs \n", person.idPessoa);
+                        //usleep(1000000000);
+                        //enviaInformação
+                        
+                    } else if (proximaAtracao == RESTAURACAO) {
 
-                    sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d está na Praça vai para a restauração \n", person.idPessoa);
-                    //enviaInformação
-                    
+                        sem_post(&semaforoParque);
+                        printf("A pessoa com ID %d está na Praça vai para a restauração \n", person.idPessoa);
+                        //usleep(1000000000);
+                        //enviaInformação
+                        
+                    }
+                } else {
+                    printf("\033[0;31mA pessoa com ID %d foi para a Praça e saiu do parque\n\033[0m", person.idPessoa);
+                    pthread_mutex_lock(&mutexParque);
+                    pessoasParque--;
+                    pthread_mutex_unlock(&mutexParque);
+                    break;
+                    //usleep(1000000000);
                 }
-
-                //Se quer desistir da break
                 
             } else if (person.zonaAtual == ENFERMARIA) {
 
@@ -627,7 +693,7 @@ void enviarPessoa(void *ptr) {
 
             } else { //Está em qualquer outra zona
                 
-                if (calculaProbabilidade(conf.probabilidadeMudarZona)) { //Se quer mudar de zona que aumenta se já andou por todas ou não
+                if (calculaProbabilidadeMudar(conf.probabilidadeMudarZona, &person)) { //Se quer mudar de zona, probabilidade aumenta se já andou por todas ou não
                     printf("A pessoa com o ID %d quer mudar para outra zona e vai para a Praça\n", person.idPessoa);
                     
                     if (person.zonaAtual == BALNEARIOS) {
@@ -638,6 +704,7 @@ void enviarPessoa(void *ptr) {
                         balnearios.numeroAtualPessoas--;
                         pthread_mutex_unlock(&mutexZonas);
                         printf("A pessoa com ID %d saiu dos balneários \n", person.idPessoa);
+                        //usleep(1000000000);
                         //enviaInformação
 
                     } else if (person.zonaAtual == NATACAO) {
@@ -648,6 +715,7 @@ void enviarPessoa(void *ptr) {
                         natacao.numeroAtualPessoas--;
                         pthread_mutex_unlock(&mutexZonas);
                         printf("A pessoa com ID %d saiu da atração de natação \n", person.idPessoa);
+                        //usleep(1000000000);
                         //enviaInformação
 
                     } else if (person.zonaAtual == MERGULHO) {
@@ -658,6 +726,7 @@ void enviarPessoa(void *ptr) {
                         mergulho.numeroAtualPessoas--;
                         pthread_mutex_unlock(&mutexZonas);
                         printf("A pessoa com ID %d saiu da atração de mergulho \n", person.idPessoa);
+                        //usleep(1000000000);
                         //enviaInformação
                         
                     } else if (person.zonaAtual == TOBOGAS) {
@@ -668,6 +737,7 @@ void enviarPessoa(void *ptr) {
                         tobogas.numeroAtualPessoas--;
                         pthread_mutex_unlock(&mutexZonas);
                         printf("A pessoa com ID %d saiu da atração de tobogãs \n", person.idPessoa);
+                        //usleep(1000000000);
                         //enviaInformação
                         
                     } else if (person.zonaAtual == RESTAURACAO) {
@@ -678,6 +748,7 @@ void enviarPessoa(void *ptr) {
                         restauracao.numeroAtualPessoas--;
                         pthread_mutex_unlock(&mutexZonas);
                         printf("A pessoa com ID %d saiu da restauração \n", person.idPessoa);
+                        //usleep(1000000000);
                         //enviaInformação
                         
                     }
@@ -686,6 +757,7 @@ void enviarPessoa(void *ptr) {
 
                 } else { //Se não quer mudar de zona
                     printf("A pessoa com o ID %d quer continuar na zona\n", person.idPessoa);
+                    //usleep(1000000000);
                     //probabilidade de ele se magoar, vai para a enfermaria
 
                     //não muda de zona e vai para a fila da zona (abrir semaforo da zona)
@@ -693,30 +765,35 @@ void enviarPessoa(void *ptr) {
 
                         sem_post(&semaforoBalneario);
                         printf("A pessoa com ID %d saiu dos balneários \n", person.idPessoa);
+                        //usleep(1000000000);
                         //enviaInformação
 
                     } else if (person.zonaAtual == NATACAO) {
 
                         sem_post(&semaforoNatacao);
                         printf("A pessoa com ID %d saiu da atração de natação \n", person.idPessoa);
+                        //usleep(1000000000);
                         //enviaInformação
 
                     } else if (person.zonaAtual == MERGULHO) {
 
                         sem_post(&semaforoMergulho);
                         printf("A pessoa com ID %d saiu da atração de mergulho \n", person.idPessoa);
+                        //usleep(1000000000);
                         //enviaInformação
                         
                     } else if (person.zonaAtual == TOBOGAS) {
 
                         sem_post(&semaforoTobogas);
                         printf("A pessoa com ID %d saiu da atração de tobogãs \n", person.idPessoa);
+                        //usleep(1000000000);
                         //enviaInformação
                         
                     } else if (person.zonaAtual == RESTAURACAO) {
 
                         sem_post(&semaforoRestauracao);
                         printf("A pessoa com ID %d saiu da restauração \n", person.idPessoa);
+                        //usleep(1000000000);
                         //enviaInformação
                         
                     }
@@ -727,14 +804,6 @@ void enviarPessoa(void *ptr) {
             break;
         }
     }
-
-    //printf("Chegou uma pessoa ao parque com ID %d\n", person.idPessoa);
-
-    //char bufferEnviar[TAMANHO_BUFFER];
-    // Aqui envio primeiro se acabou ou não a simulação e depois o id da pessoa criada
-    //snprintf(bufferEnviar, TAMANHO_BUFFER, "%d %d", NAO_ACABOU, person.idPessoa);
-    //enviarDados(bufferEnviar);
-    //praca.numeroAtualPessoas++; // Adiciona a pessoa à Bilheteria (na próxima entrega iremos melhorar)
 }
 
 /*
@@ -795,6 +864,14 @@ void exclusaoMutua() {
         exit(1);
     }
 
+    // Inicia mutex para sair do parque
+    if (pthread_mutex_init(&mutexParque, NULL) != 0) {
+        perror("Erro na inicialização do mutexParque");
+        exit(1);
+    }
+
+    sem_init(&semaforoCriar, 0, 1);
+
     sem_init(&praca.fila, 0, conf.tamanhoFilaParque);
     sem_init(&semaforoParque, 0, conf.quantidadePessoasParque);
 
@@ -822,18 +899,33 @@ void simulador(char* config) {
     configuracao(config); // Lê as configurações do arquivo e inicializa as variáveis
     exclusaoMutua(); // Inicializa os mutexes
 
+    /*
+    for (int index = 0 ; index < conf.pessoasCriar; index++) {
+        // Cria tarefas pessoa
+        pthread_mutex_lock(&mutexSimulacao);
+        if (pthread_create(&idThread[idPessoa], NULL, enviarPessoa, NULL) != 0) {
+            printf("Erro na criação da tarefa\n");
+            exit(1);
+        }
+        pthread_mutex_unlock(&mutexSimulacao);
+        usleep(10000); // Aguarda um curto período de tempo (microssegundos)
+    }
+    */
+
     while (conf.tempoSimulacao != tempoSimulado) { // Enquanto não acaba o tempo de simulação
 
         tempoSimulado++;
 
         if (tempoSimulado % conf.tempoChegadaPessoas == 0) {
-            // Cria uma nova thread para representar uma pessoa
-            pthread_mutex_lock(&mutexSimulacao);
-            if (pthread_create(&idThread[idPessoa], NULL, enviarPessoa, NULL) != 0) {
-                perror("Erro na criação da thread");
-                exit(1);
+            if(praca.numeroPessoasNaFila <= conf.tamanhoFilaParque) {
+                // Cria uma nova thread para representar uma pessoa
+                pthread_mutex_lock(&mutexSimulacao);
+                if (pthread_create(&idThread[idPessoa], NULL, enviarPessoa, NULL) != 0) {
+                    perror("Erro na criação da thread");
+                    exit(1);
+                }
+                pthread_mutex_unlock(&mutexSimulacao);
             }
-            pthread_mutex_unlock(&mutexSimulacao);
         }
 
         usleep(10000); // Aguarda um curto período de tempo (microssegundos)

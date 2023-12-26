@@ -170,11 +170,16 @@ struct pessoa {
 //Simulador
 int socketSimulador();
 int configuracao (char *file);
+int calculaProbabilidadeMudar(float probabilidade, struct pessoa *pessoa);
+int calculaProbabilidadeDesistir(float probabilidade, struct pessoa *pessoa);
 int serVIP(float probabilidade);
 int randomEntreNumeros(int min, int max);
 struct pessoa criarPessoa();
+int visitarProximaAtracao(struct pessoa *pessoa);
+void Fila (struct pessoa *pessoa);
 void enviarDados(char *bufferEnviar);
 void enviarPessoa(void *ptr);
+void exclusaoMutua();
 void simulador(char* config);
 
 //Monitor

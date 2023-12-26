@@ -136,10 +136,11 @@ int configuracao(char *file) {
     conf.probabilidadeMagoar = strtof(valores[22], &fim);
     conf.probabilidadeDesistir = strtof(valores[23], &fim);
     conf.probabilidadeMudarZona = strtof(valores[24], &fim);
-    conf.tempoEsperaMax = atoi(valores[25]);
-    conf.tempoSimulacao = atoi(valores[26]);
-    conf.tempoChegadaPessoas = atoi(valores[27]);
-    conf.pessoasCriar = atoi(valores[28]);
+    conf.probabilidadeCurar = strtof(valores[25], &fim);
+    conf.tempoEsperaMax = atoi(valores[26]);
+    conf.tempoSimulacao = atoi(valores[27]);
+    conf.tempoChegadaPessoas = atoi(valores[28]);
+    conf.pessoasCriar = atoi(valores[29]);
 
     return 0; // Retorna 0 para indicar sucesso
 }
@@ -822,7 +823,7 @@ void enviarPessoa(void *ptr) {
                     printf(ROXO "A pessoa com ID %d entrou na enfermaria\n" RESET, person.idPessoa);
                     printf("numero pessoas enfermaria: %d\n", enfermaria.numeroAtualPessoas);
                     
-                    if(calcularProbabilidade(0.8)){ //prob de se curar (acrescentar no conf)
+                    if(calcularProbabilidade(conf.probabilidadeCurar)){ 
                         person.magoar = FALSE;
 
                         sem_post(&semaforoEnfermaria);
@@ -896,7 +897,7 @@ void enviarPessoa(void *ptr) {
                             printf("numero pessoas enfermaria: %d\n", enfermaria.numeroAtualPessoas);
                             //enviarInformação
 
-                            if(calcularProbabilidade(0.5)){ //prob de se curar (acrescentar no conf)
+                            if(calcularProbabilidade(conf.probabilidadeCurar)){ 
                                 person.magoar = FALSE;
 
                                 sem_post(&semaforoEnfermaria);

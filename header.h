@@ -25,7 +25,7 @@
 #define ACABOU 1
 
 //Tamanhos
-#define TAMANHO_CONFIG 29
+#define TAMANHO_CONFIG 30
 #define TAMANHO_BUFFER 1024
 #define TAMANHO_TASK 1000000
 
@@ -75,6 +75,7 @@ struct configuracao{
 	float probabilidadeMagoar;
 	float probabilidadeDesistir; //Não devia de estar em pessoa?
 	float probabilidadeMudarZona; //Probabilidade de querer mudar de zona depois de ter andado na atração
+	float probabilidadeCurar; //probabilidade de se curar ao ir à enfermaria
 	int tempoEsperaMax; //Tempo máximo que uma pessoa pode esperar numa fila antes de desistir
 	int tempoSimulacao; //Tempo da simulação
 	int tempoChegadaPessoas; //Tempo entre a chegada de uma pessoa e da próxima ao parque

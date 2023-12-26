@@ -52,7 +52,7 @@ struct configuracao{
 	
 	int quantidadePessoasParque; //Quantidade máxima de pessoas no parque
 	int numeroAtracoes;
-	int tempoEsperaParque;
+	int tempoEntrarPraca;
 	int tamanhoFilaParque;	
 	int tempoEsperaNatacao;
 	int tamanhoFilaNatacao;	

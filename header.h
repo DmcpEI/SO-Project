@@ -39,6 +39,14 @@
 #define BALNEARIOS 6
 #define ENFERMARIA 7
 
+//cores
+#define AMARELO "\x1B[33m"
+#define AZUL "\x1B[34m"
+#define CIANO "\x1B[36m"
+#define VERDE "\x1B[32m"
+#define VERMELHO "\x1B[31m"
+#define RESET "\x1B[0m"
+#define ROXO "\x1b[35m"
 
 struct configuracao{
 	

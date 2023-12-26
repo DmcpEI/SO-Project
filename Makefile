@@ -14,3 +14,8 @@ clean:
 fullClean:
 	rm *.o simulador monitor
 	rm *.txt
+
+ficheiro:
+	rm /tmp/s.unixst
+
+Mac: ficheiro simulador monitor

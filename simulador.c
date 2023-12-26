@@ -370,26 +370,26 @@ void Fila (struct pessoa *pessoa) {
             pthread_mutex_lock(&mutexFilas);
             natacao.numeroAtualPessoas++;
             pthread_mutex_unlock(&mutexFilas);
-            //pessoa->zonaAtual = BALNEARIOS;
+            //pessoa->zonaAtual = NATACAO;
             printf(VERDE "A pessoa com ID %d entrou na atração de natação\n" RESET, pessoa->idPessoa);
             printf("numero de pessoas natacao: %d\n", natacao.numeroAtualPessoas);
             //enviarInformação
 
-            if(calcularProbabilidade(conf.probabilidadeMagoar)){
-                printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria\n" RESET, pessoa->idPessoa);
+            // if(calcularProbabilidade(conf.probabilidadeMagoar)){
+            //     printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria\n" RESET, pessoa->idPessoa);
                 
-                sem_post(&semaforoNatacao);
-                sem_wait(&semaforoParque);
-                pthread_mutex_lock(&mutexZonas);
-                natacao.numeroAtualPessoas--;
-                pthread_mutex_unlock(&mutexZonas);
-                printf(VERMELHO "A pessoa com ID %d saiu da atração de natação\n" RESET, pessoa->idPessoa);
-                //usleep(1000000000);
-                //enviaInformação
+            //     sem_post(&semaforoNatacao);
+            //     sem_wait(&semaforoParque);
+            //     pthread_mutex_lock(&mutexZonas);
+            //     natacao.numeroAtualPessoas--;
+            //     pthread_mutex_unlock(&mutexZonas);
+            //     printf(VERMELHO "A pessoa com ID %d saiu da atração de natação\n" RESET, pessoa->idPessoa);
+            //     //usleep(1000000000);
+            //     //enviaInformação
                 
-                pessoa->magoar = TRUE;
-                pessoa->zonaAtual = ENFERMARIA;
-            }
+            //     pessoa->magoar = TRUE;
+            //     pessoa->zonaAtual = ENFERMARIA;
+            // }
 
         } else {
 
@@ -431,21 +431,21 @@ void Fila (struct pessoa *pessoa) {
                     printf("numero de pessoas natacao: %d\n", natacao.numeroAtualPessoas);
                     //enviarInformação
 
-                    if(calcularProbabilidade(conf.probabilidadeMagoar)){
-                        printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria\n" RESET, pessoa->idPessoa);
+                    // if(calcularProbabilidade(conf.probabilidadeMagoar)){
+                    //     printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria\n" RESET, pessoa->idPessoa);
                         
-                        sem_post(&semaforoNatacao);
-                        sem_wait(&semaforoParque);
-                        pthread_mutex_lock(&mutexZonas);
-                        natacao.numeroAtualPessoas--;
-                        pthread_mutex_unlock(&mutexZonas);
-                        printf(VERMELHO "A pessoa com ID %d saiu da atração de natação \n" RESET, pessoa->idPessoa);
-                        //usleep(1000000000);
-                        //enviaInformação
+                    //     sem_post(&semaforoNatacao);
+                    //     sem_wait(&semaforoParque);
+                    //     pthread_mutex_lock(&mutexZonas);
+                    //     natacao.numeroAtualPessoas--;
+                    //     pthread_mutex_unlock(&mutexZonas);
+                    //     printf(VERMELHO "A pessoa com ID %d saiu da atração de natação \n" RESET, pessoa->idPessoa);
+                    //     //usleep(1000000000);
+                    //     //enviaInformação
                         
-                        pessoa->magoar = TRUE;
-                        pessoa->zonaAtual = ENFERMARIA;
-                    }
+                    //     pessoa->magoar = TRUE;
+                    //     pessoa->zonaAtual = ENFERMARIA;
+                    // }
                 }
 
             } else {
@@ -461,26 +461,26 @@ void Fila (struct pessoa *pessoa) {
             pthread_mutex_lock(&mutexFilas);
             mergulho.numeroAtualPessoas++;
             pthread_mutex_unlock(&mutexFilas);
-            //pessoa->zonaAtual = BALNEARIOS;
+            //pessoa->zonaAtual = MERGULHO;
             printf(VERDE "A pessoa com ID %d entrou na atração de mergulho\n" RESET, pessoa->idPessoa);
             printf("numero de pessoas mergulho: %d\n", mergulho.numeroAtualPessoas);
             //enviarInformação
 
-            if(calcularProbabilidade(conf.probabilidadeMagoar)){
-                printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria\n" RESET, pessoa->idPessoa);
+            // if(calcularProbabilidade(conf.probabilidadeMagoar)){
+            //     printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria\n" RESET, pessoa->idPessoa);
                 
-                sem_post(&semaforoMergulho);
-                sem_wait(&semaforoParque);
-                pthread_mutex_lock(&mutexZonas);
-                mergulho.numeroAtualPessoas--;
-                pthread_mutex_unlock(&mutexZonas);
-                printf(VERMELHO "A pessoa com ID %d saiu da atração de mergulho\n" RESET, pessoa->idPessoa);
-                //usleep(1000000000);
-                //enviaInformação
+            //     sem_post(&semaforoMergulho);
+            //     sem_wait(&semaforoParque);
+            //     pthread_mutex_lock(&mutexZonas);
+            //     mergulho.numeroAtualPessoas--;
+            //     pthread_mutex_unlock(&mutexZonas);
+            //     printf(VERMELHO "A pessoa com ID %d saiu da atração de mergulho\n" RESET, pessoa->idPessoa);
+            //     //usleep(1000000000);
+            //     //enviaInformação
                 
-                pessoa->magoar = TRUE;
-                pessoa->zonaAtual = ENFERMARIA;
-            }
+            //     pessoa->magoar = TRUE;
+            //     pessoa->zonaAtual = ENFERMARIA;
+            // }
 
         } else {
 
@@ -522,21 +522,21 @@ void Fila (struct pessoa *pessoa) {
                     printf("numero de pessoas mergulho: %d\n", mergulho.numeroAtualPessoas);
                     //enviarInformação
 
-                    if(calcularProbabilidade(conf.probabilidadeMagoar)){
-                        printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria\n" RESET, pessoa->idPessoa);
+                    // if(calcularProbabilidade(conf.probabilidadeMagoar)){
+                    //     printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria\n" RESET, pessoa->idPessoa);
                         
-                        sem_post(&semaforoMergulho);
-                        sem_wait(&semaforoParque);
-                        pthread_mutex_lock(&mutexZonas);
-                        mergulho.numeroAtualPessoas--;
-                        pthread_mutex_unlock(&mutexZonas);
-                        printf(VERMELHO "A pessoa com ID %d saiu da atração de mergulho\n" RESET, pessoa->idPessoa);
-                        //usleep(1000000000);
-                        //enviaInformação
+                    //     sem_post(&semaforoMergulho);
+                    //     sem_wait(&semaforoParque);
+                    //     pthread_mutex_lock(&mutexZonas);
+                    //     mergulho.numeroAtualPessoas--;
+                    //     pthread_mutex_unlock(&mutexZonas);
+                    //     printf(VERMELHO "A pessoa com ID %d saiu da atração de mergulho\n" RESET, pessoa->idPessoa);
+                    //     //usleep(1000000000);
+                    //     //enviaInformação
                         
-                        pessoa->magoar = TRUE;
-                        pessoa->zonaAtual = ENFERMARIA;
-                    }
+                    //     pessoa->magoar = TRUE;
+                    //     pessoa->zonaAtual = ENFERMARIA;
+                    // }
 
                 }
 
@@ -559,21 +559,21 @@ void Fila (struct pessoa *pessoa) {
                 printf("numero de pessoas tobogas: %d\n", tobogas.numeroAtualPessoas);
                 //enviarInformação
 
-                if(calcularProbabilidade(conf.probabilidadeMagoar)){
-                    printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria\n" RESET, pessoa->idPessoa);
+                // if(calcularProbabilidade(conf.probabilidadeMagoar)){
+                //     printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria\n" RESET, pessoa->idPessoa);
                     
-                    sem_post(&semaforoTobogas);
-                    sem_wait(&semaforoParque);
-                    pthread_mutex_lock(&mutexZonas);
-                    tobogas.numeroAtualPessoas--;
-                    pthread_mutex_unlock(&mutexZonas);
-                    printf(VERMELHO "A pessoa com ID %d saiu da atração de tobogãs\n" RESET, pessoa->idPessoa);
-                    //usleep(1000000000);
-                    //enviaInformação
+                //     sem_post(&semaforoTobogas);
+                //     sem_wait(&semaforoParque);
+                //     pthread_mutex_lock(&mutexZonas);
+                //     tobogas.numeroAtualPessoas--;
+                //     pthread_mutex_unlock(&mutexZonas);
+                //     printf(VERMELHO "A pessoa com ID %d saiu da atração de tobogãs\n" RESET, pessoa->idPessoa);
+                //     //usleep(1000000000);
+                //     //enviaInformação
                     
-                    pessoa->magoar = TRUE;
-                    pessoa->zonaAtual = ENFERMARIA;
-                }
+                //     pessoa->magoar = TRUE;
+                //     pessoa->zonaAtual = ENFERMARIA;
+                // }
 
             } else {
 
@@ -615,21 +615,21 @@ void Fila (struct pessoa *pessoa) {
                         printf("numero de pessoas tobogas: %d\n", tobogas.numeroAtualPessoas);
                         //enviarInformação
 
-                        if(calcularProbabilidade(conf.probabilidadeMagoar)){
-                            printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria\n" RESET, pessoa->idPessoa);
+                        // if(calcularProbabilidade(conf.probabilidadeMagoar)){
+                        //     printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria\n" RESET, pessoa->idPessoa);
                             
-                            sem_post(&semaforoTobogas);
-                            sem_wait(&semaforoParque);
-                            pthread_mutex_lock(&mutexZonas);
-                            tobogas.numeroAtualPessoas--;
-                            pthread_mutex_unlock(&mutexZonas);
-                            printf(VERMELHO "A pessoa com ID %d saiu da atração de tobogãs\n" RESET, pessoa->idPessoa);
-                            //usleep(1000000000);
-                            //enviaInformação
+                        //     sem_post(&semaforoTobogas);
+                        //     sem_wait(&semaforoParque);
+                        //     pthread_mutex_lock(&mutexZonas);
+                        //     tobogas.numeroAtualPessoas--;
+                        //     pthread_mutex_unlock(&mutexZonas);
+                        //     printf(VERMELHO "A pessoa com ID %d saiu da atração de tobogãs\n" RESET, pessoa->idPessoa);
+                        //     //usleep(1000000000);
+                        //     //enviaInformação
                             
-                            pessoa->magoar = TRUE;
-                            pessoa->zonaAtual = ENFERMARIA;
-                        }
+                        //     pessoa->magoar = TRUE;
+                        //     pessoa->zonaAtual = ENFERMARIA;
+                        // }
 
                     }
 
@@ -820,6 +820,7 @@ void enviarPessoa(void *ptr) {
                     pthread_mutex_unlock(&mutexFilas);
                     //pessoa->zonaAtual = ENFERMARIA;
                     printf(ROXO "A pessoa com ID %d entrou na enfermaria\n" RESET, person.idPessoa);
+                    printf("numero pessoas enfermaria: %d\n", enfermaria.numeroAtualPessoas);
                     
                     if(calcularProbabilidade(0.8)){ //prob de se curar (acrescentar no conf)
                         person.magoar = FALSE;
@@ -830,6 +831,7 @@ void enviarPessoa(void *ptr) {
                         enfermaria.numeroAtualPessoas--;
                         pthread_mutex_unlock(&mutexZonas);
                         printf(ROXO "A pessoa com ID %d saiu da enfermaria curada\n" RESET, person.idPessoa);
+                        printf("numero pessoas enfermaria: %d\n", enfermaria.numeroAtualPessoas);
 
                         person.zonaAtual = PRACA;
 
@@ -840,6 +842,7 @@ void enviarPessoa(void *ptr) {
                         pthread_mutex_lock(&mutexZonas);
                         enfermaria.numeroAtualPessoas--;
                         pthread_mutex_unlock(&mutexZonas);
+                        printf("numero pessoas enfermaria: %d\n", enfermaria.numeroAtualPessoas);
 
                         pthread_mutex_lock(&mutexParque);
                         pessoasParque--;
@@ -890,6 +893,7 @@ void enviarPessoa(void *ptr) {
                             enfermaria.numeroAtualPessoas++;
                             pthread_mutex_unlock(&mutexFilas);
                             printf(VERDE "A pessoa com ID %d entrou na enfermaria depois de esperar na fila\n" RESET, person.idPessoa);
+                            printf("numero pessoas enfermaria: %d\n", enfermaria.numeroAtualPessoas);
                             //enviarInformação
 
                             if(calcularProbabilidade(0.5)){ //prob de se curar (acrescentar no conf)
@@ -901,6 +905,7 @@ void enviarPessoa(void *ptr) {
                                 enfermaria.numeroAtualPessoas--;
                                 pthread_mutex_unlock(&mutexZonas);
                                 printf(ROXO "A pessoa com ID %d saiu da enfermaria curada\n" RESET, person.idPessoa);
+                                printf("numero pessoas enfermaria: %d\n", enfermaria.numeroAtualPessoas);
 
                                 person.zonaAtual = PRACA;
 
@@ -911,6 +916,7 @@ void enviarPessoa(void *ptr) {
                                 pthread_mutex_lock(&mutexZonas);
                                 enfermaria.numeroAtualPessoas--;
                                 pthread_mutex_unlock(&mutexZonas);
+                                printf("numero pessoas enfermaria: %d\n", enfermaria.numeroAtualPessoas);
 
                                 pthread_mutex_lock(&mutexParque);
                                 pessoasParque--;
@@ -1004,7 +1010,7 @@ void enviarPessoa(void *ptr) {
                     if (person.zonaAtual == BALNEARIOS) {
 
                         sem_post(&semaforoBalneario);
-                        sem_wait(&semaforoParque);
+
                         pthread_mutex_lock(&mutexZonas);
                         balnearios.numeroAtualPessoas--;
                         pthread_mutex_unlock(&mutexZonas);
@@ -1015,7 +1021,7 @@ void enviarPessoa(void *ptr) {
                     } else if (person.zonaAtual == NATACAO) {
 
                         sem_post(&semaforoNatacao);
-                        sem_wait(&semaforoParque);
+
                         pthread_mutex_lock(&mutexZonas);
                         natacao.numeroAtualPessoas--;
                         pthread_mutex_unlock(&mutexZonas);
@@ -1026,7 +1032,7 @@ void enviarPessoa(void *ptr) {
                     } else if (person.zonaAtual == MERGULHO) {
 
                         sem_post(&semaforoMergulho);
-                        sem_wait(&semaforoParque);
+
                         pthread_mutex_lock(&mutexZonas);
                         mergulho.numeroAtualPessoas--;
                         pthread_mutex_unlock(&mutexZonas);
@@ -1037,7 +1043,7 @@ void enviarPessoa(void *ptr) {
                     } else if (person.zonaAtual == TOBOGAS) {
 
                         sem_post(&semaforoTobogas);
-                        sem_wait(&semaforoParque);
+
                         pthread_mutex_lock(&mutexZonas);
                         tobogas.numeroAtualPessoas--;
                         pthread_mutex_unlock(&mutexZonas);
@@ -1048,7 +1054,7 @@ void enviarPessoa(void *ptr) {
                     } else if (person.zonaAtual == RESTAURACAO) {
 
                         sem_post(&semaforoRestauracao);
-                        sem_wait(&semaforoParque);
+
                         pthread_mutex_lock(&mutexZonas);
                         restauracao.numeroAtualPessoas--;
                         pthread_mutex_unlock(&mutexZonas);

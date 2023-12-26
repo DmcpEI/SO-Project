@@ -169,7 +169,7 @@ int calculaProbabilidadeDesistir(float probabilidade, struct pessoa *pessoa) {
 
     // Aumenta a probabilidade linearmente com o número de visitas
     if (pessoa->totalVisitadas > 4) {
-        probabilidade = probabilidade + (pessoa->totalVisitadas * 0.05);
+        probabilidade = probabilidade - (pessoa->totalVisitadas * 0.05);
     }
 
     // Verifica se a probabilidade não ultrapassa 1.0
@@ -282,7 +282,7 @@ void Fila (struct pessoa *pessoa) {
             printf("Tempo de Espera: %d\n", tempoDeEspera);
             printf("Tempo máximo de espera: %d\n", pessoa->tempoMaxEspera);
             
-            if (tempoDeEspera > pessoa->tempoMaxEspera) {
+            if (tempoDeEspera > pessoa->tempoMaxEspera && pessoasParque >= conf.quantidadePessoasParque) {
 
                 sem_post(&praca.fila);
                 pthread_mutex_lock(&mutexFilas);
@@ -333,7 +333,7 @@ void Fila (struct pessoa *pessoa) {
                 tempoDeEspera = randomEntreNumeros(conf.tempoEsperaBalnearios, conf.tempoEsperaMax);
                 pthread_mutex_unlock(&mutexSimulacao);
                 
-                if (tempoDeEspera > pessoa->tempoMaxEspera) {
+                if (tempoDeEspera > pessoa->tempoMaxEspera && balnearios.numeroAtualPessoas >= conf.numeroMaximoBalnearios) {
 
                     sem_post(&balnearios.fila);
                     sem_wait(&semaforoParque);
@@ -409,7 +409,7 @@ void Fila (struct pessoa *pessoa) {
                 tempoDeEspera = randomEntreNumeros(conf.tempoEsperaNatacao, conf.tempoEsperaMax);
                 pthread_mutex_unlock(&mutexSimulacao);
                 
-                if (tempoDeEspera > pessoa->tempoMaxEspera) {
+                if (tempoDeEspera > pessoa->tempoMaxEspera && natacao.numeroAtualPessoas >= conf.numeroMaximoNatacao) {
 
                     sem_post(&natacao.fila);
                     sem_wait(&semaforoParque);
@@ -485,7 +485,7 @@ void Fila (struct pessoa *pessoa) {
 
         } else {
 
-            if (mergulho.numeroPessoasNaFila < conf.tamanhoFilaMergulho) {
+            if (mergulho.numeroPessoasNaFila < conf.tamanhoFilaMergulho && mergulho.numeroAtualPessoas >= conf.numeroMaximoMergulho) {
 
                 sem_wait(&mergulho.fila);
                 printf(AMARELO "A pessoa com ID %d chegou à fila para entrar na atração de mergulho\n" RESET, pessoa->idPessoa);
@@ -593,7 +593,7 @@ void Fila (struct pessoa *pessoa) {
                     tempoDeEspera = randomEntreNumeros(conf.tempoEsperaTobogas, conf.tempoEsperaMax);
                     pthread_mutex_unlock(&mutexSimulacao);
                     
-                    if (tempoDeEspera > pessoa->tempoMaxEspera) {
+                    if (tempoDeEspera > pessoa->tempoMaxEspera && tobogas.numeroAtualPessoas >= conf.numeroMaximoTobogas) {
 
                         sem_post(&tobogas.fila);
                         sem_wait(&semaforoParque);
@@ -674,7 +674,7 @@ void Fila (struct pessoa *pessoa) {
                 tempoDeEspera = randomEntreNumeros(conf.tempoEsperaRestauracao, conf.tempoEsperaMax);
                 pthread_mutex_unlock(&mutexSimulacao);
                 
-                if (tempoDeEspera > pessoa->tempoMaxEspera) {
+                if (tempoDeEspera > pessoa->tempoMaxEspera && restauracao.numeroAtualPessoas >= conf.numeroMaximoRestauracao) {
 
                     sem_post(&restauracao.fila);
                     sem_wait(&semaforoParque);

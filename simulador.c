@@ -748,7 +748,7 @@ void enviarPessoa(void *ptr) {
         if(person.desistir == FALSE){
             if(person.zonaAtual == PRACA) {
 
-                //break;
+                break;
 
                 if (calculaProbabilidadeDesistir(conf.probabilidadeDesistir, &person)) {
 

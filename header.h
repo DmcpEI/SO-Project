@@ -39,6 +39,14 @@
 #define BALNEARIOS 6
 #define ENFERMARIA 7
 
+//cores
+#define AMARELO "\x1B[33m"
+#define AZUL "\x1B[34m"
+#define CIANO "\x1B[36m"
+#define VERDE "\x1B[32m"
+#define VERMELHO "\x1B[31m"
+#define RESET "\x1B[0m"
+#define ROXO "\x1b[35m"
 
 struct configuracao{
 	
@@ -162,11 +170,15 @@ struct pessoa {
 //Simulador
 int socketSimulador();
 int configuracao (char *file);
-int serVIP(float probabilidade);
+int calculaProbabilidadeMudar(float probabilidade, struct pessoa *pessoa);
+int calculaProbabilidadeDesistir(float probabilidade, struct pessoa *pessoa);
 int randomEntreNumeros(int min, int max);
 struct pessoa criarPessoa();
+int visitarProximaAtracao(struct pessoa *pessoa);
+void Fila (struct pessoa *pessoa);
 void enviarDados(char *bufferEnviar);
 void enviarPessoa(void *ptr);
+void exclusaoMutua();
 void simulador(char* config);
 
 //Monitor

@@ -169,7 +169,7 @@ int calculaProbabilidadeDesistir(float probabilidade, struct pessoa *pessoa) {
 
     // Aumenta a probabilidade linearmente com o número de visitas
     if (pessoa->totalVisitadas > 4) {
-        probabilidade = probabilidade - (pessoa->totalVisitadas * 0.05);
+        probabilidade = probabilidade + (pessoa->totalVisitadas * 0.05);
     }
 
     // Verifica se a probabilidade não ultrapassa 1.0

@@ -44,6 +44,8 @@
 #define ENTRAR 1
 #define ENTRAR_FILA 2
 #define SAIR_FILA 3
+#define SAIR_FILA_ENTRAR 4
+#define SAIR_SAIR 5
 
 //cores
 #define AMARELO "\x1B[33m"

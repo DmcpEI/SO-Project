@@ -113,8 +113,9 @@ void recebeDados(int newsockfd){
 			/*Caso a simulação esteja a decorrer este imprime o ID da pessoa que chegou
 			ao Parque e incrementa o número de Pessoas no Parque, como as pessoas começam
 			na praça este também irá incrementar o número de pessoas que estão lá*/
-			printf("Ação: %d\n", acao);
 			case NAO_ACABOU:
+
+				printf("Ação: %d\n", acao);
 				
 				if (acao == ENTRAR){
 
@@ -279,9 +280,69 @@ void recebeDados(int newsockfd){
 
 					}
 
+				} else if (acao == SAIR_FILA_ENTRAR) {
+
+					if(zona == PRACA){
+						
+						printf("Tempo: %d |", tempoSimulado);
+						printf("A pessoa com ID %d saiu da fila e entrou do Parque\n", idPessoa);
+						espPraca--;
+						numPessoas++;
+
+					}else if(zona == NATACAO){
+						
+						printf("Tempo: %d |", tempoSimulado);
+						printf("A pessoa com ID %d saiu da fila e entrou na atração da Natação\n", idPessoa);
+						espNatacao--;
+						numNatacao++;
+
+					}else if(zona == MERGULHO){
+
+						printf("Tempo: %d |", tempoSimulado);
+						printf("A pessoa com ID %d saiu da fila e entrou na atração de Mergulho\n", idPessoa);
+						espMergulho--;
+						numMergulho++;
+
+					}else if(zona == TOBOGAS){
+
+						printf("Tempo: %d |", tempoSimulado);
+						printf("A pessoa com ID %d saiu da fila e entrou na atração dos Tobogãs\n", idPessoa);
+						espTobogas--;
+						numTobogas++;
+
+					}else if(zona == RESTAURACAO){
+
+						printf("Tempo: %d |", tempoSimulado);
+						printf("A pessoa com ID %d saiu da fila e entrou na Restauração\n", idPessoa);
+						espRestauracao--;
+						numRestauracao++;
+
+					}else if(zona == BALNEARIOS){
+
+						printf("Tempo: %d |", tempoSimulado);
+						printf("A pessoa com ID %d saiu da fila e entrou nos Balneários\n", idPessoa);
+						espBalnearios--;
+						numBalnearios++;
+
+					}else if(zona == ENFERMARIA){
+
+						printf("Tempo: %d |", tempoSimulado);
+						printf("A pessoa com ID %d saiu da fila e entrou na Enfermaria\n", idPessoa);
+						espEnfermaria--;
+						numEnfermaria++;
+
+					}
+
+				}else if (acao == SAIR_SAIR){
+					
+					printf("Tempo: %d |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da Enfermaria e foi para o hospital\n", idPessoa);
+					numEnfermaria--;
+					numPessoas--;
 				}
 				
-				imprimeDados();
+				
+				//imprimeDados();
 				break;
 				
 			case ACABOU:

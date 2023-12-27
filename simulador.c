@@ -252,7 +252,7 @@ void Fila (struct pessoa *pessoa) {
     char buffer[TAMANHO_BUFFER];
     //int tempo = tempoSimulado;
     int tempoDeEspera, valorDoSemaforo;
-    
+
     if(pessoa->zonaAtual == FORADOPARQUE){
 
         if(pessoasParque < conf.quantidadePessoasParque){
@@ -289,7 +289,7 @@ void Fila (struct pessoa *pessoa) {
 
             sleep(tempoDeEspera);
             
-            if(pessoasParque < conf.quantidadePessoasParque){
+            if(pessoasParque<conf.quantidadePessoasParque && tempoSimulado<=conf.tempoSimulacao){
 
                 sem_wait(&semaforoParque);
                 sem_post(&praca.fila);
@@ -829,19 +829,16 @@ void Fila (struct pessoa *pessoa) {
 
 // Função para enviar dados (buffer) para o socket
 void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
-    pthread_mutex_lock(&mutexDados);
     sem_wait(&semaforoDados);
 
     char buffer[TAMANHO_BUFFER];
-    memset(buffer, 0, sizeof(buffer));
     snprintf(buffer, TAMANHO_BUFFER, "%d %d %d %d %d", acabou, personId, tempo, acao, zona);
 
     if (send(socketFD, buffer, strlen(buffer), 0) == -1) {
         perror("Erro ao enviar dados"); // Exibe uma mensagem de erro se não conseguir enviar os dados
     }
-    //sleep(1);
     sem_post(&semaforoDados);
-    pthread_mutex_unlock(&mutexDados);
+    sleep(2);
 }
 
 void enviarPessoa(void *ptr) {
@@ -852,7 +849,6 @@ void enviarPessoa(void *ptr) {
     int time = tempoSimulado;
 
     while(TRUE){
-
         if (!person.dentroParque) { //Se a pessoa entra no parque
             Fila(&person);
         } else if (person.dentroParque && person.zonaAtual != PRACA) { //Se a pessoa vai da praça para uma atração ou quer ficar na mesma atração
@@ -1174,7 +1170,7 @@ void enviarPessoa(void *ptr) {
                 } else { //Se não quer mudar de zona
 
                     printf(AZUL "A pessoa com o ID %d quer continuar na zona | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
-                    sleep(1);
+                    //sleep(1);
                     //probabilidade de ele se magoar, vai para a enfermaria
 
                     //não muda de zona e vai para a fila da zona (abrir semaforo da zona)
@@ -1368,10 +1364,15 @@ void simulador(char* config) {
 
     printf("Acabou a simulação\n");
     printf("Pessoas no parque: %d\n", pessoasParque);
-    printf("Pessoas na fila: %d\n", praca.numeroPessoasNaFila);
-
+    printf("Pessoas no natacao: %d\n", natacao.numeroAtualPessoas);
+    printf("Pessoas no mergulho: %d\n", mergulho.numeroAtualPessoas);
+    printf("Pessoas no tobogas: %d\n", tobogas.numeroAtualPessoas);
+    printf("Pessoas no enfermaria: %d\n", enfermaria.numeroAtualPessoas);
+    printf("Pessoas no restauracao: %d\n", restauracao.numeroAtualPessoas);
+    printf("Pessoas no balnearios: %d\n", balnearios.numeroAtualPessoas);
     // Aqui envio que acabou a simulação e não envio nenhuma pessoa
     enviarDados(ACABOU, 0, tempoSimulado, 0, 0);
+   
 
 }
 

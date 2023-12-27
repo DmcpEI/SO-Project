@@ -95,6 +95,7 @@ void recebeDados(int newsockfd){
 		char buffer[TAMANHO_BUFFER+1];
 		
 		// Dados recebidos do socket
+		memset(buffer, 0, sizeof(buffer));
 		recebido = recv(newsockfd, buffer, TAMANHO_BUFFER, 0);
 
 		// Converte a string para um número inteiro e 
@@ -280,7 +281,7 @@ void recebeDados(int newsockfd){
 
 				}
 				
-				imprimeDados();
+				//imprimeDados();
 				break;
 				
 			case ACABOU:

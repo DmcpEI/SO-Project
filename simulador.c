@@ -844,7 +844,7 @@ void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
     if (send(socketFD, buffer, strlen(buffer), 0) == -1) {
         perror("Erro ao enviar dados"); // Exibe uma mensagem de erro se não conseguir enviar os dados
     }
-    sleep(1);
+    //sleep(1);
     sem_post(&semaforoDados);
 }
 

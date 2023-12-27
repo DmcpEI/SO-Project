@@ -829,7 +829,7 @@ void Fila (struct pessoa *pessoa) {
 
 // Função para enviar dados (buffer) para o socket
 void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
-    //pthread_mutex_lock(&mutexDados);
+    pthread_mutex_lock(&mutexDados);
     sem_wait(&semaforoDados);
 
     char buffer[TAMANHO_BUFFER];
@@ -841,7 +841,7 @@ void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
     }
     //sleep(1);
     sem_post(&semaforoDados);
-    //pthread_mutex_unlock(&mutexDados);
+    pthread_mutex_unlock(&mutexDados);
 }
 
 void enviarPessoa(void *ptr) {
@@ -1312,7 +1312,7 @@ void exclusaoMutua() {
 
     sem_init(&semaforoCriar, 0, 1);
 
-    sem_init(&semaforoDados, 0, 0);
+    sem_init(&semaforoDados, 0, 1);
 
     sem_init(&praca.fila, 0, conf.tamanhoFilaParque);
     sem_init(&semaforoParque, 0, conf.quantidadePessoasParque);

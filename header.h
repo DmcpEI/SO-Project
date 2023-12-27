@@ -39,6 +39,12 @@
 #define BALNEARIOS 6
 #define ENFERMARIA 7
 
+//Ações
+#define SAIR 0
+#define ENTRAR 1
+#define ENTRAR_FILA 2
+#define SAIR_FILA 3
+
 //cores
 #define AMARELO "\x1B[33m"
 #define AZUL "\x1B[34m"
@@ -177,7 +183,7 @@ int randomEntreNumeros(int min, int max);
 struct pessoa criarPessoa();
 int visitarProximaAtracao(struct pessoa *pessoa);
 void Fila (struct pessoa *pessoa);
-void enviarDados(char *bufferEnviar);
+void enviarDados(int acabou, int personId, int tempo, int acao, int zona);
 void enviarPessoa(void *ptr);
 void exclusaoMutua();
 void simulador(char* config);

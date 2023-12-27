@@ -838,7 +838,7 @@ void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
     sem_wait(&semaforoDados);
 
     char buffer[TAMANHO_BUFFER];
-
+    memset(buffer, 0, sizeof(buffer));
     snprintf(buffer, TAMANHO_BUFFER, "%d %d %d %d %d", acabou, personId, tempo, acao, zona);
 
     if (send(socketFD, buffer, strlen(buffer), 0) == -1) {

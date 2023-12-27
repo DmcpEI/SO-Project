@@ -281,7 +281,7 @@ void recebeDados(int newsockfd){
 
 				}
 				
-				//imprimeDados();
+				imprimeDados();
 				break;
 				
 			case ACABOU:

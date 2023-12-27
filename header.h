@@ -26,7 +26,7 @@
 
 //Tamanhos
 #define TAMANHO_CONFIG 30
-#define TAMANHO_BUFFER 1024
+#define TAMANHO_BUFFER 2048
 #define TAMANHO_TASK 1000000
 
 //Zonas

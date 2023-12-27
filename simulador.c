@@ -829,6 +829,7 @@ void Fila (struct pessoa *pessoa) {
 
 // Função para enviar dados (buffer) para o socket
 void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
+    pthread_mutex_lock(&mutexDados);
     sem_wait(&semaforoDados);
 
     char buffer[TAMANHO_BUFFER];
@@ -840,6 +841,7 @@ void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
     }
     //sleep(1);
     sem_post(&semaforoDados);
+    pthread_mutex_unlock(&mutexDados);
 }
 
 void enviarPessoa(void *ptr) {
@@ -1300,6 +1302,11 @@ void exclusaoMutua() {
     // Inicia mutex para incrementar tempo
     if (pthread_mutex_init(&mutexTempo, NULL) != 0) {
         perror("Erro na inicialização do mutexTempo");
+        exit(1);
+    }
+
+    if (pthread_mutex_init(&mutexDados, NULL) != 0) {
+        perror("Erro na inicialização do mutexDados");
         exit(1);
     }
 

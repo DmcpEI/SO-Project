@@ -107,7 +107,7 @@ void recebeDados(int newsockfd){
 		significa que a simulaçao acabou e sendo assim acaba a simulação 
 		e imprime os ultimos dados*/
 		
-		//system("clear");
+		system("clear");
 
 		tempoSimulado = tempo;
 
@@ -170,6 +170,7 @@ void recebeDados(int newsockfd){
 						printf("Tempo: %d |", tempoSimulado);
 						printf("A pessoa com ID %d saiu do Parque\n", idPessoa);
 						numPessoas--;
+						numDesistencias++;
 
 					}else if(zona == NATACAO){
 						printf("Tempo: %d |", tempoSimulado);
@@ -249,6 +250,7 @@ void recebeDados(int newsockfd){
 						printf("Tempo: %d |", tempoSimulado);
 						printf("A pessoa com ID %d saiu da fila do Parque\n", idPessoa);
 						espPraca--;
+						numDesistencias++;
 
 					}else if(zona == NATACAO){
 						
@@ -350,7 +352,7 @@ void recebeDados(int newsockfd){
 				}
 				
 				
-				//imprimeDados();
+				imprimeDados();
 				break;
 				
 			case ACABOU:

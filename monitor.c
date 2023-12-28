@@ -19,6 +19,10 @@ int tempoSimulado = 0, numPessoas = 0, numPessoasSairam = 0, numPraca = 0, numDe
 int  espParque=0, espNatacao = 0, espMergulho = 0, espTobogas = 0, espEnfermaria = 0, 
 	 espRestauracao = 0, espBalnearios = 0;
 
+//variaveis para fazer contas
+int desistirFilaNatacao = 0;
+int entraramFilaNatacao = 0;
+
 
 void socketMonitor () {
 
@@ -525,6 +529,10 @@ void imprimeDados() {
         tempoSimulado, numPessoas, numPessoasSairam, numDesistencias,
         numPraca, numNatacao, numMergulho, numTobogas, numEnfermaria, numRestauracao, numBalnearios,
         espParque, espNatacao, espMergulho, espTobogas, espEnfermaria, espRestauracao, espBalnearios);
+
+	//float conta = entraramFilaNatacao/desistirFilaNatacao;
+
+	//printf("ratio de pessoas que desistiram da fila de natação: %f", conta);
 
    	// Escreve no ficheiro a informação
   	escreveFicheiro(informacao);	

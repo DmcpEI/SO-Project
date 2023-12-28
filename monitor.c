@@ -1,5 +1,7 @@
 #include "header.h"
 
+int erro = 0;
+
 //Final da simulação
 int finalSim = FALSE;
 
@@ -109,13 +111,18 @@ void recebeDados(int newsockfd){
 
 		tempoSimulado = tempo;
 
+		if(zona > 7) {
+			printf("ERRO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+			erro++;
+		}
+
 		switch (acabou){
 			/*Caso a simulação esteja a decorrer este imprime o ID da pessoa que chegou
 			ao Parque e incrementa o número de Pessoas no Parque, como as pessoas começam
 			na praça este também irá incrementar o número de pessoas que estão lá*/
 			case NAO_ACABOU:
 
-				printf("Ação: %d\n", acao);
+				printf("Ação: %d | Zona: %d | Erros: %d\n", acao, zona, erro);
 				
 				if (acao == ENTRAR){
 

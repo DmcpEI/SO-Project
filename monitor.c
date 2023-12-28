@@ -16,7 +16,7 @@ int tempoSimulado = 0, numPessoas = 0, numDesistencias = 0,  numPraca = 0, numNa
 	numRestauracao = 0, numBalnearios = 0;
 
 //Contadores de pessoas em espera
-int  espPraca=0, espNatacao = 0, espMergulho = 0, espTobogas = 0, espEnfermaria = 0, 
+int  espParque=0, espNatacao = 0, espMergulho = 0, espTobogas = 0, espEnfermaria = 0, 
 	 espRestauracao = 0, espBalnearios = 0;
 
 
@@ -118,7 +118,7 @@ void recebeDados(int newsockfd){
 		// Converte a string para um número inteiro e 
 
 
-		printf(buffer);
+		//printf(buffer);
 
 		/*Caso a variável "acabou" seja um número diferente de 0 
 		significa que a simulaçao acabou e sendo assim acaba a simulação 
@@ -130,264 +130,289 @@ void recebeDados(int newsockfd){
 
 void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 
-		tempoSimulado = tempo;
+	system("clear");
 
-		if(zona > 7) {
-			printf("ERRO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-			printf("Ação: %d | Zona: %d | Erros: %d | Acabou: %d | ID: %d | Tempo: %d\n", acao, zona, erro, acabou, idPessoa, tempo);
-			erro++;
-		}
+	tempoSimulado = tempo;
 
-		switch (acabou){
-			/*Caso a simulação esteja a decorrer este imprime o ID da pessoa que chegou
-			ao Parque e incrementa o número de Pessoas no Parque, como as pessoas começam
-			na praça este também irá incrementar o número de pessoas que estão lá*/
-			case NAO_ACABOU:
+	if(zona > 7) {
+		printf("ERRO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+		printf("Ação: %d | Zona: %d | Erros: %d | Acabou: %d | ID: %d | Tempo: %d\n", acao, zona, erro, acabou, idPessoa, tempo);
+		erro++;
+	}
 
-				printf("\nAção: %d | Zona: %d | Erros: %d\n", acao, zona, erro);
+	switch (acabou){
+		/*Caso a simulação esteja a decorrer este imprime o ID da pessoa que chegou
+		ao Parque e incrementa o número de Pessoas no Parque, como as pessoas começam
+		na praça este também irá incrementar o número de pessoas que estão lá*/
+		case NAO_ACABOU:
+
+			//printf("Ação: %d | Zona: %d | Erros: %d\n", acao, zona, erro);
+			
+			if (acao == ENTRAR){
+
+				if(zona == PRACA){
+					//printf("Tempo: %d",", tempoSimulado);
+					printf("A pessoa com ID %d entrou no Parque\n", idPessoa);
+					numPessoas++;
+
+				}else if(zona == NATACAO){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou na atração da Natação\n", idPessoa);
+					numNatacao++;
+
+				}else if(zona == MERGULHO){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou na atração de Mergulho\n", idPessoa);
+					numMergulho++;
+
+				}else if(zona == TOBOGAS){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou na atração dos Tobogãs\n", idPessoa);
+					numTobogas++;
+
+				}else if(zona == RESTAURACAO){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou na Restauração\n", idPessoa);
+					numRestauracao++;
+
+				}else if(zona == BALNEARIOS){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou nos Balneários\n", idPessoa);
+					numBalnearios++;
+
+				}else if(zona == ENFERMARIA){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou na Enfermaria\n", idPessoa);
+					numEnfermaria++;
+
+				}
+
+			} else if(acao == SAIR) {
+
+				if(zona == PRACA){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu do Parque\n", idPessoa);
+					numPessoas--;
+
+				}else if(zona == NATACAO){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da atração da Natação\n", idPessoa);
+					numNatacao--;
+
+				}else if(zona == MERGULHO){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da atração de Mergulho\n", idPessoa);
+					numMergulho--;
+
+				}else if(zona == TOBOGAS){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da atração dos Tobogãs\n", idPessoa);
+					numTobogas--;
+
+				}else if(zona == RESTAURACAO){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da Restauração\n", idPessoa);
+					numRestauracao--;
+
+				}else if(zona == BALNEARIOS){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu dos Balneários\n", idPessoa);
+					numBalnearios--;
+
+				}else if(zona == ENFERMARIA){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da Enfermaria\n", idPessoa);
+					numEnfermaria--;
+
+				}
 				
-				if (acao == ENTRAR){
-
-					if(zona == PRACA){
-						printf("Tempo: %d", tempoSimulado);
-						printf("A pessoa com ID %d entrou no Parque\n", idPessoa);
-						numPessoas++;
-
-					}else if(zona == NATACAO){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou na atração da Natação\n", idPessoa);
-						numNatacao++;
-
-					}else if(zona == MERGULHO){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou na atração de Mergulho\n", idPessoa);
-						numMergulho++;
-
-					}else if(zona == TOBOGAS){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou na atração dos Tobogãs\n", idPessoa);
-						numTobogas++;
-
-					}else if(zona == RESTAURACAO){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou na Restauração\n", idPessoa);
-						numRestauracao++;
-
-					}else if(zona == BALNEARIOS){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou nos Balneários\n", idPessoa);
-						numBalnearios++;
-
-					}else if(zona == ENFERMARIA){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou na Enfermaria\n", idPessoa);
-						numEnfermaria++;
-
-					}
-
-				} else if(acao == SAIR) {
-
-					if(zona == PRACA){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu do Parque\n", idPessoa);
-						numPessoas--;
-						numDesistencias++;
-
-					}else if(zona == NATACAO){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da atração da Natação\n", idPessoa);
-						numNatacao--;
-
-					}else if(zona == MERGULHO){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da atração de Mergulho\n", idPessoa);
-						numMergulho--;
-
-					}else if(zona == TOBOGAS){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da atração dos Tobogãs\n", idPessoa);
-						numTobogas--;
-
-					}else if(zona == RESTAURACAO){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da Restauração\n", idPessoa);
-						numRestauracao--;
-
-					}else if(zona == BALNEARIOS){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu dos Balneários\n", idPessoa);
-						numBalnearios--;
-
-					}else if(zona == ENFERMARIA){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da Enfermaria\n", idPessoa);
-						numEnfermaria--;
-
-					}
+			} else if (acao == ENTRAR_FILA) {
 					
-				} else if (acao == ENTRAR_FILA) {
-						
-					if(zona == PRACA){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou na fila do Parque\n", idPessoa);
-						espPraca++;
+				if(zona == PRACA){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou na fila do Parque\n", idPessoa);
+					espParque++;
 
-					}else if(zona == NATACAO){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou na fila da atração da Natação\n", idPessoa);
-						espNatacao++;
+				}else if(zona == NATACAO){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou na fila da atração da Natação\n", idPessoa);
+					espNatacao++;
 
-					}else if(zona == MERGULHO){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou na fila da atração de Mergulho\n", idPessoa);
-						espMergulho++;
+				}else if(zona == MERGULHO){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou na fila da atração de Mergulho\n", idPessoa);
+					espMergulho++;
 
-					}else if(zona == TOBOGAS){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou na fila da atração dos Tobogãs\n", idPessoa);
-						espTobogas++;
+				}else if(zona == TOBOGAS){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou na fila da atração dos Tobogãs\n", idPessoa);
+					espTobogas++;
 
-					}else if(zona == RESTAURACAO){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou na fila da Restauração\n", idPessoa);
-						espRestauracao++;
+				}else if(zona == RESTAURACAO){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou na fila da Restauração\n", idPessoa);
+					espRestauracao++;
 
-					}else if(zona == BALNEARIOS){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou na fila dos Balneários\n", idPessoa);
-						espBalnearios++;
+				}else if(zona == BALNEARIOS){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou na fila dos Balneários\n", idPessoa);
+					espBalnearios++;
 
-					}else if(zona == ENFERMARIA){
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d entrou na fila da Enfermaria\n", idPessoa);
-						espEnfermaria++;
-						
-					}
+				}else if(zona == ENFERMARIA){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d entrou na fila da Enfermaria\n", idPessoa);
+					espEnfermaria++;
 					
-				} else if (acao == SAIR_FILA) {
+				}
+				
+			} else if (acao == SAIR_FILA) {
 
-					if(zona == PRACA){
-						
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila do Parque\n", idPessoa);
-						espPraca--;
-						numDesistencias++;
-
-					}else if(zona == NATACAO){
-						
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila da atração da Natação\n", idPessoa);
-						espNatacao--;
-
-					}else if(zona == MERGULHO){
-
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila da atração de Mergulho\n", idPessoa);
-						espMergulho--;
-
-					}else if(zona == TOBOGAS){
-
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila da atração dos Tobogãs\n", idPessoa);
-						espTobogas--;
-
-					}else if(zona == RESTAURACAO){
-
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila da Restauração\n", idPessoa);
-						espRestauracao--;
-
-					}else if(zona == BALNEARIOS){
-
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila dos Balneários\n", idPessoa);
-						espBalnearios--;
-
-					}else if(zona == ENFERMARIA){
-
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila da Enfermaria\n", idPessoa);
-						espEnfermaria--;
-
-					}
-
-				} else if (acao == SAIR_FILA_ENTRAR) {
-
-					if(zona == PRACA){
-						
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila e entrou do Parque\n", idPessoa);
-						espPraca--;
-						numPessoas++;
-
-					}else if(zona == NATACAO){
-						
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila e entrou na atração da Natação\n", idPessoa);
-						espNatacao--;
-						numNatacao++;
-
-					}else if(zona == MERGULHO){
-
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila e entrou na atração de Mergulho\n", idPessoa);
-						espMergulho--;
-						numMergulho++;
-
-					}else if(zona == TOBOGAS){
-
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila e entrou na atração dos Tobogãs\n", idPessoa);
-						espTobogas--;
-						numTobogas++;
-
-					}else if(zona == RESTAURACAO){
-
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila e entrou na Restauração\n", idPessoa);
-						espRestauracao--;
-						numRestauracao++;
-
-					}else if(zona == BALNEARIOS){
-
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila e entrou nos Balneários\n", idPessoa);
-						espBalnearios--;
-						numBalnearios++;
-
-					}else if(zona == ENFERMARIA){
-
-						printf("Tempo: %d |", tempoSimulado);
-						printf("A pessoa com ID %d saiu da fila e entrou na Enfermaria\n", idPessoa);
-						espEnfermaria--;
-						numEnfermaria++;
-
-					}
-
-				}else if (acao == SAIR_SAIR){
+				if(zona == PRACA){
 					
-					printf("Tempo: %d |", tempoSimulado);
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila do Parque\n", idPessoa);
+					espParque--;
+
+				}else if(zona == NATACAO){
+					
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila da atração da Natação\n", idPessoa);
+					espNatacao--;
+
+				}else if(zona == MERGULHO){
+
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila da atração de Mergulho\n", idPessoa);
+					espMergulho--;
+
+				}else if(zona == TOBOGAS){
+
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila da atração dos Tobogãs\n", idPessoa);
+					espTobogas--;
+
+				}else if(zona == RESTAURACAO){
+
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila da Restauração\n", idPessoa);
+					espRestauracao--;
+
+				}else if(zona == BALNEARIOS){
+
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila dos Balneários\n", idPessoa);
+					espBalnearios--;
+
+				}else if(zona == ENFERMARIA){
+
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila da Enfermaria\n", idPessoa);
+					espEnfermaria--;
+
+				}
+
+			} else if (acao == SAIR_FILA_ENTRAR) {
+
+				if(zona == PRACA){
+					
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila e entrou do Parque\n", idPessoa);
+					espParque--;
+					numPessoas++;
+
+				}else if(zona == NATACAO){
+					
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila e entrou na atração da Natação\n", idPessoa);
+					espNatacao--;
+					numNatacao++;
+
+				}else if(zona == MERGULHO){
+
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila e entrou na atração de Mergulho\n", idPessoa);
+					espMergulho--;
+					numMergulho++;
+
+				}else if(zona == TOBOGAS){
+
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila e entrou na atração dos Tobogãs\n", idPessoa);
+					espTobogas--;
+					numTobogas++;
+
+				}else if(zona == RESTAURACAO){
+
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila e entrou na Restauração\n", idPessoa);
+					espRestauracao--;
+					numRestauracao++;
+
+				}else if(zona == BALNEARIOS){
+
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila e entrou nos Balneários\n", idPessoa);
+					espBalnearios--;
+					numBalnearios++;
+
+				}else if(zona == ENFERMARIA){
+
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da fila e entrou na Enfermaria\n", idPessoa);
+					espEnfermaria--;
+					numEnfermaria++;
+
+				}
+
+			}else if (acao == SAIR_SAIR){
+				if(zona==ENFERMARIA){
+					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d saiu da Enfermaria e foi para o hospital\n", idPessoa);
 					numEnfermaria--;
 					numPessoas--;
+				} else if (zona==BALNEARIOS){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu dos Balnearios e saiu do Parque\n", idPessoa);
+					numBalnearios--;
+					numPessoas--;
+				} else if (zona==TOBOGAS){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu dos Tobogas e saiu do Parque\n", idPessoa);
+					numTobogas--;
+					numPessoas--;
+				} else if (zona==NATACAO){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da Natacao e saiu do Parque\n", idPessoa);
+					numNatacao--;
+					numPessoas--;
+				} else if (zona==MERGULHO){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu do Mergulho e saiu do Parque\n", idPessoa);
+					numMergulho--;
+					numPessoas--;
+				} else if (zona==RESTAURACAO){
+					//printf("Tempo: %d", |", tempoSimulado);
+					printf("A pessoa com ID %d saiu da Restauracao e saiu do Parque\n", idPessoa);
+					numRestauracao--;
+					numPessoas--;
 				}
-				
-				
-				imprimeDados();
-				break;
-				
-			case ACABOU:
-				finalSim = TRUE;
-				imprimeDados();
-				break;
-			default:
-				printf("Foi para o default!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
-				break;
-		
-		}
+
+			}
+			
+			
+			imprimeDados();
+			break;
+			
+		case ACABOU:
+			finalSim = TRUE;
+			imprimeDados();
+			break;
+		default:
+			printf("Foi para o default!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+			break;
+	
+	}
 }
-
-
 
 // Exportação para o ficheiro
 
@@ -442,7 +467,6 @@ void imprimeDados() {
         "Desistencias:			%d\n"
         "--------------------------------------\n"
         "Pessoas na zona:\n"
-        "---> Praça:		        %d\n"
         "---> Natacao:			%d\n"
 		"---> Mergulho:			%d\n"
         "---> Tobogas:			%d\n"
@@ -450,8 +474,8 @@ void imprimeDados() {
         "---> Restauracao:		%d\n"
         "---> Balnearios:		%d\n"
         "--------------------------------------\n"
-        "Pessoas a espera na zona:\n"
-        "---> Praça:		        %d\n"
+        "Pessoas a espera na fila:\n"
+        "---> Parque:		        %d\n"
         "---> Natacao:			%d\n"
 		"---> Mergulho:			%d\n"
         "---> Tobogas:			%d\n"
@@ -462,7 +486,7 @@ void imprimeDados() {
         (!finalSim) ? "A decorrer" : "Finalizado",
         tempoSimulado,numPessoas, numDesistencias,
         numPraca, numNatacao, numMergulho, numTobogas, numEnfermaria, numRestauracao, numBalnearios,
-        espPraca, espNatacao, espMergulho, espTobogas, espEnfermaria, espRestauracao, espBalnearios);
+        espParque, espNatacao, espMergulho, espTobogas, espEnfermaria, espRestauracao, espBalnearios);
 
    	// Escreve no ficheiro a informação
   	escreveFicheiro(informacao);	

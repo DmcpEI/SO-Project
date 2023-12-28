@@ -1,0 +1,27 @@
+======================================
+            PARQUE AQUATICO
+======================================
+Estado de execucao --> Finalizado
+Tempo Simulado --> 52335
+--------------------------------------
+Pessoas no Parque:		0
+Desistencias:			0
+--------------------------------------
+Pessoas na zona:
+---> Praça:		        0
+---> Natacao:			0
+---> Mergulho:			0
+---> Tobogas:			0
+---> Enfermaria:		0
+---> Restauracao:		0
+---> Balnearios:		0
+--------------------------------------
+Pessoas a espera na zona:
+---> Praça:		        0
+---> Natacao:			0
+---> Mergulho:			0
+---> Tobogas:			0
+---> Enfermaria:		0
+---> Restauracao:		0
+---> Balnearios:		0
+--------------------------------------

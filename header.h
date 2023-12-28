@@ -196,3 +196,5 @@ void recebeDados(int newsockfd);
 void imprimeDados();
 void limpaFicheiro();
 void escreveFicheiro(char *informacao);
+void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona);
+

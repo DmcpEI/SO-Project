@@ -100,14 +100,35 @@ void recebeDados(int newsockfd){
 		memset(buffer, 0, sizeof(buffer));
 		recebido = recv(newsockfd, buffer, TAMANHO_BUFFER, 0);
 
+		if (recebido <= 0){
+			printf(VERMELHO "Não foram recebidos dados\n");
+			break;
+		}
+
+		char *token = strtok(buffer, "|");
+
+		while(token != NULL){
+			sscanf(token,"%d %d %d %d %d", &acabou, &idPessoa, &tempo, &acao, &zona);
+
+			processarOsDados(acabou, idPessoa, tempo, acao, zona);
+
+			token = strtok(NULL, "|");
+		}
+
 		// Converte a string para um número inteiro e 
-		sscanf(buffer,"%d %d %d %d %d", &acabou, &idPessoa, &tempo, &acao, &zona);
+
+
+		printf(buffer);
 
 		/*Caso a variável "acabou" seja um número diferente de 0 
 		significa que a simulaçao acabou e sendo assim acaba a simulação 
 		e imprime os ultimos dados*/
 		
 		//system("clear");
+	}
+}
+
+void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 
 		tempoSimulado = tempo;
 
@@ -123,7 +144,7 @@ void recebeDados(int newsockfd){
 			na praça este também irá incrementar o número de pessoas que estão lá*/
 			case NAO_ACABOU:
 
-				printf("Ação: %d | Zona: %d | Erros: %d\n", acao, zona, erro);
+				printf("\nAção: %d | Zona: %d | Erros: %d\n", acao, zona, erro);
 				
 				if (acao == ENTRAR){
 
@@ -362,8 +383,9 @@ void recebeDados(int newsockfd){
 				break;
 		
 		}
-	}
 }
+
+
 
 // Exportação para o ficheiro
 

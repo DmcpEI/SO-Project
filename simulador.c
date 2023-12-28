@@ -268,6 +268,7 @@ void Fila (struct pessoa *pessoa) {
 
             printf(VERDE "A pessoa com ID %d entrou no parque | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, PRACA);
+            printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, PRACA);
             
             sleep(conf.tempoEntrarPraca);
 
@@ -286,6 +287,7 @@ void Fila (struct pessoa *pessoa) {
             
             printf(AMARELO "A pessoa com ID %d chegou à fila para entrar no parque | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, PRACA);
+            printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, PRACA);
 
             sleep(tempoDeEspera);
             
@@ -304,6 +306,7 @@ void Fila (struct pessoa *pessoa) {
 
                 printf(VERDE "A pessoa com ID %d entrou no parque depois de esperar %d segundos | Tempo: %d\n" RESET, pessoa->idPessoa, tempoDeEspera, tempoSimulado);
                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, PRACA);
+                printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, PRACA);
                 
                 sleep(conf.tempoEntrarPraca);
 
@@ -317,6 +320,7 @@ void Fila (struct pessoa *pessoa) {
 
                 printf(VERMELHO "A pessoa com ID %d desistiu de entrar no parque porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, PRACA);
+                printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, PRACA);
                 
                 pessoa->desistir = TRUE;
             }
@@ -334,6 +338,7 @@ void Fila (struct pessoa *pessoa) {
             
             printf(VERDE "A pessoa com ID %d entrou nos balneários | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, BALNEARIOS);
+            printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, BALNEARIOS);
 
             sleep(conf.tempoEsperaBalnearios);
             
@@ -354,6 +359,7 @@ void Fila (struct pessoa *pessoa) {
                 
                 printf(AMARELO "A pessoa com ID %d chegou à fila para entrar nos balneários | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, BALNEARIOS);
+                printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, BALNEARIOS);
 
                 sleep(tempoDeEspera);
                 
@@ -368,6 +374,7 @@ void Fila (struct pessoa *pessoa) {
 
                     printf(VERMELHO "A pessoa com ID %d desistiu de entrar nos balneários porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, BALNEARIOS);
+                    printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, BALNEARIOS);
 
                     pessoa->zonaAtual = PRACA;
 
@@ -383,6 +390,7 @@ void Fila (struct pessoa *pessoa) {
                     
                     printf(VERDE "A pessoa com ID %d entrou nos balneários depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, BALNEARIOS);
+                    printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, BALNEARIOS);
 
                     sleep(conf.tempoEsperaBalnearios);
                 }
@@ -410,6 +418,7 @@ void Fila (struct pessoa *pessoa) {
 
                 printf(VERDE "A pessoa com ID %d entrou na atração de natação | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, NATACAO);
+                printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, NATACAO);
                 
                 sleep(conf.tempoEsperaNatacao);
 
@@ -426,6 +435,7 @@ void Fila (struct pessoa *pessoa) {
 
                     printf(VERMELHO "A pessoa com ID %d saiu da atração de natação | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, NATACAO);
+                    printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, NATACAO);
                     
                     pessoa->magoar = TRUE;
                     pessoa->zonaAtual = ENFERMARIA;
@@ -448,6 +458,7 @@ void Fila (struct pessoa *pessoa) {
 
                     printf(AMARELO "A pessoa com ID %d chegou à fila para entrar na atração de natação | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, NATACAO);
+                    printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, NATACAO);
                     
                     sleep(tempoDeEspera);
 
@@ -462,6 +473,7 @@ void Fila (struct pessoa *pessoa) {
 
                         printf(VERMELHO "A pessoa com ID %d desistiu de entrar na atração de natação porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, NATACAO);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, NATACAO);
                         
                         pessoa->zonaAtual = PRACA;
 
@@ -477,6 +489,7 @@ void Fila (struct pessoa *pessoa) {
 
                         printf(VERDE "A pessoa com ID %d entrou na atração de natação depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, NATACAO);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, NATACAO);
 
                         sleep(conf.tempoEsperaNatacao);
 
@@ -492,6 +505,7 @@ void Fila (struct pessoa *pessoa) {
                             printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                             printf(VERMELHO "A pessoa com ID %d saiu da atração de natação | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, NATACAO);
+                            printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, NATACAO);
                             
                             pessoa->magoar = TRUE;
                             pessoa->zonaAtual = ENFERMARIA;
@@ -528,6 +542,7 @@ void Fila (struct pessoa *pessoa) {
 
                 printf(VERDE "A pessoa com ID %d entrou na atração de mergulho | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, MERGULHO);
+                printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, MERGULHO);
                 
                 sleep(conf.tempoEsperaMergulho);
 
@@ -543,6 +558,7 @@ void Fila (struct pessoa *pessoa) {
                     printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     printf(VERMELHO "A pessoa com ID %d saiu da atração de mergulho | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, MERGULHO);
+                    printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, MERGULHO);
                     
                     pessoa->magoar = TRUE;
                     pessoa->zonaAtual = ENFERMARIA;
@@ -565,6 +581,7 @@ void Fila (struct pessoa *pessoa) {
 
                     printf(AMARELO "A pessoa com ID %d chegou à fila para entrar na atração de mergulho | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, MERGULHO);
+                    printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, MERGULHO);
 
                     sleep(tempoDeEspera);
                     
@@ -579,6 +596,7 @@ void Fila (struct pessoa *pessoa) {
 
                         printf(VERMELHO "A pessoa com ID %d desistiu de entrar na atração de mergulho porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, MERGULHO);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, MERGULHO);
                         
                         pessoa->zonaAtual = PRACA;
 
@@ -594,6 +612,7 @@ void Fila (struct pessoa *pessoa) {
 
                         printf(VERDE "A pessoa com ID %d entrou na atração de mergulho depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, PRACA);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, MERGULHO);
                         
                         sleep(conf.tempoEsperaMergulho);
 
@@ -609,6 +628,7 @@ void Fila (struct pessoa *pessoa) {
                             printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                             printf(VERMELHO "A pessoa com ID %d saiu da atração de mergulho | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, MERGULHO);
+                            printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, MERGULHO);
                             
                             pessoa->magoar = TRUE;
                             pessoa->zonaAtual = ENFERMARIA;
@@ -646,6 +666,7 @@ void Fila (struct pessoa *pessoa) {
                 
                 printf(VERDE "A pessoa com ID %d entrou na atração de tobogãs | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, TOBOGAS);
+                printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, TOBOGAS);
                 
                 sleep(conf.tempoEsperaTobogas);
 
@@ -661,6 +682,7 @@ void Fila (struct pessoa *pessoa) {
                     printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);                    
                     printf(VERMELHO "A pessoa com ID %d saiu da atração de tobogãs | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, TOBOGAS);
+                    printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, TOBOGAS);
                     
                     pessoa->magoar = TRUE;
                     pessoa->zonaAtual = ENFERMARIA;
@@ -683,6 +705,7 @@ void Fila (struct pessoa *pessoa) {
 
                     printf(AMARELO "A pessoa com ID %d chegou à fila para entrar na atração de tobogãs | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, TOBOGAS);
+                    printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, TOBOGAS);
 
                     sleep(tempoDeEspera);
                     
@@ -697,6 +720,7 @@ void Fila (struct pessoa *pessoa) {
 
                         printf(VERMELHO "A pessoa com ID %d desistiu de entrar na atração de tobogãs porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, TOBOGAS);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, TOBOGAS);
                         
                         pessoa->zonaAtual = PRACA;
 
@@ -712,6 +736,7 @@ void Fila (struct pessoa *pessoa) {
                         
                         printf(VERDE "A pessoa com ID %d entrou na atração de tobogãs depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, TOBOGAS);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, TOBOGAS);
                         
                         sleep(conf.tempoEsperaTobogas);
 
@@ -727,6 +752,7 @@ void Fila (struct pessoa *pessoa) {
                             printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                             printf(VERMELHO "A pessoa com ID %d saiu da atração de tobogãs | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, TOBOGAS);
+                            printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, TOBOGAS);
                             
                             pessoa->magoar = TRUE;
                             pessoa->zonaAtual = ENFERMARIA;
@@ -762,6 +788,7 @@ void Fila (struct pessoa *pessoa) {
 
             printf(VERDE "A pessoa com ID %d entrou na restauração | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, RESTAURACAO);
+            printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, RESTAURACAO);
 
             sleep(conf.tempoEsperaRestauracao);
             
@@ -782,6 +809,7 @@ void Fila (struct pessoa *pessoa) {
 
                 printf(AMARELO "A pessoa com ID %d chegou à fila para entrar na restauração | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, RESTAURACAO);
+                printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, RESTAURACAO);
 
                 sleep(tempoDeEspera);
                 
@@ -796,6 +824,7 @@ void Fila (struct pessoa *pessoa) {
 
                     printf(VERMELHO "A pessoa com ID %d desistiu de entrar na restauração porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, RESTAURACAO);
+                    printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, RESTAURACAO);
 
                     pessoa->zonaAtual = PRACA;
 
@@ -811,6 +840,7 @@ void Fila (struct pessoa *pessoa) {
 
                     printf(VERDE "A pessoa com ID %d entrou na restauração depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, RESTAURACAO);
+                    printf("%d %d %d %d %d|\n",NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, RESTAURACAO);
 
                     sleep(conf.tempoEsperaRestauracao);
 
@@ -832,7 +862,7 @@ void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
     sem_wait(&semaforoDados);
 
     char buffer[TAMANHO_BUFFER];
-    snprintf(buffer, TAMANHO_BUFFER, "%d %d %d %d %d", acabou, personId, tempo, acao, zona);
+    snprintf(buffer, TAMANHO_BUFFER, "%d %d %d %d %d|", acabou, personId, tempo, acao, zona);
 
     if (send(socketFD, buffer, strlen(buffer), 0) == -1) {
         perror("Erro ao enviar dados"); // Exibe uma mensagem de erro se não conseguir enviar os dados
@@ -902,6 +932,7 @@ void enviarPessoa(void *ptr) {
 
                         printf(VERMELHO "A pessoa com ID %d saiu do parque porque está a fechar | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, PRACA);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, PRACA);
 
                         break;
 
@@ -915,6 +946,7 @@ void enviarPessoa(void *ptr) {
 
                         printf(VERMELHO "A pessoa com ID %d foi para a Praça e saiu do parque | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, PRACA);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, PRACA);
                         
                         break;
                     }
@@ -934,6 +966,7 @@ void enviarPessoa(void *ptr) {
 
                     printf(ROXO "A pessoa com ID %d entrou na enfermaria | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                     enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, ENTRAR, ENFERMARIA);
+                    printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, ENTRAR, ENFERMARIA);
 
                     sleep(2);
                     
@@ -950,6 +983,7 @@ void enviarPessoa(void *ptr) {
 
                         printf(ROXO "A pessoa com ID %d saiu da enfermaria curada | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, ENFERMARIA);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, ENFERMARIA);
 
                         person.zonaAtual = PRACA;
 
@@ -967,6 +1001,7 @@ void enviarPessoa(void *ptr) {
 
                         printf(VERMELHO "A pessoa com ID %d entrou na enfermaria mas não foi curada e foi para o hospital | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR_SAIR, ENFERMARIA);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR_SAIR, ENFERMARIA);
 
                         break;
                     }
@@ -984,6 +1019,7 @@ void enviarPessoa(void *ptr) {
 
                         printf(AMARELO "A pessoa com ID %d chegou à fila para entrar na enfermaria | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, ENTRAR_FILA, ENFERMARIA);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, ENTRAR_FILA, ENFERMARIA);
 
                         pthread_mutex_lock(&mutexSimulacao);
                         //Fazer dependendo do tempo que chegou e de quantas pessoas estão na fila!!!!!!
@@ -1006,6 +1042,7 @@ void enviarPessoa(void *ptr) {
                             
                             printf(VERMELHO "A pessoa com ID %d desistiu de entrar na enfermaria porque não queria esperar na fila e foi para o hospital | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                             enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, ENFERMARIA);
+                            printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, ENFERMARIA);
 
                             break;
 
@@ -1021,6 +1058,7 @@ void enviarPessoa(void *ptr) {
 
                             printf(VERDE "A pessoa com ID %d entrou na enfermaria depois de esperar na fila | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                             enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, ENFERMARIA);
+                            printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, ENFERMARIA);
 
                             sleep(conf.tempoEsperaEnfermaria);
 
@@ -1036,6 +1074,7 @@ void enviarPessoa(void *ptr) {
 
                                 printf(ROXO "A pessoa com ID %d saiu da enfermaria curada | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                                 enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, ENFERMARIA);
+                                printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, ENFERMARIA);
 
                                 person.zonaAtual = PRACA;
 
@@ -1053,6 +1092,7 @@ void enviarPessoa(void *ptr) {
 
                                 printf(VERMELHO "A pessoa com ID %d entrou na enfermaria mas não foi curada e foi para o hospital | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                                 enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR_SAIR, ENFERMARIA);
+                                printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR_SAIR, ENFERMARIA);
                                 break;
                             }
 
@@ -1067,6 +1107,7 @@ void enviarPessoa(void *ptr) {
 
                         printf(VERMELHO "A pessoa com ID %d desistiu de entrar na enfermaria porque não havia lugar na fila e foi para o hospital | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, PRACA);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, ENFERMARIA);
 
                         break;
                     }
@@ -1090,6 +1131,7 @@ void enviarPessoa(void *ptr) {
 
                         printf(VERMELHO "A pessoa com ID %d saiu dos balneários | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, BALNEARIOS);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, BALNEARIOS);
 
                         sleep(1);
 
@@ -1104,6 +1146,7 @@ void enviarPessoa(void *ptr) {
 
                         printf(VERMELHO "A pessoa com ID %d saiu da atração de natação | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, NATACAO);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, NATACAO);
 
                         sleep(1);
 
@@ -1118,6 +1161,7 @@ void enviarPessoa(void *ptr) {
 
                         printf(VERMELHO "A pessoa com ID %d saiu da atração de mergulho | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, MERGULHO);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, MERGULHO);
 
                         sleep(1);
                         
@@ -1132,6 +1176,7 @@ void enviarPessoa(void *ptr) {
 
                         printf(VERMELHO "A pessoa com ID %d saiu da atração de tobogãs | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, TOBOGAS);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, TOBOGAS);
                         sleep(1);
                         
                     } else if (person.zonaAtual == RESTAURACAO) {
@@ -1145,6 +1190,7 @@ void enviarPessoa(void *ptr) {
 
                         printf(VERMELHO "A pessoa com ID %d saiu da restauração | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, RESTAURACAO);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, RESTAURACAO);
 
                         sleep(1);
                         
@@ -1160,6 +1206,7 @@ void enviarPessoa(void *ptr) {
 
                         printf(VERMELHO "A pessoa com ID %d saiu do parque porque ele está fechando | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, PRACA);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, PRACA);
 
                         break;
 
@@ -1185,6 +1232,7 @@ void enviarPessoa(void *ptr) {
                         // printf(VERMELHO "A pessoa com ID %d saiu dos balneários\n" RESET, person.idPessoa);
 
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, BALNEARIOS);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, BALNEARIOS);
 
                     } else if (person.zonaAtual == NATACAO) {
 
@@ -1197,6 +1245,7 @@ void enviarPessoa(void *ptr) {
                         // printf(VERMELHO "A pessoa com ID %d saiu da atração de natação\n" RESET, person.idPessoa);
 
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, NATACAO);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, NATACAO);
 
                     } else if (person.zonaAtual == MERGULHO) {
 
@@ -1209,6 +1258,7 @@ void enviarPessoa(void *ptr) {
                         // printf(VERMELHO "A pessoa com ID %d saiu da atração de mergulho\n" RESET, person.idPessoa);
 
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, MERGULHO);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, MERGULHO);
                         
                     } else if (person.zonaAtual == TOBOGAS) {
 
@@ -1221,6 +1271,7 @@ void enviarPessoa(void *ptr) {
                         // printf(VERMELHO "A pessoa com ID %d saiu da atração de tobogãs\n" RESET, person.idPessoa);
 
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, TOBOGAS);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, TOBOGAS);
                         
                     } else if (person.zonaAtual == RESTAURACAO) {
 
@@ -1233,6 +1284,7 @@ void enviarPessoa(void *ptr) {
                         // printf(VERMELHO "A pessoa com ID %d saiu da restauração\n" RESET, person.idPessoa);
 
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, RESTAURACAO);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, RESTAURACAO);
                         
                     }
 
@@ -1244,6 +1296,7 @@ void enviarPessoa(void *ptr) {
                         
                         printf(VERMELHO "A pessoa com ID %d saiu do parque porque está a fechar | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, PRACA);
+                        printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, PRACA);
                         
                         break;
 

@@ -113,6 +113,7 @@ void recebeDados(int newsockfd){
 
 		if(zona > 7) {
 			printf("ERRO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
+			printf("Ação: %d | Zona: %d | Erros: %d | Acabou: %d | ID: %d | Tempo: %d\n", acao, zona, erro, acabou, idPessoa, tempo);
 			erro++;
 		}
 
@@ -357,6 +358,7 @@ void recebeDados(int newsockfd){
 				imprimeDados();
 				break;
 			default:
+				printf("Foi para o default!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 				break;
 		
 		}

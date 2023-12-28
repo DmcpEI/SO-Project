@@ -19,6 +19,10 @@ int tempoSimulado = 0, numPessoas = 0, numDesistencias = 0,  numPraca = 0, numNa
 int  espParque=0, espNatacao = 0, espMergulho = 0, espTobogas = 0, espEnfermaria = 0, 
 	 espRestauracao = 0, espBalnearios = 0;
 
+//variaveis para fazer contas
+int desistirFilaNatacao = 0;
+int entraramFilaNatacao = 0;
+
 
 void socketMonitor () {
 
@@ -237,6 +241,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na fila da atração da Natação\n", idPessoa);
 					espNatacao++;
+					entraramFilaNatacao++;
 
 				}else if(zona == MERGULHO){
 					//printf("Tempo: %d", |", tempoSimulado);
@@ -278,6 +283,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d saiu da fila da atração da Natação\n", idPessoa);
 					espNatacao--;
+					desistirFilaNatacao++;
 
 				}else if(zona == MERGULHO){
 
@@ -485,8 +491,12 @@ void imprimeDados() {
         "--------------------------------------\n",
         (!finalSim) ? "A decorrer" : "Finalizado",
         tempoSimulado,numPessoas, numDesistencias,
-        numPraca, numNatacao, numMergulho, numTobogas, numEnfermaria, numRestauracao, numBalnearios,
+        numNatacao, numMergulho, numTobogas, numEnfermaria, numRestauracao, numBalnearios,
         espParque, espNatacao, espMergulho, espTobogas, espEnfermaria, espRestauracao, espBalnearios);
+
+	//float conta = entraramFilaNatacao/desistirFilaNatacao;
+
+	//printf("ratio de pessoas que desistiram da fila de natação: %f", conta);
 
    	// Escreve no ficheiro a informação
   	escreveFicheiro(informacao);	

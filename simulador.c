@@ -293,8 +293,8 @@ void Fila (struct pessoa *pessoa) {
             
             if(pessoasParque<conf.quantidadePessoasParque && tempoSimulado<=conf.tempoSimulacao){
 
-                sem_wait(&semaforoParque);
                 sem_post(&praca.fila);
+                sem_wait(&semaforoParque);
 
                 pthread_mutex_lock(&mutexFilas);
                 praca.numeroPessoasNaFila--;

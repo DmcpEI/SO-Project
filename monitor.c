@@ -191,6 +191,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 						printf("Tempo: %d |", tempoSimulado);
 						printf("A pessoa com ID %d saiu do Parque\n", idPessoa);
 						numPessoas--;
+						numDesistencias++;
 
 					}else if(zona == NATACAO){
 						printf("Tempo: %d |", tempoSimulado);
@@ -270,6 +271,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 						printf("Tempo: %d |", tempoSimulado);
 						printf("A pessoa com ID %d saiu da fila do Parque\n", idPessoa);
 						espPraca--;
+						numDesistencias++;
 
 					}else if(zona == NATACAO){
 						
@@ -371,7 +373,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 				}
 				
 				
-				//imprimeDados();
+				imprimeDados();
 				break;
 				
 			case ACABOU:

@@ -867,8 +867,9 @@ void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
     if (send(socketFD, buffer, strlen(buffer), 0) == -1) {
         perror("Erro ao enviar dados"); // Exibe uma mensagem de erro se não conseguir enviar os dados
     }
+    usleep(5000);
     sem_post(&semaforoDados);
-    sleep(2);
+    usleep(5000);
 }
 
 void enviarPessoa(void *ptr) {
@@ -890,7 +891,11 @@ void enviarPessoa(void *ptr) {
 
                 //break;
 
+                sleep(2);
+
                 if (calculaProbabilidadeDesistir(conf.probabilidadeDesistir, &person)) {
+
+                    sleep(1);
 
                     int proximaAtracao = visitarProximaAtracao(&person);
                     person.zonaAtual = proximaAtracao;
@@ -922,6 +927,9 @@ void enviarPessoa(void *ptr) {
                         
                     }
                 } else {
+
+                    sleep(1);
+
                     if(tempoSimulado>conf.tempoSimulacao){
 
                         sem_post(&semaforoParque);
@@ -954,8 +962,11 @@ void enviarPessoa(void *ptr) {
                 
             } else if (person.zonaAtual == ENFERMARIA) {
                 
-                
+                sleep(2);
+
                 if(enfermaria.numeroAtualPessoas < conf.numeroMaximoEnfermaria){
+
+                    sleep(1);
 
                     sem_wait(&semaforoEnfermaria);
                     sem_post(&semaforoParque);
@@ -971,6 +982,8 @@ void enviarPessoa(void *ptr) {
                     sleep(2);
                     
                     if(calcularProbabilidade(conf.probabilidadeCurar)){ 
+
+                        sleep(1);
                         
                         person.magoar = FALSE;
 
@@ -988,6 +1001,8 @@ void enviarPessoa(void *ptr) {
                         person.zonaAtual = PRACA;
 
                     }else{ //sai do parque
+
+                        sleep(1);
 
                         sem_post(&semaforoEnfermaria);
                         
@@ -1008,7 +1023,11 @@ void enviarPessoa(void *ptr) {
 
                 } else {
 
+                    sleep(1);
+
                     if (enfermaria.numeroPessoasNaFila < conf.tamanhoFilaEnfermaria) {
+
+                        sleep(1);
 
                         sem_post(&semaforoParque);
                         sem_wait(&enfermaria.fila);
@@ -1030,6 +1049,8 @@ void enviarPessoa(void *ptr) {
                         
                         if (enfermaria.numeroAtualPessoas >= conf.numeroMaximoEnfermaria) {
 
+                            sleep(1);
+
                             sem_post(&enfermaria.fila);
 
                             pthread_mutex_lock(&mutexFilas);
@@ -1048,6 +1069,8 @@ void enviarPessoa(void *ptr) {
 
                         } else {
 
+                            sleep(1);
+
                             sem_wait(&semaforoEnfermaria);
                             sem_post(&enfermaria.fila);
 
@@ -1063,6 +1086,9 @@ void enviarPessoa(void *ptr) {
                             sleep(conf.tempoEsperaEnfermaria);
 
                             if(calcularProbabilidade(conf.probabilidadeCurar)){ 
+
+                                sleep(1);
+
                                 person.magoar = FALSE;
 
                                 sem_post(&semaforoEnfermaria);
@@ -1079,6 +1105,8 @@ void enviarPessoa(void *ptr) {
                                 person.zonaAtual = PRACA;
 
                             }else{ //sai do parque
+
+                                sleep(1);
 
                                 sem_post(&semaforoEnfermaria);
 
@@ -1099,6 +1127,9 @@ void enviarPessoa(void *ptr) {
                         }
 
                     } else {
+
+                        sleep(1);
+
                         sem_post(&semaforoParque);
 
                         pthread_mutex_lock(&mutexParque);
@@ -1116,11 +1147,17 @@ void enviarPessoa(void *ptr) {
                 
 
             } else { //Está em qualquer outra zona
+
+                sleep(2);
                 
                 if (calculaProbabilidadeMudar(conf.probabilidadeMudarZona, &person)) { //Se quer mudar de zona, probabilidade aumenta se já andou por todas ou não
                     //printf(AZUL "A pessoa com o ID %d quer mudar para outra zona e vai para a Praça\n" RESET, person.idPessoa);
+
+                    sleep(1);
                     
                     if (person.zonaAtual == BALNEARIOS) {
+
+                        sleep(1);
 
                         sem_post(&semaforoBalneario);
                         sem_wait(&semaforoParque);
@@ -1137,6 +1174,8 @@ void enviarPessoa(void *ptr) {
 
                     } else if (person.zonaAtual == NATACAO) {
 
+                        sleep(1);
+
                         sem_post(&semaforoNatacao);
                         sem_wait(&semaforoParque);
 
@@ -1151,6 +1190,8 @@ void enviarPessoa(void *ptr) {
                         sleep(1);
 
                     } else if (person.zonaAtual == MERGULHO) {
+
+                        sleep(1);
 
                         sem_post(&semaforoMergulho);
                         sem_wait(&semaforoParque);
@@ -1167,6 +1208,8 @@ void enviarPessoa(void *ptr) {
                         
                     } else if (person.zonaAtual == TOBOGAS) {
 
+                        sleep(1);
+
                         sem_post(&semaforoTobogas);
                         sem_wait(&semaforoParque);
 
@@ -1180,6 +1223,8 @@ void enviarPessoa(void *ptr) {
                         sleep(1);
                         
                     } else if (person.zonaAtual == RESTAURACAO) {
+
+                        sleep(1);
 
                         sem_post(&semaforoRestauracao);
                         sem_wait(&semaforoParque);
@@ -1197,6 +1242,8 @@ void enviarPessoa(void *ptr) {
                     }
 
                     if(tempoSimulado > conf.tempoSimulacao) {
+
+                        sleep(1);
 
                         sem_post(&semaforoParque);
 
@@ -1217,11 +1264,15 @@ void enviarPessoa(void *ptr) {
                 } else { //Se não quer mudar de zona
 
                     printf(AZUL "A pessoa com o ID %d quer continuar na zona | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
-                    //sleep(1);
+                    
+                    sleep(1);
+                    
                     //probabilidade de ele se magoar, vai para a enfermaria
 
                     //não muda de zona e vai para a fila da zona (abrir semaforo da zona)
                     if (person.zonaAtual == BALNEARIOS) {
+
+                        sleep(1);
 
                         sem_post(&semaforoBalneario);
 
@@ -1236,6 +1287,8 @@ void enviarPessoa(void *ptr) {
 
                     } else if (person.zonaAtual == NATACAO) {
 
+                        sleep(1);
+
                         sem_post(&semaforoNatacao);
 
                         pthread_mutex_lock(&mutexZonas);
@@ -1248,6 +1301,8 @@ void enviarPessoa(void *ptr) {
                         printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, NATACAO);
 
                     } else if (person.zonaAtual == MERGULHO) {
+
+                        sleep(1);
 
                         sem_post(&semaforoMergulho);
 
@@ -1262,6 +1317,8 @@ void enviarPessoa(void *ptr) {
                         
                     } else if (person.zonaAtual == TOBOGAS) {
 
+                        sleep(1);
+
                         sem_post(&semaforoTobogas);
 
                         pthread_mutex_lock(&mutexZonas);
@@ -1274,6 +1331,8 @@ void enviarPessoa(void *ptr) {
                         printf("%d %d %d %d %d|\n",NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, TOBOGAS);
                         
                     } else if (person.zonaAtual == RESTAURACAO) {
+
+                        sleep(1);
 
                         sem_post(&semaforoRestauracao);
 
@@ -1289,6 +1348,8 @@ void enviarPessoa(void *ptr) {
                     }
 
                     if(tempoSimulado > conf.tempoSimulacao) {
+
+                        sleep(1);
 
                         pthread_mutex_lock(&mutexParque);
                         pessoasParque--;

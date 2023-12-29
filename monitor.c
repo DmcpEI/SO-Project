@@ -499,6 +499,11 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					numPessoasSairam++;
 				}
 
+			}else if (acao == SAIR_FILA_ENFERMARIA){
+				//printf("Tempo: %d", |", tempoSimulado);
+				printf("A pessoa com ID %d saiu da fila da Enfermaria e foi para o hospital\n", idPessoa);
+				espEnfermaria--;
+				numPessoasSairam++;
 			}
 			
 			numPessoas = numBalnearios + numEnfermaria + numMergulho + numNatacao + numPraca +

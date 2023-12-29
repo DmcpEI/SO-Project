@@ -46,6 +46,7 @@
 #define SAIR_FILA 3
 #define SAIR_FILA_ENTRAR 4
 #define SAIR_SAIR 5
+#define SAIR_FILA_ENFERMARIA 6
 
 //cores
 #define AMARELO "\x1B[33m"

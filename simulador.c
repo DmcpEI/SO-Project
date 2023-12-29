@@ -378,8 +378,8 @@ void Fila (struct pessoa *pessoa) {
 
                 } else {
 
-                    sem_wait(&semaforoBalneario);
                     sem_post(&balnearios.fila);
+                    sem_wait(&semaforoBalneario);
                     
                     pthread_mutex_lock(&mutexFilas);
                     balnearios.numeroPessoasNaFila--;
@@ -472,8 +472,8 @@ void Fila (struct pessoa *pessoa) {
 
                     } else {
 
-                        sem_wait(&semaforoNatacao);
                         sem_post(&natacao.fila);
+                        sem_wait(&semaforoNatacao);
                         
                         pthread_mutex_lock(&mutexFilas);
                         natacao.numeroPessoasNaFila--;
@@ -589,8 +589,8 @@ void Fila (struct pessoa *pessoa) {
 
                     } else {
 
-                        sem_wait(&semaforoMergulho);
                         sem_post(&mergulho.fila);
+                        sem_wait(&semaforoMergulho);
                         
                         pthread_mutex_lock(&mutexFilas);
                         mergulho.numeroPessoasNaFila--;
@@ -707,8 +707,8 @@ void Fila (struct pessoa *pessoa) {
 
                     } else {
 
-                        sem_wait(&semaforoTobogas);
                         sem_post(&tobogas.fila);
+                        sem_wait(&semaforoTobogas);
 
                         pthread_mutex_lock(&mutexFilas);
                         tobogas.numeroPessoasNaFila--;
@@ -806,8 +806,8 @@ void Fila (struct pessoa *pessoa) {
 
                 } else {
 
-                    sem_wait(&semaforoRestauracao);
                     sem_post(&restauracao.fila);
+                    sem_wait(&semaforoRestauracao);
 
                     pthread_mutex_lock(&mutexFilas);
                     restauracao.numeroPessoasNaFila--;
@@ -930,8 +930,8 @@ void enviarPessoa(void *ptr) {
                 
                 if(enfermaria.numeroAtualPessoas < conf.numeroMaximoEnfermaria){
 
-                    sem_wait(&semaforoEnfermaria);
                     sem_post(&semaforoParque);
+                    sem_wait(&semaforoEnfermaria);
 
                     pthread_mutex_lock(&mutexFilas);
                     enfermaria.numeroAtualPessoas++;
@@ -1010,14 +1010,14 @@ void enviarPessoa(void *ptr) {
                             pthread_mutex_unlock(&mutexParque);
                             
                             printf(VERMELHO "A pessoa com ID %d desistiu de entrar na enfermaria porque não queria esperar na fila e foi para o hospital | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
-                            enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, ENFERMARIA);
+                            enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR_FILA_ENFERMARIA, ENFERMARIA);
 
                             break;
 
                         } else {
 
-                            sem_wait(&semaforoEnfermaria);
                             sem_post(&enfermaria.fila);
+                            sem_wait(&semaforoEnfermaria);
 
                             pthread_mutex_lock(&mutexFilas);
                             enfermaria.numeroPessoasNaFila--;

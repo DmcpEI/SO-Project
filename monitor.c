@@ -23,52 +23,52 @@ int  espParque=0, espNatacao = 0, espMergulho = 0, espTobogas = 0, espEnfermaria
 //variaveis para fazer contas
 unsigned int desistirFilaParque = 0;
 unsigned int entraramFilaParque = 0;
-float ratioFilaParque = 0;
+int ratioFilaParque = 0;
 
 unsigned int desistirFilaNatacao = 0;
 unsigned int entraramFilaNatacao = 0;
-float ratioFilaNatacao = 0;
+int ratioFilaNatacao = 0;
 
 unsigned int desistirFilaMergulho = 0;
 unsigned int entraramFilaMergulho = 0;
-float ratioFilaMergulho = 0;
+int ratioFilaMergulho = 0;
 
 unsigned int desistirFilaTobogas = 0;
 unsigned int entraramFilaTobogas = 0;
-float ratioFilaTobogas = 0;
+int ratioFilaTobogas = 0;
 
 unsigned int desistirFilaRestauracao = 0;
 unsigned int entraramFilaRestauracao = 0;
-float ratioFilaRestauracao = 0;
+int ratioFilaRestauracao = 0;
 
 unsigned int desistirFilaBalnearios = 0;
 unsigned int entraramFilaBalnearios = 0;
-float ratioFilaBalnearios = 0;
+int ratioFilaBalnearios = 0;
 
 unsigned int desistirFilaEnfermaria = 0;
 unsigned int entraramFilaEnfermaria = 0;
-float ratioFilaEnfermaria = 0;
+int ratioFilaEnfermaria = 0;
 
 
 unsigned int  totalEntrarParque = 0;
 
 unsigned int totalEntrarNatacao = 0;
-float ratioEntrarNatacao = 0;
+int ratioEntrarNatacao = 0;
 
 unsigned int totalEntrarMergulho = 0;
-float ratioEntrarMergulho = 0;
+int ratioEntrarMergulho = 0;
 
 unsigned int totalEntrarTobogas = 0;
-float ratioEntrarTobogas = 0;
+int ratioEntrarTobogas = 0;
 
 unsigned int totalEntrarRestauracao = 0;
-float ratioEntrarRestauracao = 0;
+int ratioEntrarRestauracao = 0;
 
 unsigned int totalEntrarBalnearios = 0;
-float ratioEntrarBalnearios = 0;
+int ratioEntrarBalnearios = 0;
 
 unsigned int totalEntrarEnfermaria = 0;
-float ratioEntrarEnfermaria = 0;
+int ratioEntrarEnfermaria = 0;
 
 /////////acabou variaveis para contas///////////
 
@@ -509,20 +509,34 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 						 numRestauracao + numTobogas + espBalnearios + espEnfermaria + 
 						 espMergulho + espNatacao + espRestauracao + espTobogas;
 
-			ratioFilaParque = (float)desistirFilaParque / entraramFilaParque;
-			ratioFilaNatacao = (float)desistirFilaNatacao / entraramFilaNatacao;
-			ratioFilaTobogas = (float)desistirFilaTobogas / entraramFilaTobogas;
-			ratioFilaRestauracao = (float)desistirFilaRestauracao / entraramFilaRestauracao;
-			ratioFilaMergulho = (float)desistirFilaMergulho / entraramFilaMergulho;
-			ratioFilaBalnearios = (float)desistirFilaBalnearios / entraramFilaBalnearios;
-			ratioFilaEnfermaria = (float)desistirFilaEnfermaria / entraramFilaEnfermaria;
+			if(entraramFilaParque != 0){
+				ratioFilaParque = (int)(((float)desistirFilaParque / entraramFilaParque) * 100);
+			}
+			if(entraramFilaNatacao != 0){
+				ratioFilaNatacao = (int)(((float)desistirFilaNatacao / entraramFilaNatacao) * 100);
+			}
+			if(entraramFilaTobogas != 0){
+				ratioFilaTobogas = (int)(((float)desistirFilaTobogas / entraramFilaTobogas) * 100);
+			}
+			if(entraramFilaRestauracao != 0){
+				ratioFilaRestauracao = (int)(((float)desistirFilaRestauracao / entraramFilaRestauracao) * 100);
+			}
+			if(entraramFilaMergulho != 0){
+				ratioFilaMergulho = (int)(((float)desistirFilaMergulho / entraramFilaMergulho) * 100);
+			}
+			if(entraramFilaBalnearios != 0){
+				ratioFilaBalnearios = (int)(((float)desistirFilaBalnearios / entraramFilaBalnearios) * 100);
+			}
+			if(entraramFilaEnfermaria != 0){
+				ratioFilaEnfermaria = (int)(((float)desistirFilaEnfermaria / entraramFilaEnfermaria) * 100);
+			}
 
-			ratioEntrarNatacao = (float)totalEntrarNatacao / totalEntrarParque;
-			ratioEntrarTobogas = (float)totalEntrarTobogas / totalEntrarParque;
-			ratioEntrarRestauracao = (float)totalEntrarRestauracao / totalEntrarParque;
-			ratioEntrarMergulho = (float)totalEntrarMergulho / totalEntrarParque;
-			ratioEntrarBalnearios = (float)totalEntrarBalnearios / totalEntrarParque;
-			ratioEntrarEnfermaria = (float)totalEntrarEnfermaria / totalEntrarParque;
+			ratioEntrarNatacao = (int)(((float)totalEntrarNatacao / totalEntrarParque) * 100);
+			ratioEntrarTobogas = (int)(((float)totalEntrarTobogas / totalEntrarParque) * 100);
+			ratioEntrarRestauracao = (int)(((float)totalEntrarRestauracao / totalEntrarParque) * 100);
+			ratioEntrarMergulho = (int)(((float)totalEntrarMergulho / totalEntrarParque) * 100);
+			ratioEntrarBalnearios = (int)(((float)totalEntrarBalnearios / totalEntrarParque) * 100);
+			ratioEntrarEnfermaria = (int)(((float)totalEntrarEnfermaria / totalEntrarParque) * 100);
 			
 			imprimeDados();
 			break;
@@ -610,21 +624,21 @@ void imprimeDados() {
         "---> Balnearios:		%d\n"
         "--------------------------------------\n"
 		"Probabilidade de desistir na fila:\n"
-		"---> Parque:		        %f\n"
-        "---> Natacao:			%f\n"
-		"---> Mergulho:			%f\n"
-        "---> Tobogas:			%f\n"
-        "---> Enfermaria:		%f\n"
-        "---> Restauracao:		%f\n"
-        "---> Balnearios:		%f\n"
+		"---> Parque:		        %d%%\n"
+        "---> Natacao:			%d%%\n"
+		"---> Mergulho:			%d%%\n"
+        "---> Tobogas:			%d%%\n"
+        "---> Enfermaria:		%d%%\n"
+        "---> Restauracao:		%d%%\n"
+        "---> Balnearios:		%d%%\n"
 		"--------------------------------------\n"
 		"Probabilidade de ir para a atracao:\n"//qual a atracao que as pessoas vao mais
-		"---> Natacao:		        %f\n"
-		"---> Mergulho:			%f\n"
-        "---> Tobogas:			%f\n"
-        "---> Enfermaria:		%f\n"
-        "---> Restauracao:		%f\n"
-        "---> Balnearios:		%f\n",
+		"---> Natacao:		        %d%%\n"
+		"---> Mergulho:			%d%%\n"
+        "---> Tobogas:			%d%%\n"
+        "---> Enfermaria:		%d%%\n"
+        "---> Restauracao:		%d%%\n"
+        "---> Balnearios:		%d%%\n",
         (!finalSim) ? "A decorrer" : "Finalizado",
         tempoSimulado, numPessoas, numPessoasSairam, numDesistencias,
         numPraca, numNatacao, numMergulho, numTobogas, numEnfermaria, numRestauracao, numBalnearios,

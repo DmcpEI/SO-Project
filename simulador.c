@@ -400,7 +400,7 @@ void Fila (struct pessoa *pessoa) {
         }
     } else if (pessoa->zonaAtual == NATACAO) {
 
-        if(pessoa->altura <= 80 && pessoa->idade <= 2){
+        if(pessoa->altura >= 80 && pessoa->idade >= 2){
 
             if(natacao.numeroAtualPessoas < conf.numeroMaximoNatacao){
 
@@ -519,7 +519,7 @@ void Fila (struct pessoa *pessoa) {
 
     } else if (pessoa->zonaAtual == MERGULHO) {
 
-        if(pessoa->altura <= 150 && pessoa->idade < 7){
+        if(pessoa->altura >= 150 && pessoa->idade >= 7){
 
             if(mergulho.numeroAtualPessoas < conf.numeroMaximoMergulho){
                 sem_wait(&semaforoMergulho);

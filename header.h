@@ -56,7 +56,7 @@
 #define AZUL "\x1B[34m"
 #define ROXO "\x1B[35m"
 #define CIANO "\x1B[36m"
-#define VERMELHO_CLARO "\x1B[90m"
+#define VERMELHO_CLARO "\x1B[91m"
 #define VERDE_CLARO "\x1B[92m"
 #define AMARELO_CLARO "\x1B[93m"
 #define AZUL_CLARO "\x1B[94m"

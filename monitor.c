@@ -624,7 +624,7 @@ void imprimeDados() {
         "---> Restauracao:		%d\n"
         "---> Balnearios:		%d\n"
         "--------------------------------------\n"
-		"Probabilidade de desistir na fila:\n"
+		"Taxa de desistência ao estar na fila:\n"
 		"---> Parque:		        %d%%\n"
         "---> Natacao:			%d%%\n"
 		"---> Mergulho:			%d%%\n"
@@ -633,13 +633,14 @@ void imprimeDados() {
         "---> Restauracao:		%d%%\n"
         "---> Balnearios:		%d%%\n"
 		"--------------------------------------\n"
-		"Probabilidade de ir para a atracao:\n"//qual a atracao que as pessoas vao mais
+		"Taxa de utilização da atração:\n"//qual a atracao que as pessoas vao mais
 		"---> Natacao:		        %d%%\n"
 		"---> Mergulho:			%d%%\n"
         "---> Tobogas:			%d%%\n"
         "---> Enfermaria:		%d%%\n"
         "---> Restauracao:		%d%%\n"
-        "---> Balnearios:		%d%%\n",
+        "---> Balnearios:		%d%%\n"
+		"--------------------------------------\n",
         (!finalSim) ? "A decorrer" : "Finalizado",
         tempoSimulado, numPessoas, numPessoasSairam, numDesistencias,
         numPraca, numNatacao, numMergulho, numTobogas, numEnfermaria, numRestauracao, numBalnearios,

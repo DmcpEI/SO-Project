@@ -12,17 +12,65 @@ FILE *relatorioFicheiro;
 int simulacaoIniciada = 0;
 
 //Contadores de pessoas nas zonas
-int tempoSimulado = 0, numPessoas = 0, numPessoasSairam = 0, numPraca = 0, numDesistencias = 0, numNatacao = 0, numMergulho = 0, numTobogas = 0, numEnfermaria = 0, 
-	numRestauracao = 0, numBalnearios = 0;
+int tempoSimulado = 0, numPessoas = 0, numPessoasSairam = 0, numPraca = 0, 
+	numDesistencias = 0, numNatacao = 0, numMergulho = 0, numTobogas = 0,
+	numEnfermaria = 0, numRestauracao = 0, numBalnearios = 0;
 
 //Contadores de pessoas em espera
 int  espParque=0, espNatacao = 0, espMergulho = 0, espTobogas = 0, espEnfermaria = 0, 
 	 espRestauracao = 0, espBalnearios = 0;
 
 //variaveis para fazer contas
-int desistirFilaNatacao = 0;
-int entraramFilaNatacao = 0;
+unsigned int desistirFilaParque = 0;
+unsigned int entraramFilaParque = 0;
+float ratioFilaParque = 0;
 
+unsigned int desistirFilaNatacao = 0;
+unsigned int entraramFilaNatacao = 0;
+float ratioFilaNatacao = 0;
+
+unsigned int desistirFilaMergulho = 0;
+unsigned int entraramFilaMergulho = 0;
+float ratioFilaMergulho = 0;
+
+unsigned int desistirFilaTobogas = 0;
+unsigned int entraramFilaTobogas = 0;
+float ratioFilaTobogas = 0;
+
+unsigned int desistirFilaRestauracao = 0;
+unsigned int entraramFilaRestauracao = 0;
+float ratioFilaRestauracao = 0;
+
+unsigned int desistirFilaBalnearios = 0;
+unsigned int entraramFilaBalnearios = 0;
+float ratioFilaBalnearios = 0;
+
+unsigned int desistirFilaEnfermaria = 0;
+unsigned int entraramFilaEnfermaria = 0;
+float ratioFilaEnfermaria = 0;
+
+
+unsigned int  totalEntrarParque = 0;
+
+unsigned int totalEntrarNatacao = 0;
+float ratioEntrarNatacao = 0;
+
+unsigned int totalEntrarMergulho = 0;
+float ratioEntrarMergulho = 0;
+
+unsigned int totalEntrarTobogas = 0;
+float ratioEntrarTobogas = 0;
+
+unsigned int totalEntrarRestauracao = 0;
+float ratioEntrarRestauracao = 0;
+
+unsigned int totalEntrarBalnearios = 0;
+float ratioEntrarBalnearios = 0;
+
+unsigned int totalEntrarEnfermaria = 0;
+float ratioEntrarEnfermaria = 0;
+
+/////////acabou variaveis para contas///////////
 
 void socketMonitor () {
 
@@ -158,42 +206,49 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					//printf("Tempo: %d",", tempoSimulado);
 					printf("A pessoa com ID %d entrou no Parque\n", idPessoa);
 					numPraca++;
+					totalEntrarParque++;
 
 				}else if(zona == NATACAO){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na atração da Natação\n", idPessoa);
 					numNatacao++;
 					numPraca--;
+					totalEntrarNatacao++;
 
 				}else if(zona == MERGULHO){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na atração de Mergulho\n", idPessoa);
 					numMergulho++;
 					numPraca--;
+					totalEntrarMergulho++;
 
 				}else if(zona == TOBOGAS){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na atração dos Tobogãs\n", idPessoa);
 					numTobogas++;
 					numPraca--;
+					totalEntrarTobogas++;
 
 				}else if(zona == RESTAURACAO){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na Restauração\n", idPessoa);
 					numRestauracao++;
 					numPraca--;
+					totalEntrarRestauracao++;
 
 				}else if(zona == BALNEARIOS){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou nos Balneários\n", idPessoa);
 					numBalnearios++;
 					numPraca--;
+					totalEntrarBalnearios++;
 
 				}else if(zona == ENFERMARIA){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na Enfermaria\n", idPessoa);
 					numEnfermaria++;
 					numPraca--;
+					totalEntrarEnfermaria++;
 
 				}
 
@@ -249,42 +304,49 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na fila do Parque\n", idPessoa);
 					espParque++;
+					entraramFilaParque++;
 
 				}else if(zona == NATACAO){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na fila da atração da Natação\n", idPessoa);
 					espNatacao++;
 					numPraca--;
+					entraramFilaNatacao++;
 
 				}else if(zona == MERGULHO){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na fila da atração de Mergulho\n", idPessoa);
 					espMergulho++;
 					numPraca--;
+					entraramFilaMergulho++;
 
 				}else if(zona == TOBOGAS){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na fila da atração dos Tobogãs\n", idPessoa);
 					espTobogas++;
 					numPraca--;
+					entraramFilaTobogas++;
 
 				}else if(zona == RESTAURACAO){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na fila da Restauração\n", idPessoa);
 					espRestauracao++;
 					numPraca--;
+					entraramFilaRestauracao++;
 
 				}else if(zona == BALNEARIOS){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na fila dos Balneários\n", idPessoa);
 					espBalnearios++;
 					numPraca--;
+					entraramFilaBalnearios++;
 
 				}else if(zona == ENFERMARIA){
 					//printf("Tempo: %d", |", tempoSimulado);
 					printf("A pessoa com ID %d entrou na fila da Enfermaria\n", idPessoa);
 					espEnfermaria++;
 					numPraca--;
+					entraramFilaEnfermaria++;
 					
 				}
 				
@@ -296,6 +358,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila do Parque\n", idPessoa);
 					espParque--;
 					numDesistencias++;
+					desistirFilaParque++;
 
 				}else if(zona == NATACAO){
 					
@@ -303,6 +366,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila da atração da Natação\n", idPessoa);
 					espNatacao--;
 					numPraca++;
+					desistirFilaNatacao++;
 
 				}else if(zona == MERGULHO){
 
@@ -310,6 +374,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila da atração de Mergulho\n", idPessoa);
 					espMergulho--;
 					numPraca++;
+					desistirFilaMergulho++;
 
 				}else if(zona == TOBOGAS){
 
@@ -317,6 +382,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila da atração dos Tobogãs\n", idPessoa);
 					espTobogas--;
 					numPraca++;
+					desistirFilaTobogas++;
 
 				}else if(zona == RESTAURACAO){
 
@@ -324,6 +390,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila da Restauração\n", idPessoa);
 					espRestauracao--;
 					numPraca++;
+					desistirFilaRestauracao++;
 
 				}else if(zona == BALNEARIOS){
 
@@ -331,6 +398,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila dos Balneários\n", idPessoa);
 					espBalnearios--;
 					numPraca++;
+					desistirFilaBalnearios++;
 
 				}else if(zona == ENFERMARIA){
 
@@ -338,6 +406,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila da Enfermaria\n", idPessoa);
 					espEnfermaria--;
 					numPraca++;
+					desistirFilaEnfermaria++;
 
 				}
 
@@ -349,6 +418,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila e entrou do Parque\n", idPessoa);
 					espParque--;
 					numPraca++;
+					totalEntrarParque++;
 
 				}else if(zona == NATACAO){
 					
@@ -356,6 +426,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila e entrou na atração da Natação\n", idPessoa);
 					espNatacao--;
 					numNatacao++;
+					totalEntrarNatacao++;
 
 				}else if(zona == MERGULHO){
 
@@ -363,6 +434,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila e entrou na atração de Mergulho\n", idPessoa);
 					espMergulho--;
 					numMergulho++;
+					totalEntrarMergulho++;
 
 				}else if(zona == TOBOGAS){
 
@@ -370,6 +442,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila e entrou na atração dos Tobogãs\n", idPessoa);
 					espTobogas--;
 					numTobogas++;
+					totalEntrarTobogas++;
 
 				}else if(zona == RESTAURACAO){
 
@@ -377,6 +450,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila e entrou na Restauração\n", idPessoa);
 					espRestauracao--;
 					numRestauracao++;
+					totalEntrarRestauracao++;
 
 				}else if(zona == BALNEARIOS){
 
@@ -384,6 +458,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila e entrou nos Balneários\n", idPessoa);
 					espBalnearios--;
 					numBalnearios++;
+					totalEntrarBalnearios++;
 
 				}else if(zona == ENFERMARIA){
 
@@ -391,6 +466,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da fila e entrou na Enfermaria\n", idPessoa);
 					espEnfermaria--;
 					numEnfermaria++;
+					totalEntrarEnfermaria++;
 
 				}
 
@@ -429,8 +505,24 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 
 			}
 			
-			numPessoas=numBalnearios+numEnfermaria+numMergulho+numNatacao+numPraca+
-				numRestauracao+numTobogas+espBalnearios+espEnfermaria+espMergulho+espNatacao+espRestauracao+espTobogas;
+			numPessoas = numBalnearios + numEnfermaria + numMergulho + numNatacao + numPraca +
+						 numRestauracao + numTobogas + espBalnearios + espEnfermaria + 
+						 espMergulho + espNatacao + espRestauracao + espTobogas;
+
+			ratioFilaParque = (float)desistirFilaParque / entraramFilaParque;
+			ratioFilaNatacao = (float)desistirFilaNatacao / entraramFilaNatacao;
+			ratioFilaTobogas = (float)desistirFilaTobogas / entraramFilaTobogas;
+			ratioFilaRestauracao = (float)desistirFilaRestauracao / entraramFilaRestauracao;
+			ratioFilaMergulho = (float)desistirFilaMergulho / entraramFilaMergulho;
+			ratioFilaBalnearios = (float)desistirFilaBalnearios / entraramFilaBalnearios;
+			ratioFilaEnfermaria = (float)desistirFilaEnfermaria / entraramFilaEnfermaria;
+
+			ratioEntrarNatacao = (float)totalEntrarNatacao / totalEntrarParque;
+			ratioEntrarTobogas = (float)totalEntrarTobogas / totalEntrarParque;
+			ratioEntrarRestauracao = (float)totalEntrarRestauracao / totalEntrarParque;
+			ratioEntrarMergulho = (float)totalEntrarMergulho / totalEntrarParque;
+			ratioEntrarBalnearios = (float)totalEntrarBalnearios / totalEntrarParque;
+			ratioEntrarEnfermaria = (float)totalEntrarEnfermaria / totalEntrarParque;
 			
 			imprimeDados();
 			break;
@@ -483,7 +575,7 @@ void escreveFicheiro(char *informacao){
 void imprimeDados() {
 
 	// Poderá ser preciso mudar o 1000 caso se acrescente mais informação
-    char informacao[1000]; 
+    char informacao[2000]; 
 
 	/*Irá colocar na variavel local informação a seguinte mensagem, 
 	decidimos utilizar este formato pois ajuda na visualização da mensagem que 
@@ -516,11 +608,30 @@ void imprimeDados() {
         "---> Enfermaria:		%d\n"
         "---> Restauracao:		%d\n"
         "---> Balnearios:		%d\n"
-        "--------------------------------------\n",
+        "--------------------------------------\n"
+		"Probabilidade de desistir na fila:\n"
+		"---> Parque:		        %f\n"
+        "---> Natacao:			%f\n"
+		"---> Mergulho:			%f\n"
+        "---> Tobogas:			%f\n"
+        "---> Enfermaria:		%f\n"
+        "---> Restauracao:		%f\n"
+        "---> Balnearios:		%f\n"
+		"--------------------------------------\n"
+		"Probabilidade de ir para a atracao:\n"//qual a atracao que as pessoas vao mais
+		"---> Natacao:		        %f\n"
+		"---> Mergulho:			%f\n"
+        "---> Tobogas:			%f\n"
+        "---> Enfermaria:		%f\n"
+        "---> Restauracao:		%f\n"
+        "---> Balnearios:		%f\n",
         (!finalSim) ? "A decorrer" : "Finalizado",
         tempoSimulado, numPessoas, numPessoasSairam, numDesistencias,
         numPraca, numNatacao, numMergulho, numTobogas, numEnfermaria, numRestauracao, numBalnearios,
-        espParque, espNatacao, espMergulho, espTobogas, espEnfermaria, espRestauracao, espBalnearios);
+        espParque, espNatacao, espMergulho, espTobogas, espEnfermaria, espRestauracao, espBalnearios,
+		ratioFilaParque, ratioFilaNatacao, ratioFilaMergulho, ratioFilaTobogas, ratioFilaEnfermaria,
+		ratioFilaRestauracao, ratioFilaBalnearios, ratioEntrarNatacao, ratioEntrarMergulho, ratioEntrarTobogas,
+		ratioEntrarEnfermaria, ratioEntrarRestauracao, ratioEntrarBalnearios);
 
 	//float conta = entraramFilaNatacao/desistirFilaNatacao;
 

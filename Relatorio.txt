@@ -1,0 +1,44 @@
+======================================
+            PARQUE AQUATICO
+======================================
+Estado de execucao --> A decorrer
+Tempo Simulado --> 4057
+--------------------------------------
+Pessoas no Parque:		20
+Pessoas que saíram:		3
+Desistencias:			33
+--------------------------------------
+Pessoas na zona:
+---> Praça:			2
+---> Natacao:			0
+---> Mergulho:			0
+---> Tobogas:			7
+---> Enfermaria:		0
+---> Restauracao:		10
+---> Balnearios:		1
+--------------------------------------
+Pessoas a espera na fila:
+---> Parque:		        10
+---> Natacao:			0
+---> Mergulho:			0
+---> Tobogas:			0
+---> Enfermaria:		0
+---> Restauracao:		0
+---> Balnearios:		0
+--------------------------------------
+Probabilidade de desistir na fila:
+---> Parque:		        0.733333
+---> Natacao:			-nan
+---> Mergulho:			-nan
+---> Tobogas:			-nan
+---> Enfermaria:		-nan
+---> Restauracao:		-nan
+---> Balnearios:		-nan
+--------------------------------------
+Probabilidade de ir para a atracao:
+---> Natacao:		        0.000000
+---> Mergulho:			0.000000
+---> Tobogas:			0.347826
+---> Enfermaria:		0.000000
+---> Restauracao:		0.739130
+---> Balnearios:		0.434783

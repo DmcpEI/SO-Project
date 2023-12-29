@@ -49,13 +49,20 @@
 #define SAIR_FILA_ENFERMARIA 6
 
 //cores
+#define RESET "\x1B[0m"
+#define VERMELHO "\x1B[31m"
+#define VERDE "\x1B[32m"
 #define AMARELO "\x1B[33m"
 #define AZUL "\x1B[34m"
+#define ROXO "\x1B[35m"
 #define CIANO "\x1B[36m"
-#define VERDE "\x1B[32m"
-#define VERMELHO "\x1B[31m"
-#define RESET "\x1B[0m"
-#define ROXO "\x1b[35m"
+#define VERMELHO_CLARO "\x1B[90m"
+#define VERDE_CLARO "\x1B[92m"
+#define AMARELO_CLARO "\x1B[93m"
+#define AZUL_CLARO "\x1B[94m"
+#define ROXO_CLARO "\x1B[95m"
+#define CIANO_CLARO "\x1B[96m"
+#define CINZA "\x1B[90m"
 
 struct configuracao{
 	

@@ -597,7 +597,7 @@ void Fila (struct pessoa *pessoa) {
                         mergulho.numeroAtualPessoas++;
                         pthread_mutex_unlock(&mutexFilas);
 
-                        enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, PRACA);
+                        enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, MERGULHO);
                         printf(VERDE "A pessoa com ID %d entrou na atração de mergulho depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                         
                         sleep(conf.tempoEsperaMergulho);
@@ -834,8 +834,8 @@ void Fila (struct pessoa *pessoa) {
 
 // Função para enviar dados (buffer) para o socket
 void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
-    sem_wait(&semaforoDados);
-    //pthread_mutex_lock(&mutexDados);
+    //sem_wait(&semaforoDados);
+    pthread_mutex_lock(&mutexDados);
 
     char buffer[TAMANHO_BUFFER];
     snprintf(buffer, TAMANHO_BUFFER, "%d %d %d %d %d|", acabou, personId, tempo, acao, zona);
@@ -843,10 +843,9 @@ void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
     if (send(socketFD, buffer, strlen(buffer), 0) == -1) {
         perror("Erro ao enviar dados"); // Exibe uma mensagem de erro se não conseguir enviar os dados
     }
-    //usleep(1000);
-    //pthread_mutex_unlock(&mutexDados);
-    sem_post(&semaforoDados);
-    //usleep(1000);
+
+    pthread_mutex_unlock(&mutexDados);
+    //sem_post(&semaforoDados);
 }
 
 void enviarPessoa(void *ptr) {

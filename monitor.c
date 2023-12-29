@@ -178,7 +178,7 @@ void recebeDados(int newsockfd){
 
 void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 
-	system("clear");
+	//system("clear");
 
 	tempoSimulado = tempo;
 

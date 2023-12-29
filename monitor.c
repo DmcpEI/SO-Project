@@ -727,12 +727,12 @@ void imprimeDados() {
 		"--------------------------------------\n"
 		"Médias:\n"
 		"---> Tempo no Parque:		%d\n"
-		"---> Tempo no Natacao:		%d\n"
+		"---> Tempo na Natacao:		%d\n"
 		"---> Tempo no Mergulho:		%d\n"
-		"---> Tempo no Tobogas:		%d\n"
-		"---> Tempo no Enfermaria:	%d\n"
-		"---> Tempo no Restauracao:	%d\n"
-		"---> Tempo no Balnearios:	%d\n",
+		"---> Tempo nos Tobogas:		%d\n"
+		"---> Tempo na Enfermaria:	%d\n"
+		"---> Tempo na Restauracao:	%d\n"
+		"---> Tempo nos Balnearios:	%d\n",
         tempoSimulado, totalEntrarParque, numDesistencias,
 		ratioFilaParque, ratioFilaNatacao, ratioFilaMergulho, ratioFilaTobogas, ratioFilaEnfermaria,
 		ratioFilaRestauracao, ratioFilaBalnearios, ratioEntrarNatacao, ratioEntrarMergulho, ratioEntrarTobogas,

@@ -25,7 +25,7 @@
 #define ACABOU 1
 
 //Tamanhos
-#define TAMANHO_CONFIG 30
+#define TAMANHO_CONFIG 28
 #define TAMANHO_BUFFER 2048
 #define TAMANHO_TASK 1000000
 
@@ -81,13 +81,11 @@ struct configuracao{
 	int tamanhoFilaBalnearios;
 	int numeroMaximoBalnearios;
 	float probabilidadeMagoar;
-	float probabilidadeDesistir; //Não devia de estar em pessoa?
+	float probabilidadeDesistir;
 	float probabilidadeMudarZona; //Probabilidade de querer mudar de zona depois de ter andado na atração
 	float probabilidadeCurar; //probabilidade de se curar ao ir à enfermaria
-	int tempoEsperaMax; //Tempo máximo que uma pessoa pode esperar numa fila antes de desistir
 	int tempoSimulacao; //Tempo da simulação
 	int tempoChegadaPessoas; //Tempo entre a chegada de uma pessoa e da próxima ao parque
-	int pessoasCriar;
 };
 
 // Praça
@@ -165,7 +163,6 @@ struct pessoa {
 	int altura; //Altura da pessoa em centímetros
 	int magoar; //Se se magoou ou não (0 - Não se magoou / 1 - Magoou-se)
 	int zonaAtual; //Id da zona atual (0 - Bilheteria / ...)
-	int tempoMaxEspera; //Tempo máximo de espera numa fila (em ciclos)
 	int tempoDeChegadaFila; //Tempo que a pessoa está na fila à espera 
 	int desistir; //Se a pessoa desistiu da fila em que está (0 - não desistiu / 1 - desistiu)
 	int visitas[5];

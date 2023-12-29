@@ -167,16 +167,12 @@ void recebeDados(int newsockfd){
 			token = strtok(NULL, "|");
 		}
 
-		// Converte a string para um número inteiro e 
+		acabou = 0;
+		idPessoa = 0;
+		tempo = 0;
+		acao = 0;
+		zona = 0;
 
-
-		//printf(buffer);
-
-		/*Caso a variável "acabou" seja um número diferente de 0 
-		significa que a simulaçao acabou e sendo assim acaba a simulação 
-		e imprime os ultimos dados*/
-		
-		//system("clear");
 	}
 }
 

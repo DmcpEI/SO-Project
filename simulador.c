@@ -113,36 +113,40 @@ int configuracao(char *file) {
     }
 
     // Atribui os valores lidos do arquivo à estrutura de configuração "conf"
-    conf.quantidadePessoasParque = atoi(valores[0]);
-    conf.numeroAtracoes = atoi(valores[1]);
-    conf.tempoEntrarPraca = atoi(valores[2]);
-    conf.tamanhoFilaParque = atoi(valores[3]);
-    conf.tempoEsperaNatacao = atoi(valores[4]);
-    conf.tamanhoFilaNatacao = atoi(valores[5]);
-    conf.numeroMaximoNatacao = atoi(valores[6]);
-    conf.tempoEsperaMergulho = atoi(valores[7]);
-    conf.tamanhoFilaMergulho = atoi(valores[8]);
-    conf.numeroMaximoMergulho = atoi(valores[9]);
-    conf.tempoEsperaTobogas = atoi(valores[10]);
-    conf.tamanhoFilaTobogas = atoi(valores[11]);
-    conf.numeroMaximoTobogas = atoi(valores[12]);
-    conf.tempoEsperaEnfermaria = atoi(valores[13]);
-    conf.tamanhoFilaEnfermaria = atoi(valores[14]);
-    conf.numeroMaximoEnfermaria = atoi(valores[15]);
-    conf.tempoEsperaRestauracao = atoi(valores[16]);
-    conf.tamanhoFilaRestauracao = atoi(valores[17]);
-    conf.numeroMaximoRestauracao = atoi(valores[18]);
-    conf.tempoEsperaBalnearios = atoi(valores[19]);
-    conf.tamanhoFilaBalnearios = atoi(valores[20]);
-    conf.numeroMaximoBalnearios = atoi(valores[21]);
-    conf.probabilidadeMagoar = strtof(valores[22], &fim);
-    conf.probabilidadeDesistir = strtof(valores[23], &fim);
-    conf.probabilidadeMudarZona = strtof(valores[24], &fim);
-    conf.probabilidadeCurar = strtof(valores[25], &fim);
-    conf.tempoEsperaMax = atoi(valores[26]);
-    conf.tempoSimulacao = atoi(valores[27]);
-    conf.tempoChegadaPessoas = atoi(valores[28]);
-    conf.pessoasCriar = atoi(valores[29]);
+    conf.numeroAtracoes = atoi(valores[0]);
+    conf.tempoEntrarPraca = atoi(valores[1]);
+    conf.tamanhoFilaParque = atoi(valores[2]);
+    conf.tempoEsperaNatacao = atoi(valores[3]);
+    conf.tamanhoFilaNatacao = atoi(valores[4]);
+    conf.numeroMaximoNatacao = atoi(valores[5]);
+    conf.tempoEsperaMergulho = atoi(valores[6]);
+    conf.tamanhoFilaMergulho = atoi(valores[7]);
+    conf.numeroMaximoMergulho = atoi(valores[8]);
+    conf.tempoEsperaTobogas = atoi(valores[9]);
+    conf.tamanhoFilaTobogas = atoi(valores[10]);
+    conf.numeroMaximoTobogas = atoi(valores[11]);
+    conf.tempoEsperaEnfermaria = atoi(valores[12]);
+    conf.tamanhoFilaEnfermaria = atoi(valores[13]);
+    conf.numeroMaximoEnfermaria = atoi(valores[14]);
+    conf.tempoEsperaRestauracao = atoi(valores[15]);
+    conf.tamanhoFilaRestauracao = atoi(valores[16]);
+    conf.numeroMaximoRestauracao = atoi(valores[17]);
+    conf.tempoEsperaBalnearios = atoi(valores[18]);
+    conf.tamanhoFilaBalnearios = atoi(valores[19]);
+    conf.numeroMaximoBalnearios = atoi(valores[20]);
+    conf.probabilidadeMagoar = strtof(valores[21], &fim);
+    conf.probabilidadeDesistir = strtof(valores[22], &fim);
+    conf.probabilidadeMudarZona = strtof(valores[23], &fim);
+    conf.probabilidadeCurar = strtof(valores[24], &fim);
+    conf.tempoSimulacao = atoi(valores[25]);
+    conf.tempoChegadaPessoas = atoi(valores[26]);
+
+    conf.quantidadePessoasParque = conf.tamanhoFilaNatacao + conf.numeroMaximoNatacao + 
+                                    conf.tamanhoFilaMergulho + conf.numeroMaximoMergulho + 
+                                    conf.tamanhoFilaTobogas + conf.numeroMaximoTobogas + 
+                                    conf.tamanhoFilaEnfermaria + conf.numeroMaximoEnfermaria + 
+                                    conf.tamanhoFilaBalnearios + conf.numeroMaximoBalnearios + 
+                                    conf.tamanhoFilaRestauracao + conf.numeroMaximoRestauracao;
 
     return 0; // Retorna 0 para indicar sucesso
 }
@@ -171,7 +175,7 @@ int calculaProbabilidadeDesistir(float probabilidade, struct pessoa *pessoa) {
 
     // Aumenta a probabilidade linearmente com o número de visitas
     if (pessoa->totalVisitadas > 4) {
-        probabilidade = probabilidade + (pessoa->totalVisitadas * 0.05);
+        probabilidade = probabilidade + (pessoa->totalVisitadas * 0.03);
     }
 
     // Verifica se a probabilidade não ultrapassa 1.0
@@ -211,7 +215,6 @@ struct pessoa criarPessoa() {
     person.altura = randomEntreNumeros(60, 220); // Altura randomizada entre 60 e 220 centímetros
     person.magoar = 0; // Pessoa ainda não se magoou, pois acabou de ser criada
     person.zonaAtual = FORADOPARQUE;
-    person.tempoMaxEspera = randomEntreNumeros((conf.tempoEsperaMax / 2), conf.tempoEsperaMax); // Tempo de espera randomizado entre metade do tempo de espera máximo e o tempo de espera máximo
     for (int i = 0; i < conf.numeroAtracoes; i++) {
         person.visitas[i] = 0;
     }
@@ -400,7 +403,7 @@ void Fila (struct pessoa *pessoa) {
         }
     } else if (pessoa->zonaAtual == NATACAO) {
 
-        if(pessoa->altura >= 80 && pessoa->idade >= 2){
+        if(pessoa->altura >= 100 && pessoa->idade >= 5){
 
             if(natacao.numeroAtualPessoas < conf.numeroMaximoNatacao){
 
@@ -519,7 +522,7 @@ void Fila (struct pessoa *pessoa) {
 
     } else if (pessoa->zonaAtual == MERGULHO) {
 
-        if(pessoa->altura >= 150 && pessoa->idade >= 7){
+        if((pessoa->altura <= 200 && pessoa->altura >= 140) && (pessoa->idade <= 55 && pessoa->idade >= 10)){
 
             if(mergulho.numeroAtualPessoas < conf.numeroMaximoMergulho){
                 sem_wait(&semaforoMergulho);
@@ -637,7 +640,7 @@ void Fila (struct pessoa *pessoa) {
         
     } else if (pessoa->zonaAtual == TOBOGAS) {
 
-        if(pessoa->altura >= 110 && pessoa->idade >= 6){ //criar no conf as alturas minimas e idade das atrações
+        if((pessoa->altura >= 110) && (pessoa->idade <= 70 && pessoa->idade >= 6)){ //criar no conf as alturas minimas e idade das atrações
 
             if(tobogas.numeroAtualPessoas < conf.numeroMaximoTobogas){
                 sem_wait(&semaforoTobogas);
@@ -831,7 +834,8 @@ void Fila (struct pessoa *pessoa) {
 
 // Função para enviar dados (buffer) para o socket
 void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
-    pthread_mutex_lock(&mutexDados);
+    sem_wait(&semaforoDados);
+    //pthread_mutex_lock(&mutexDados);
 
     char buffer[TAMANHO_BUFFER];
     snprintf(buffer, TAMANHO_BUFFER, "%d %d %d %d %d|", acabou, personId, tempo, acao, zona);
@@ -839,8 +843,10 @@ void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
     if (send(socketFD, buffer, strlen(buffer), 0) == -1) {
         perror("Erro ao enviar dados"); // Exibe uma mensagem de erro se não conseguir enviar os dados
     }
-    pthread_mutex_unlock(&mutexDados);
-    //sleep(1);
+    //usleep(1000);
+    //pthread_mutex_unlock(&mutexDados);
+    sem_post(&semaforoDados);
+    //usleep(1000);
 }
 
 void enviarPessoa(void *ptr) {
@@ -1372,6 +1378,8 @@ void simulador(char* config) {
     configuracao(config); // Lê as configurações do arquivo e inicializa as variáveis
     exclusaoMutua(); // Inicializa os mutexes
 
+    printf(VERMELHO "Vai começar uma simulaçao de um parque com capacidade para %d pessoas.\n" RESET, conf.quantidadePessoasParque);
+
     while (TRUE) { // Loop infinito para continuar a simulação
 
         pthread_mutex_lock(&mutexTempo);
@@ -1387,6 +1395,7 @@ void simulador(char* config) {
                     exit(1);
                 }
                 pthread_mutex_unlock(&mutexSimulacao);
+                sleep(1);
             }
         }
 

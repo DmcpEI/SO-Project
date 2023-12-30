@@ -11,8 +11,10 @@ FILE *relatorioFicheiro;
 //Variável para aparecer no início da execução
 int simulacaoIniciada = 0;
 
+float tempoSimulado = 0;
+
 //Contadores de pessoas nas zonas
-int tempoSimulado = 0, numPessoas = 0, numPessoasSairam = 0, numPraca = 0, 
+int numPessoas = 0, numPessoasSairam = 0, numPraca = 0, 
 	numDesistencias = 0, numNatacao = 0, numMergulho = 0, numTobogas = 0,
 	numEnfermaria = 0, numRestauracao = 0, numBalnearios = 0;
 
@@ -209,8 +211,15 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 
 	system("clear");
 
-	tempoSimulado = tempo;
+	if(tempo<60){
+		tempoSimulado = tempo/100.0;
+	} else {
+		int segundos = tempo % 60;  
+    	int minutos = tempo / 60.0;  
 
+    	tempoSimulado = minutos + (segundos / 100.0);
+	}
+	
 	if(zona > 7) {
 		printf("ERRO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 		printf("Ação: %d | Zona: %d | Erros: %d | Acabou: %d | ID: %d | Tempo: %d\n", acao, zona, erro, acabou, idPessoa, tempo);
@@ -642,7 +651,7 @@ void imprimeDados() {
         "            PARQUE AQUATICO\n"
         "======================================\n"
         "Estado de execucao --> %s\n"
-		"Tempo Simulado --> %d\n"
+		"Tempo Simulado(minutos) --> %.2f\n"
         "--------------------------------------\n"
         "Pessoas no Parque:		%d\n"
         "Pessoas que saíram:		%d\n"
@@ -703,7 +712,7 @@ void imprimeDados() {
         "            PARQUE AQUATICO\n"
         "======================================\n"
         "Estado de execucao --> Finalizado\n"
-		"Tempo Simulado Final --> %d\n"
+		"Tempo Simulado Final --> %.2f\n"
         "--------------------------------------\n"
         "Número de entradas:		%d\n"
 		"Desistencias:			%d\n"

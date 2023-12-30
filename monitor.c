@@ -11,7 +11,7 @@ FILE *relatorioFicheiro;
 //Variável para aparecer no início da execução
 int simulacaoIniciada = 0;
 
-int minutos=0, segundos=0;
+float tempoSimulado = 0;
 
 //Contadores de pessoas nas zonas
 int numPessoas = 0, numPessoasSairam = 0, numPraca = 0, 
@@ -211,9 +211,14 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 
 	system("clear");
 
-	minutos = tempo / 100;
-	segundos = tempo % 100;
+	if(tempo<60){
+		tempoSimulado = tempo/100.0;
+	} else {
+		int segundos = tempo % 60;  
+    	int minutos = tempo / 60.0;  
 
+    	tempoSimulado = minutos + (segundos / 100.0);
+	}
 	
 	if(zona > 7) {
 		printf("ERRO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
@@ -667,7 +672,7 @@ void imprimeDados() {
         "            PARQUE AQUATICO\n"
         "======================================\n"
         "Estado de execucao --> %s\n"
-		"Tempo Simulado(minutos) --> %02d:%02d \n"
+		"Tempo Simulado(minutos) --> %.2f\n"
         "--------------------------------------\n"
         "Pessoas no Parque:		%d\n"
         "Pessoas que saíram:		%d\n"
@@ -709,7 +714,7 @@ void imprimeDados() {
         "---> Balnearios:		%d%%\n"
 		"--------------------------------------\n",
         (!finalSim) ? "A decorrer" : "Finalizado",
-        minutos,segundos, numPessoas, numPessoasSairam, numDesistencias,
+        tempoSimulado, numPessoas, numPessoasSairam, numDesistencias,
         numPraca, numNatacao, numMergulho, numTobogas, numEnfermaria, numRestauracao, numBalnearios,
         espParque, espNatacao, espMergulho, espTobogas, espEnfermaria, espRestauracao, espBalnearios,
 		entraramFilaParque, ratioFilaParque, entraramFilaNatacao, ratioFilaNatacao, entraramFilaMergulho, ratioFilaMergulho, entraramFilaTobogas, 
@@ -728,7 +733,7 @@ void imprimeDados() {
         "            PARQUE AQUATICO\n"
         "======================================\n"
         "Estado de execucao --> Finalizado\n"
-		"Tempo Simulado Final(minutos) --> %02d:%02d\n"
+		"Tempo Simulado Final(minutos) --> %.2f\n"
         "--------------------------------------\n"
         "Número de entradas:		%d\n"
 		"Desistencias:			%d\n"
@@ -759,7 +764,7 @@ void imprimeDados() {
 		"---> Tempo na Restauracao:	%.2f\n"
 		"---> Tempo nos Balnearios:	%.2f\n"
 		"--------------------------------------\n",
-        minutos, segundos, totalEntrarParque, numDesistencias,
+        tempoSimulado, totalEntrarParque, numDesistencias,
 		ratioFilaParque, ratioFilaNatacao, ratioFilaMergulho, ratioFilaTobogas, ratioFilaEnfermaria,
 		ratioFilaRestauracao, ratioFilaBalnearios, ratioEntrarNatacao, ratioEntrarMergulho, ratioEntrarTobogas,
 		ratioEntrarEnfermaria, ratioEntrarRestauracao, ratioEntrarBalnearios,

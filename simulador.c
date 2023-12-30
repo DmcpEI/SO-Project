@@ -1500,10 +1500,7 @@ void simulador(char* config) {
 
         time_t diferencaTempo = tempoAtual - tempoInicial;
 
-        int minutos = diferencaTempo / 60; 
-        int segundos = diferencaTempo % 60;
-
-        tempoSimulado = minutos * 100 + segundos;
+        tempoSimulado = diferencaTempo;
 
         pthread_mutex_unlock(&mutexTempo); 
 

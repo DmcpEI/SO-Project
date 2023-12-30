@@ -367,35 +367,48 @@ void Fila (struct pessoa *pessoa) {
                     printf(CIANO "A pessoa com ID %d chegou à fila para entrar nos balneários | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
                     sleep(tempoDeEspera);
-                    
-                    if (balnearios.numeroAtualPessoas >= conf.numeroMaximoBalnearios) {
 
+                    if (tempoSimulado > conf.tempoSimulacao){
                         sem_post(&balnearios.fila);
-                        sem_wait(&semaforoParque);
-                        
+
                         pthread_mutex_lock(&mutexFilas);
                         balnearios.numeroPessoasNaFila--;
                         pthread_mutex_unlock(&mutexFilas);
 
                         enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, BALNEARIOS);
-                        printf(VERMELHO "A pessoa com ID %d desistiu de entrar nos balneários porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                        printf(VERMELHO "A pessoa com ID %d teve que sair da fila dos balneários porque o parque está a fechar | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
                         pessoa->zonaAtual = PRACA;
+                    } else{
+                        if (balnearios.numeroAtualPessoas >= conf.numeroMaximoBalnearios) {
 
-                    } else {
+                            sem_post(&balnearios.fila);
+                            sem_wait(&semaforoParque);
+                            
+                            pthread_mutex_lock(&mutexFilas);
+                            balnearios.numeroPessoasNaFila--;
+                            pthread_mutex_unlock(&mutexFilas);
 
-                        sem_post(&balnearios.fila);
-                        sem_wait(&semaforoBalneario);
-                        
-                        pthread_mutex_lock(&mutexFilas);
-                        balnearios.numeroPessoasNaFila--;
-                        balnearios.numeroAtualPessoas++;
-                        pthread_mutex_unlock(&mutexFilas);
-                        
-                        enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, BALNEARIOS);
-                        printf(CIANO_CLARO "A pessoa com ID %d entrou nos balneários depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                            enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, BALNEARIOS);
+                            printf(VERMELHO "A pessoa com ID %d desistiu de entrar nos balneários porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
-                        sleep(conf.tempoEsperaBalnearios);
+                            pessoa->zonaAtual = PRACA;
+
+                        } else {
+
+                            sem_post(&balnearios.fila);
+                            sem_wait(&semaforoBalneario);
+                            
+                            pthread_mutex_lock(&mutexFilas);
+                            balnearios.numeroPessoasNaFila--;
+                            balnearios.numeroAtualPessoas++;
+                            pthread_mutex_unlock(&mutexFilas);
+                            
+                            enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, BALNEARIOS);
+                            printf(CIANO_CLARO "A pessoa com ID %d entrou nos balneários depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
+                            sleep(conf.tempoEsperaBalnearios);
+                        }
                     }
 
                 } else {
@@ -470,53 +483,67 @@ void Fila (struct pessoa *pessoa) {
                         
                         sleep(tempoDeEspera);
 
-                        if (natacao.numeroAtualPessoas >= conf.numeroMaximoNatacao) {
-
+                        if (tempoSimulado > conf.tempoSimulacao){
                             sem_post(&natacao.fila);
-                            sem_wait(&semaforoParque);
 
                             pthread_mutex_lock(&mutexFilas);
                             natacao.numeroPessoasNaFila--;
                             pthread_mutex_unlock(&mutexFilas);
 
                             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, NATACAO);
-                            printf(VERMELHO "A pessoa com ID %d desistiu de entrar na atração de natação porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
-                            
+                            printf(VERMELHO "A pessoa com ID %d teve que sair da fila da natação porque o parque está a fechar | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
                             pessoa->zonaAtual = PRACA;
 
-                        } else {
+                        } else{
 
-                            sem_post(&natacao.fila);
-                            sem_wait(&semaforoNatacao);
-                            
-                            pthread_mutex_lock(&mutexFilas);
-                            natacao.numeroPessoasNaFila--;
-                            natacao.numeroAtualPessoas++;
-                            pthread_mutex_unlock(&mutexFilas);
+                            if (natacao.numeroAtualPessoas >= conf.numeroMaximoNatacao) {
 
-                            enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, NATACAO);
-                            printf(CIANO_CLARO "A pessoa com ID %d entrou na atração de natação depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
-
-                            sleep(conf.tempoEsperaNatacao);
-
-                            if(calcularProbabilidade(conf.probabilidadeMagoar)){
-                        
-                                sem_post(&semaforoNatacao);
+                                sem_post(&natacao.fila);
                                 sem_wait(&semaforoParque);
-                                
-                                pthread_mutex_lock(&mutexZonas);
-                                natacao.numeroAtualPessoas--;
-                                pthread_mutex_unlock(&mutexZonas);
 
-                                enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, NATACAO);
-                                printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
-                                printf(VERMELHO "A pessoa com ID %d saiu da atração de natação | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                                pthread_mutex_lock(&mutexFilas);
+                                natacao.numeroPessoasNaFila--;
+                                pthread_mutex_unlock(&mutexFilas);
+
+                                enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, NATACAO);
+                                printf(VERMELHO "A pessoa com ID %d desistiu de entrar na atração de natação porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                                 
-                                pessoa->magoar = TRUE;
-                                pessoa->zonaAtual = ENFERMARIA;
+                                pessoa->zonaAtual = PRACA;
+
+                            } else {
+
+                                sem_post(&natacao.fila);
+                                sem_wait(&semaforoNatacao);
+                                
+                                pthread_mutex_lock(&mutexFilas);
+                                natacao.numeroPessoasNaFila--;
+                                natacao.numeroAtualPessoas++;
+                                pthread_mutex_unlock(&mutexFilas);
+
+                                enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, NATACAO);
+                                printf(CIANO_CLARO "A pessoa com ID %d entrou na atração de natação depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
+                                sleep(conf.tempoEsperaNatacao);
+
+                                if(calcularProbabilidade(conf.probabilidadeMagoar)){
+                            
+                                    sem_post(&semaforoNatacao);
+                                    sem_wait(&semaforoParque);
+                                    
+                                    pthread_mutex_lock(&mutexZonas);
+                                    natacao.numeroAtualPessoas--;
+                                    pthread_mutex_unlock(&mutexZonas);
+
+                                    enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, NATACAO);
+                                    printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                                    printf(VERMELHO "A pessoa com ID %d saiu da atração de natação | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                                    
+                                    pessoa->magoar = TRUE;
+                                    pessoa->zonaAtual = ENFERMARIA;
+                                }
                             }
-                        }
-
+                    }
                     } else {
                         printf(VERMELHO "A pessoa com ID %d desistiu de entrar na atração de natação porque não havia lugar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                         
@@ -593,55 +620,69 @@ void Fila (struct pessoa *pessoa) {
                         printf(CIANO "A pessoa com ID %d chegou à fila para entrar na atração de mergulho | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
                         sleep(tempoDeEspera);
-                        
-                        if (mergulho.numeroAtualPessoas >= conf.numeroMaximoMergulho) {
 
+                        if (tempoSimulado > conf.tempoSimulacao){
                             sem_post(&mergulho.fila);
-                            sem_wait(&semaforoParque);
 
                             pthread_mutex_lock(&mutexFilas);
                             mergulho.numeroPessoasNaFila--;
                             pthread_mutex_unlock(&mutexFilas);
 
                             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, MERGULHO);
-                            printf(VERMELHO "A pessoa com ID %d desistiu de entrar na atração de mergulho porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
-                            
+                            printf(VERMELHO "A pessoa com ID %d teve que sair da fila do mergulho porque o parque está a fechar | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
                             pessoa->zonaAtual = PRACA;
 
-                        } else {
+                        } else{
+                        
+                            if (mergulho.numeroAtualPessoas >= conf.numeroMaximoMergulho) {
 
-                            sem_post(&mergulho.fila);
-                            sem_wait(&semaforoMergulho);
-                            
-                            pthread_mutex_lock(&mutexFilas);
-                            mergulho.numeroPessoasNaFila--;
-                            mergulho.numeroAtualPessoas++;
-                            pthread_mutex_unlock(&mutexFilas);
-
-                            enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, MERGULHO);
-                            printf(CIANO_CLARO "A pessoa com ID %d entrou na atração de mergulho depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
-                            
-                            sleep(conf.tempoEsperaMergulho);
-
-                            if(calcularProbabilidade(conf.probabilidadeMagoar)){
-                            
-                                sem_post(&semaforoMergulho);
+                                sem_post(&mergulho.fila);
                                 sem_wait(&semaforoParque);
+
+                                pthread_mutex_lock(&mutexFilas);
+                                mergulho.numeroPessoasNaFila--;
+                                pthread_mutex_unlock(&mutexFilas);
+
+                                enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, MERGULHO);
+                                printf(VERMELHO "A pessoa com ID %d desistiu de entrar na atração de mergulho porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                                 
-                                pthread_mutex_lock(&mutexZonas);
-                                mergulho.numeroAtualPessoas--;
-                                pthread_mutex_unlock(&mutexZonas);
+                                pessoa->zonaAtual = PRACA;
+
+                            } else {
+
+                                sem_post(&mergulho.fila);
+                                sem_wait(&semaforoMergulho);
                                 
-                                enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, MERGULHO);
-                                printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
-                                printf(VERMELHO "A pessoa com ID %d saiu da atração de mergulho | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                                pthread_mutex_lock(&mutexFilas);
+                                mergulho.numeroPessoasNaFila--;
+                                mergulho.numeroAtualPessoas++;
+                                pthread_mutex_unlock(&mutexFilas);
+
+                                enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, MERGULHO);
+                                printf(CIANO_CLARO "A pessoa com ID %d entrou na atração de mergulho depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                                 
-                                pessoa->magoar = TRUE;
-                                pessoa->zonaAtual = ENFERMARIA;
+                                sleep(conf.tempoEsperaMergulho);
+
+                                if(calcularProbabilidade(conf.probabilidadeMagoar)){
+                                
+                                    sem_post(&semaforoMergulho);
+                                    sem_wait(&semaforoParque);
+                                    
+                                    pthread_mutex_lock(&mutexZonas);
+                                    mergulho.numeroAtualPessoas--;
+                                    pthread_mutex_unlock(&mutexZonas);
+                                    
+                                    enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, MERGULHO);
+                                    printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                                    printf(VERMELHO "A pessoa com ID %d saiu da atração de mergulho | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                                    
+                                    pessoa->magoar = TRUE;
+                                    pessoa->zonaAtual = ENFERMARIA;
+                                }
+
                             }
-
                         }
-
                     } else {
                         printf(VERMELHO "A pessoa com ID %d desistiu de entrar na atração de mergulho porque não havia lugar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                         
@@ -718,55 +759,68 @@ void Fila (struct pessoa *pessoa) {
                         printf(CIANO "A pessoa com ID %d chegou à fila para entrar na atração de tobogãs | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
                         sleep(tempoDeEspera);
-                        
-                        if (tobogas.numeroAtualPessoas >= conf.numeroMaximoTobogas) {
 
+                        if (tempoSimulado > conf.tempoSimulacao){
                             sem_post(&tobogas.fila);
-                            sem_wait(&semaforoParque);
 
                             pthread_mutex_lock(&mutexFilas);
                             tobogas.numeroPessoasNaFila--;
                             pthread_mutex_unlock(&mutexFilas);
 
                             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, TOBOGAS);
-                            printf(VERMELHO "A pessoa com ID %d desistiu de entrar na atração de tobogãs porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
-                            
+                            printf(VERMELHO "A pessoa com ID %d teve que sair da fila dos tobogãs porque o parque está a fechar | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
                             pessoa->zonaAtual = PRACA;
 
-                        } else {
+                        } else{
+                        
+                            if (tobogas.numeroAtualPessoas >= conf.numeroMaximoTobogas) {
 
-                            sem_post(&tobogas.fila);
-                            sem_wait(&semaforoTobogas);
-
-                            pthread_mutex_lock(&mutexFilas);
-                            tobogas.numeroPessoasNaFila--;
-                            tobogas.numeroAtualPessoas++;
-                            pthread_mutex_unlock(&mutexFilas);
-                            
-                            enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, TOBOGAS);
-                            printf(CIANO_CLARO "A pessoa com ID %d entrou na atração de tobogãs depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
-                            
-                            sleep(conf.tempoEsperaTobogas);
-
-                            if(calcularProbabilidade(conf.probabilidadeMagoar)){
-                                
-                                sem_post(&semaforoTobogas);
+                                sem_post(&tobogas.fila);
                                 sem_wait(&semaforoParque);
 
-                                pthread_mutex_lock(&mutexZonas);
-                                tobogas.numeroAtualPessoas--;
-                                pthread_mutex_unlock(&mutexZonas);
+                                pthread_mutex_lock(&mutexFilas);
+                                tobogas.numeroPessoasNaFila--;
+                                pthread_mutex_unlock(&mutexFilas);
 
-                                enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, TOBOGAS);
-                                printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
-                                printf(VERMELHO "A pessoa com ID %d saiu da atração de tobogãs | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                                enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, TOBOGAS);
+                                printf(VERMELHO "A pessoa com ID %d desistiu de entrar na atração de tobogãs porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                                 
-                                pessoa->magoar = TRUE;
-                                pessoa->zonaAtual = ENFERMARIA;
+                                pessoa->zonaAtual = PRACA;
+
+                            } else {
+
+                                sem_post(&tobogas.fila);
+                                sem_wait(&semaforoTobogas);
+
+                                pthread_mutex_lock(&mutexFilas);
+                                tobogas.numeroPessoasNaFila--;
+                                tobogas.numeroAtualPessoas++;
+                                pthread_mutex_unlock(&mutexFilas);
+                                
+                                enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, TOBOGAS);
+                                printf(CIANO_CLARO "A pessoa com ID %d entrou na atração de tobogãs depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                                
+                                sleep(conf.tempoEsperaTobogas);
+
+                                if(tempoSimulado<conf.tempoSimulacao && calcularProbabilidade(conf.probabilidadeMagoar)){
+                                    
+                                    sem_post(&semaforoTobogas);
+                                    sem_wait(&semaforoParque);
+
+                                    pthread_mutex_lock(&mutexZonas);
+                                    tobogas.numeroAtualPessoas--;
+                                    pthread_mutex_unlock(&mutexZonas);
+
+                                    enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, TOBOGAS);
+                                    printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                                    printf(VERMELHO "A pessoa com ID %d saiu da atração de tobogãs | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                                    
+                                    pessoa->magoar = TRUE;
+                                    pessoa->zonaAtual = ENFERMARIA;
+                                }
                             }
-
                         }
-
                     } else {
                         printf(VERMELHO "A pessoa com ID %d desistiu de entrar na atração de tobogãs porque não havia lugar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                         
@@ -824,38 +878,52 @@ void Fila (struct pessoa *pessoa) {
                     printf(CIANO "A pessoa com ID %d chegou à fila para entrar na restauração | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
                     sleep(tempoDeEspera);
-                    
-                    if (restauracao.numeroAtualPessoas >= conf.numeroMaximoRestauracao) {
 
+                    if (tempoSimulado > conf.tempoSimulacao){
                         sem_post(&restauracao.fila);
-                        sem_wait(&semaforoParque);
 
                         pthread_mutex_lock(&mutexFilas);
                         restauracao.numeroPessoasNaFila--;
                         pthread_mutex_unlock(&mutexFilas);
 
                         enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, RESTAURACAO);
-                        printf(VERMELHO "A pessoa com ID %d desistiu de entrar na restauração porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                        printf(VERMELHO "A pessoa com ID %d teve que sair da fila da restauração porque o parque está a fechar | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
                         pessoa->zonaAtual = PRACA;
 
-                    } else {
+                    } else{
+                    
+                        if (restauracao.numeroAtualPessoas >= conf.numeroMaximoRestauracao) {
 
-                        sem_post(&restauracao.fila);
-                        sem_wait(&semaforoRestauracao);
+                            sem_post(&restauracao.fila);
+                            sem_wait(&semaforoParque);
 
-                        pthread_mutex_lock(&mutexFilas);
-                        restauracao.numeroPessoasNaFila--;
-                        restauracao.numeroAtualPessoas++;
-                        pthread_mutex_unlock(&mutexFilas);
+                            pthread_mutex_lock(&mutexFilas);
+                            restauracao.numeroPessoasNaFila--;
+                            pthread_mutex_unlock(&mutexFilas);
 
-                        enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, RESTAURACAO);
-                        printf(CIANO_CLARO "A pessoa com ID %d entrou na restauração depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                            enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, RESTAURACAO);
+                            printf(VERMELHO "A pessoa com ID %d desistiu de entrar na restauração porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
-                        sleep(conf.tempoEsperaRestauracao);
+                            pessoa->zonaAtual = PRACA;
 
+                        } else {
+
+                            sem_post(&restauracao.fila);
+                            sem_wait(&semaforoRestauracao);
+
+                            pthread_mutex_lock(&mutexFilas);
+                            restauracao.numeroPessoasNaFila--;
+                            restauracao.numeroAtualPessoas++;
+                            pthread_mutex_unlock(&mutexFilas);
+
+                            enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, RESTAURACAO);
+                            printf(CIANO_CLARO "A pessoa com ID %d entrou na restauração depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
+                            sleep(conf.tempoEsperaRestauracao);
+
+                        }
                     }
-
                 } else {
                     printf(VERMELHO "A pessoa com ID %d desistiu de entrar na restauração porque não havia lugar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
@@ -963,6 +1031,20 @@ void enviarPessoa(void *ptr) {
                 
             } else if (person.zonaAtual == ENFERMARIA) {
                 
+                if(tempoSimulado>conf.tempoSimulacao){
+
+                    sem_post(&semaforoParque);
+
+                    pthread_mutex_lock(&mutexParque);
+                    pessoasParque--;
+                    pthread_mutex_unlock(&mutexParque);
+
+                    printf(VERMELHO_CLARO "A pessoa com ID %d saiu do parque porque está a fechar e foi para o hospital | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
+                    enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR, PRACA);
+
+                    break;
+
+                }
                 
                 if(enfermaria.numeroAtualPessoas < conf.numeroMaximoEnfermaria){
 

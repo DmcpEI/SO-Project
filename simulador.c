@@ -39,6 +39,8 @@ sem_t semaforoTobogas;
 sem_t semaforoRestauracao;
 sem_t semaforoEnfermaria;
 
+time_t tempoInicial;
+
 //Tarefas
 pthread_t idThread[TAMANHO_TASK]; // Array das tarefas
 struct pessoa *pessoas[100000]; // Array de todas as pessoas
@@ -948,7 +950,7 @@ void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
     //sem_wait(&semaforoDados);
     pthread_mutex_lock(&mutexDados);
 
-    tempo = tempo/conf.tempoChegadaPessoas;
+    // tempo = tempo/conf.tempoChegadaPessoas;
 
     char buffer[TAMANHO_BUFFER];
     snprintf(buffer, TAMANHO_BUFFER, "%d %d %d %d %d|", acabou, personId, tempo, acao, zona);
@@ -1493,9 +1495,19 @@ void simulador(char* config) {
     while (TRUE) { // Loop infinito para continuar a simulação
 
         pthread_mutex_lock(&mutexTempo);
-        tempoSimulado++;
-        pthread_mutex_unlock(&mutexTempo);
+        // tempoSimulado++;
+        time_t tempoAtual = time(NULL);
 
+        time_t diferencaTempo = tempoAtual - tempoInicial;
+
+        int minutos = diferencaTempo / 60; 
+        int segundos = diferencaTempo % 60;
+
+        tempoSimulado = minutos * 100 + segundos;
+
+        pthread_mutex_unlock(&mutexTempo); 
+
+              
         if ((tempoSimulado % conf.tempoChegadaPessoas == 0) && (tempoSimulado < conf.tempoSimulacao)) {
             if (praca.numeroPessoasNaFila <= conf.tamanhoFilaParque) {
                 // Cria uma nova thread para representar uma pessoa
@@ -1534,6 +1546,7 @@ void simulador(char* config) {
 int main(int argc, char *argv[]) {
 
     srand(time(NULL));
+    tempoInicial = time(NULL); 
 
     if (argc == 2) { // Verifica se o número de argumentos da linha de comando é igual a 2
         socketFD = socketSimulador();

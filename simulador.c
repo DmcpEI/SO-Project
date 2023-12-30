@@ -260,7 +260,6 @@ int visitarProximaAtracao(struct pessoa *pessoa) {
 void Fila (struct pessoa *pessoa) {
     
     char buffer[TAMANHO_BUFFER];
-    //int tempo = tempoSimulado;
     int tempoDeEspera, valorDoSemaforo;
 
     sleep(1);
@@ -285,54 +284,61 @@ void Fila (struct pessoa *pessoa) {
 
         } else {
 
-            sem_wait(&praca.fila);
-            
-            pthread_mutex_lock(&mutexFilas);
-            praca.numeroPessoasNaFila++;
-            pthread_mutex_unlock(&mutexFilas);
+            if (praca.numeroPessoasNaFila < conf.tamanhoFilaParque) {
 
-            pthread_mutex_lock(&mutexSimulacao);
-            tempoDeEspera = conf.tempoEntrarPraca*praca.numeroPessoasNaFila;
-            pthread_mutex_unlock(&mutexSimulacao);
-            
-            enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, PRACA);
-            printf(AMARELO_CLARO "A pessoa com ID %d chegou à fila para entrar no parque | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
-
-            sleep(tempoDeEspera);
-            
-            if(pessoasParque<conf.quantidadePessoasParque){
-
-                sem_post(&praca.fila);
-                sem_wait(&semaforoParque);
-
+                sem_wait(&praca.fila);
+                
                 pthread_mutex_lock(&mutexFilas);
-                praca.numeroPessoasNaFila--;
-                pessoasParque++;
+                praca.numeroPessoasNaFila++;
                 pthread_mutex_unlock(&mutexFilas);
 
-                pessoa->zonaAtual = PRACA;
-                pessoa->dentroParque = TRUE;
-
-                enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, PRACA);
-                printf(VERDE_CLARO "A pessoa com ID %d entrou no parque depois de esperar %d segundos | Tempo: %d\n" RESET, pessoa->idPessoa, tempoDeEspera, tempoSimulado);
+                pthread_mutex_lock(&mutexSimulacao);
+                tempoDeEspera = conf.tempoEntrarPraca*praca.numeroPessoasNaFila;
+                pthread_mutex_unlock(&mutexSimulacao);
                 
-                sleep(conf.tempoEntrarPraca);
+                enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, PRACA);
+                printf(AMARELO_CLARO "A pessoa com ID %d chegou à fila para entrar no parque | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
-            }else {
+                sleep(tempoDeEspera);
                 
-                sem_post(&praca.fila);
+                if(pessoasParque<conf.quantidadePessoasParque){
 
-                pthread_mutex_lock(&mutexFilas);
-                praca.numeroPessoasNaFila--;
-                pthread_mutex_unlock(&mutexFilas);
+                    sem_post(&praca.fila);
+                    sem_wait(&semaforoParque);
 
-                enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, PRACA);
-                printf(VERMELHO_CLARO "A pessoa com ID %d desistiu de entrar no parque porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
-                
+                    pthread_mutex_lock(&mutexFilas);
+                    praca.numeroPessoasNaFila--;
+                    pessoasParque++;
+                    pthread_mutex_unlock(&mutexFilas);
+
+                    pessoa->zonaAtual = PRACA;
+                    pessoa->dentroParque = TRUE;
+
+                    enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, PRACA);
+                    printf(VERDE_CLARO "A pessoa com ID %d entrou no parque depois de esperar %d segundos | Tempo: %d\n" RESET, pessoa->idPessoa, tempoDeEspera, tempoSimulado);
+                    
+                    sleep(conf.tempoEntrarPraca);
+
+                }else {
+                    
+                    sem_post(&praca.fila);
+
+                    pthread_mutex_lock(&mutexFilas);
+                    praca.numeroPessoasNaFila--;
+                    pthread_mutex_unlock(&mutexFilas);
+
+                    enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, PRACA);
+                    printf(VERMELHO_CLARO "A pessoa com ID %d desistiu de entrar no parque porque não queria esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                    
+                    pessoa->desistir = TRUE;
+                }
+            } else {
+
+                printf(VERMELHO "A pessoa com ID %d desistiu de entrar no parque porque não havia lugar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
                 pessoa->desistir = TRUE;
             }
-
-        }
+        } 
     } else if (pessoa->zonaAtual == BALNEARIOS) {
 
         if (tempoSimulado > conf.tempoSimulacao) {
@@ -1503,7 +1509,7 @@ void simulador(char* config) {
             }
         }
 
-        usleep(10000); // Aguarda um curto período de tempo (microssegundos)
+        usleep(10000);
 
         if ((pessoasParque < 1) && (tempoSimulado >= conf.tempoSimulacao)) { // Verifica se o tempo simulado atingiu ou ultrapassou o tempo de simulação
             break; // Sai do loop quando a simulação terminar

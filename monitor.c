@@ -75,31 +75,31 @@ int ratioEntrarEnfermaria = 0;
 
 unsigned int totalTempoChegada = 0;
 unsigned int totalTempoSaida = 0;
-int mediaTempoParque = 0;
+float mediaTempoParqueFinal = 0;
 
 unsigned int totalChegadaNatacao = 0;
 unsigned int totalSaidaNatacao = 0;
-int mediaTempoNatacao = 0;
+float mediaTempoNatacaoFinal = 0;
 
 unsigned int totalChegadaMergulho = 0;
 unsigned int totalSaidaMergulho = 0;
-int mediaTempoMergulho = 0;
+float mediaTempoMergulhoFinal = 0;
 
 unsigned int totalChegadaTobogas = 0;
 unsigned int totalSaidaTobogas = 0;
-int mediaTempoTobogas = 0;
+float mediaTempoTobogasFinal = 0;
 
 unsigned int totalChegadaRestauracao = 0;
 unsigned int totalSaidaRestauracao = 0;
-int mediaTempoRestauracao = 0;
+float mediaTempoRestauracaoFinal = 0;
 
 unsigned int totalChegadaBalnearios = 0;
 unsigned int totalSaidaBalnearios = 0;
-int mediaTempoBalnearios = 0;
+float mediaTempoBalneariosFinal = 0;
 
 unsigned int totalChegadaEnfermaria = 0;
 unsigned int totalSaidaEnfermaria = 0;
-int mediaTempoEnfermaria = 0;
+float mediaTempoEnfermariaFinal = 0;
 
 /////////acabou variaveis para contas///////////
 
@@ -240,49 +240,49 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d entrou no Parque\n", idPessoa);
 					numPraca++;
 					totalEntrarParque++;
-					totalTempoChegada += tempoSimulado;
+					totalTempoChegada += tempo;
 
 				}else if(zona == NATACAO){
 					printf("A pessoa com ID %d entrou na atração da Natação\n", idPessoa);
 					numNatacao++;
 					numPraca--;
 					totalEntrarNatacao++;
-					totalChegadaNatacao += tempoSimulado;
+					totalChegadaNatacao += tempo;
 
 				}else if(zona == MERGULHO){
 					printf("A pessoa com ID %d entrou na atração de Mergulho\n", idPessoa);
 					numMergulho++;
 					numPraca--;
 					totalEntrarMergulho++;
-					totalChegadaMergulho += tempoSimulado;
+					totalChegadaMergulho += tempo;
 
 				}else if(zona == TOBOGAS){
 					printf("A pessoa com ID %d entrou na atração dos Tobogãs\n", idPessoa);
 					numTobogas++;
 					numPraca--;
 					totalEntrarTobogas++;
-					totalChegadaTobogas += tempoSimulado;
+					totalChegadaTobogas += tempo;
 
 				}else if(zona == RESTAURACAO){
 					printf("A pessoa com ID %d entrou na Restauração\n", idPessoa);
 					numRestauracao++;
 					numPraca--;
 					totalEntrarRestauracao++;
-					totalChegadaRestauracao += tempoSimulado;
+					totalChegadaRestauracao += tempo;
 
 				}else if(zona == BALNEARIOS){
 					printf("A pessoa com ID %d entrou nos Balneários\n", idPessoa);
 					numBalnearios++;
 					numPraca--;
 					totalEntrarBalnearios++;
-					totalChegadaBalnearios += tempoSimulado;
+					totalChegadaBalnearios += tempo;
 
 				}else if(zona == ENFERMARIA){
 					printf("A pessoa com ID %d entrou na Enfermaria\n", idPessoa);
 					numEnfermaria++;
 					numPraca--;
 					totalEntrarEnfermaria++;
-					totalChegadaEnfermaria += tempoSimulado;
+					totalChegadaEnfermaria += tempo;
 
 				}
 
@@ -293,49 +293,49 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu do Parque\n", idPessoa);
 					numPraca--;
 					numPessoasSairam++;
-					totalTempoSaida += tempoSimulado;
+					totalTempoSaida += tempo;
 
 				}else if(zona == NATACAO){
 
 					printf("A pessoa com ID %d saiu da atração da Natação\n", idPessoa);
 					numNatacao--;
 					numPraca++;
-					totalSaidaNatacao += tempoSimulado;
+					totalSaidaNatacao += tempo;
 
 				}else if(zona == MERGULHO){
 
 					printf("A pessoa com ID %d saiu da atração de Mergulho\n", idPessoa);
 					numMergulho--;
 					numPraca++;
-					totalSaidaMergulho += tempoSimulado;
+					totalSaidaMergulho += tempo;
 
 				}else if(zona == TOBOGAS){
 
 					printf("A pessoa com ID %d saiu da atração dos Tobogãs\n", idPessoa);
 					numTobogas--;
 					numPraca++;
-					totalSaidaTobogas += tempoSimulado;
+					totalSaidaTobogas += tempo;
 
 				}else if(zona == RESTAURACAO){
 
 					printf("A pessoa com ID %d saiu da Restauração\n", idPessoa);
 					numRestauracao--;
 					numPraca++;
-					totalSaidaRestauracao += tempoSimulado;
+					totalSaidaRestauracao += tempo;
 
 				}else if(zona == BALNEARIOS){
 
 					printf("A pessoa com ID %d saiu dos Balneários\n", idPessoa);
 					numBalnearios--;
 					numPraca++;
-					totalSaidaBalnearios += tempoSimulado;
+					totalSaidaBalnearios += tempo;
 
 				}else if(zona == ENFERMARIA){
 
 					printf("A pessoa com ID %d saiu da Enfermaria\n", idPessoa);
 					numEnfermaria--;
 					numPraca++;
-					totalSaidaEnfermaria += tempoSimulado;
+					totalSaidaEnfermaria += tempo;
 
 				}
 				
@@ -445,7 +445,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					espParque--;
 					numPraca++;
 					totalEntrarParque++;
-					totalTempoChegada += tempoSimulado;
+					totalTempoChegada += tempo;
 
 				}else if(zona == NATACAO){
 					
@@ -453,7 +453,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					espNatacao--;
 					numNatacao++;
 					totalEntrarNatacao++;
-					totalChegadaNatacao += tempoSimulado;
+					totalChegadaNatacao += tempo;
 
 				}else if(zona == MERGULHO){
 
@@ -461,7 +461,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					espMergulho--;
 					numMergulho++;
 					totalEntrarMergulho++;
-					totalChegadaMergulho += tempoSimulado;
+					totalChegadaMergulho += tempo;
 
 				}else if(zona == TOBOGAS){
 
@@ -469,7 +469,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					espTobogas--;
 					numTobogas++;
 					totalEntrarTobogas++;
-					totalChegadaTobogas += tempoSimulado;
+					totalChegadaTobogas += tempo;
 
 				}else if(zona == RESTAURACAO){
 
@@ -477,7 +477,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					espRestauracao--;
 					numRestauracao++;
 					totalEntrarRestauracao++;
-					totalChegadaRestauracao += tempoSimulado;
+					totalChegadaRestauracao += tempo;
 
 				}else if(zona == BALNEARIOS){
 
@@ -485,7 +485,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					espBalnearios--;
 					numBalnearios++;
 					totalEntrarBalnearios++;
-					totalChegadaBalnearios += tempoSimulado;
+					totalChegadaBalnearios += tempo;
 
 				}else if(zona == ENFERMARIA){
 
@@ -493,7 +493,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					espEnfermaria--;
 					numEnfermaria++;
 					totalEntrarEnfermaria++;
-					totalChegadaEnfermaria += tempoSimulado;
+					totalChegadaEnfermaria += tempo;
 
 				}
 
@@ -502,43 +502,43 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 					printf("A pessoa com ID %d saiu da Enfermaria e foi para o hospital\n", idPessoa);
 					numEnfermaria--;
 					numPessoasSairam++;
-					totalTempoSaida += tempoSimulado;
-					totalSaidaEnfermaria += tempoSimulado;
+					totalTempoSaida += tempo;
+					totalSaidaEnfermaria += tempo;
 
 				} else if (zona==BALNEARIOS){
 					printf("A pessoa com ID %d saiu dos Balnearios e saiu do Parque\n", idPessoa);
 					numBalnearios--;
 					numPessoasSairam++;
-					totalTempoSaida += tempoSimulado;
-					totalSaidaBalnearios += tempoSimulado;
+					totalTempoSaida += tempo;
+					totalSaidaBalnearios += tempo;
 
 				} else if (zona==TOBOGAS){
 					printf("A pessoa com ID %d saiu dos Tobogas e saiu do Parque\n", idPessoa);
 					numTobogas--;
 					numPessoasSairam++;
-					totalTempoSaida += tempoSimulado;
-					totalSaidaTobogas += tempoSimulado;
+					totalTempoSaida += tempo;
+					totalSaidaTobogas += tempo;
 
 				} else if (zona==NATACAO){
 					printf("A pessoa com ID %d saiu da Natacao e saiu do Parque\n", idPessoa);
 					numNatacao--;
 					numPessoasSairam++;
-					totalTempoSaida += tempoSimulado;
-					totalSaidaNatacao += tempoSimulado;
+					totalTempoSaida += tempo;
+					totalSaidaNatacao += tempo;
 
 				} else if (zona==MERGULHO){
 					printf("A pessoa com ID %d saiu do Mergulho e saiu do Parque\n", idPessoa);
 					numMergulho--;
 					numPessoasSairam++;
-					totalTempoSaida += tempoSimulado;
-					totalSaidaMergulho += tempoSimulado;
+					totalTempoSaida += tempo;
+					totalSaidaMergulho += tempo;
 
 				} else if (zona==RESTAURACAO){
 					printf("A pessoa com ID %d saiu da Restauracao e saiu do Parque\n", idPessoa);
 					numRestauracao--;
 					numPessoasSairam++;
-					totalTempoSaida += tempoSimulado;
-					totalSaidaRestauracao += tempoSimulado;
+					totalTempoSaida += tempo;
+					totalSaidaRestauracao += tempo;
 				}
 
 			}else if (acao == SAIR_FILA_ENFERMARIA){
@@ -546,7 +546,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 				espEnfermaria--;
 				numPessoasSairam++;
 				desistirFilaEnfermaria++;
-				totalTempoSaida += tempoSimulado;
+				totalTempoSaida += tempo;
 			}
 			
 			numPessoas = numBalnearios + numEnfermaria + numMergulho + numNatacao + numPraca +
@@ -588,13 +588,33 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 		case ACABOU:
 			finalSim = TRUE;
 
-			mediaTempoParque = (totalTempoSaida - totalTempoChegada) / totalEntrarParque;
-			mediaTempoNatacao = (totalSaidaNatacao - totalChegadaNatacao) / totalEntrarNatacao;
-			mediaTempoMergulho = (totalSaidaMergulho - totalChegadaMergulho) / totalEntrarMergulho;
-			mediaTempoTobogas = (totalSaidaTobogas - totalChegadaTobogas) / totalEntrarTobogas;
-			mediaTempoEnfermaria = (totalSaidaEnfermaria - totalChegadaEnfermaria) / totalEntrarEnfermaria;
-			mediaTempoRestauracao = (totalSaidaRestauracao - totalChegadaRestauracao) / totalEntrarRestauracao;
-			mediaTempoBalnearios = (totalSaidaBalnearios - totalChegadaBalnearios) / totalEntrarBalnearios;
+			int mediaTempoParqueSec = (((totalTempoSaida - totalTempoChegada) / totalEntrarParque) % 60);
+			int mediaTempoParqueMin = (((totalTempoSaida - totalTempoChegada) / totalEntrarParque) / 60.0);
+			mediaTempoParqueFinal = mediaTempoParqueMin + (mediaTempoParqueSec / 100.0);
+
+			int mediaTempoNatacaoSec = (((totalSaidaNatacao - totalChegadaNatacao) / totalEntrarNatacao) % 60);
+			int mediaTempoNatacaoMin = (((totalSaidaNatacao - totalChegadaNatacao) / totalEntrarNatacao) / 60.0);
+			mediaTempoNatacaoFinal = mediaTempoNatacaoMin + (mediaTempoNatacaoSec / 100.0);
+
+			int mediaTempoMergulhoSec = (((totalSaidaMergulho - totalChegadaMergulho) / totalEntrarMergulho) % 60);
+			int mediaTempoMergulhoMin = (((totalSaidaMergulho - totalChegadaMergulho) / totalEntrarMergulho) / 60.0);
+			mediaTempoMergulhoFinal = mediaTempoMergulhoMin + (mediaTempoMergulhoSec / 100.0);
+
+			int mediaTempoTobogasSec = (((totalSaidaTobogas - totalChegadaTobogas) / totalEntrarTobogas) % 60);
+			int mediaTempoTobogasMin = (((totalSaidaTobogas - totalChegadaTobogas) / totalEntrarTobogas) / 60.0);
+			mediaTempoTobogasFinal = mediaTempoTobogasMin + (mediaTempoTobogasSec / 100.0);
+
+			int mediaTempoEnfermariaSec = (((totalSaidaEnfermaria - totalChegadaEnfermaria) / totalEntrarEnfermaria) % 60);
+			int mediaTempoEnfermariaMin = (((totalSaidaEnfermaria - totalChegadaEnfermaria) / totalEntrarEnfermaria) / 60.0);
+			mediaTempoEnfermariaFinal = mediaTempoEnfermariaMin + (mediaTempoEnfermariaSec / 100.0);
+
+			int mediaTempoRestauracaoSec = (((totalSaidaRestauracao - totalChegadaRestauracao) / totalEntrarRestauracao) % 60);
+			int mediaTempoRestauracaoMin = (((totalSaidaRestauracao - totalChegadaRestauracao) / totalEntrarRestauracao) / 60.0);
+			mediaTempoRestauracaoFinal = mediaTempoRestauracaoMin + (mediaTempoRestauracaoSec / 100.0);
+
+			int mediaTempoBalneariosSec = (((totalSaidaBalnearios - totalChegadaBalnearios) / totalEntrarBalnearios) % 60);
+			int mediaTempoBalneariosMin = (((totalSaidaBalnearios - totalChegadaBalnearios) / totalEntrarBalnearios) / 60.0);
+			mediaTempoBalneariosFinal = mediaTempoBalneariosMin + (mediaTempoBalneariosSec / 100.0);
 
 			imprimeDados();
 			break;
@@ -713,7 +733,7 @@ void imprimeDados() {
         "            PARQUE AQUATICO\n"
         "======================================\n"
         "Estado de execucao --> Finalizado\n"
-		"Tempo Simulado Final --> %.2f\n"
+		"Tempo Simulado Final(minutos) --> %.2f\n"
         "--------------------------------------\n"
         "Número de entradas:		%d\n"
 		"Desistencias:			%d\n"
@@ -735,20 +755,21 @@ void imprimeDados() {
         "---> Restauracao:		%d%%\n"
         "---> Balnearios:		%d%%\n"
 		"--------------------------------------\n"
-		"Médias:\n"
-		"---> Tempo no Parque:		%d\n"
-		"---> Tempo na Natacao:		%d\n"
-		"---> Tempo no Mergulho:		%d\n"
-		"---> Tempo nos Tobogas:		%d\n"
-		"---> Tempo na Enfermaria:	%d\n"
-		"---> Tempo na Restauracao:	%d\n"
-		"---> Tempo nos Balnearios:	%d\n"
+		"Médias(minutos):\n"
+		"---> Tempo no Parque:		%.2f\n"
+		"---> Tempo na Natacao:		%.2f\n"
+		"---> Tempo no Mergulho:		%.2f\n"
+		"---> Tempo nos Tobogas:		%.2f\n"
+		"---> Tempo na Enfermaria:	%.2f\n"
+		"---> Tempo na Restauracao:	%.2f\n"
+		"---> Tempo nos Balnearios:	%.2f\n"
 		"--------------------------------------\n",
         tempoSimulado, totalEntrarParque, numDesistencias,
 		ratioFilaParque, ratioFilaNatacao, ratioFilaMergulho, ratioFilaTobogas, ratioFilaEnfermaria,
 		ratioFilaRestauracao, ratioFilaBalnearios, ratioEntrarNatacao, ratioEntrarMergulho, ratioEntrarTobogas,
 		ratioEntrarEnfermaria, ratioEntrarRestauracao, ratioEntrarBalnearios,
-		mediaTempoParque, mediaTempoNatacao, mediaTempoMergulho, mediaTempoTobogas, mediaTempoEnfermaria, mediaTempoRestauracao, mediaTempoBalnearios);
+		mediaTempoParqueFinal, mediaTempoNatacaoFinal, mediaTempoMergulhoFinal, mediaTempoTobogasFinal,
+		mediaTempoEnfermariaFinal, mediaTempoRestauracaoFinal, mediaTempoBalneariosFinal);
 
 		// Escreve no ficheiro a informação
   		escreveFicheiro(informacao);	

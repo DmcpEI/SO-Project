@@ -705,7 +705,7 @@ void imprimeDados() {
         "---> Restauracao (%d):		%d%%\n"
         "---> Balnearios (%d):		%d%%\n"
 		"--------------------------------------\n"
-		"Taxas de utilização da atração:\n"//qual a atracao que as pessoas vao mais
+		"Taxas de acesso da zona:\n"//qual a atracao que as pessoas vao mais
 		"---> Natacao:		        %d%%\n"
 		"---> Mergulho:			%d%%\n"
         "---> Tobogas:			%d%%\n"
@@ -747,7 +747,7 @@ void imprimeDados() {
         "---> Restauracao:		%d%%\n"
         "---> Balnearios:		%d%%\n"
 		"--------------------------------------\n"
-		"Taxas de utilização da atração:\n"//qual a atracao que as pessoas vao mais
+		"Taxas de acesso da zona:\n"//qual a atracao que as pessoas vao mais
 		"---> Natacao:		        %d%%\n"
 		"---> Mergulho:			%d%%\n"
         "---> Tobogas:			%d%%\n"

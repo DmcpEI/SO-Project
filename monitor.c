@@ -631,7 +631,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 usamos "w" pois caso exista algo no ficheiro este elimina o que já existe nele
 caso contrario ele cria o ficheiro*/
 void limpaFicheiro(){
-	fclose(fopen("Relatorio.txt","w"));
+	fclose(fopen("Resumo_Execucao.txt","w"));
 }
 
 
@@ -645,7 +645,7 @@ void escreveFicheiro(char *informacao){
 	caso o ficheiro exista este adiciona ao ficheiro o texto que queremos, 
 	caso contrário cria um novo*/
 
-	relatorioFicheiro = fopen("Relatorio.txt","a");
+	relatorioFicheiro = fopen("Resumo_Execucao.txt","a");
 
 	// Caso haja um erro o usuario seá notificado
 	if(relatorioFicheiro == NULL){

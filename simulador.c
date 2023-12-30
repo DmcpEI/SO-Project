@@ -942,6 +942,8 @@ void enviarDados(int acabou, int personId, int tempo, int acao, int zona) {
     //sem_wait(&semaforoDados);
     pthread_mutex_lock(&mutexDados);
 
+    tempo = tempo/conf.tempoChegadaPessoas;
+
     char buffer[TAMANHO_BUFFER];
     snprintf(buffer, TAMANHO_BUFFER, "%d %d %d %d %d|", acabou, personId, tempo, acao, zona);
 

@@ -536,6 +536,7 @@ void processarOsDados(int acabou, int idPessoa, int tempo, int acao, int zona){
 				printf("A pessoa com ID %d saiu da fila da Enfermaria e foi para o hospital\n", idPessoa);
 				espEnfermaria--;
 				numPessoasSairam++;
+				desistirFilaEnfermaria++;
 				totalTempoSaida += tempoSimulado;
 			}
 			
@@ -667,13 +668,13 @@ void imprimeDados() {
         "---> Balnearios:		%d\n"
         "--------------------------------------\n"
 		"Taxas de desistência ao estar na fila:\n"
-		"---> Parque:		        %d%%\n"
-        "---> Natacao:			%d%%\n"
-		"---> Mergulho:			%d%%\n"
-        "---> Tobogas:			%d%%\n"
-        "---> Enfermaria:		%d%%\n"
-        "---> Restauracao:		%d%%\n"
-        "---> Balnearios:		%d%%\n"
+		"---> Parque (%d):		%d%%\n"
+        "---> Natacao (%d):		%d%%\n"
+		"---> Mergulho (%d):		%d%%\n"
+        "---> Tobogas (%d):		%d%%\n"
+        "---> Enfermaria (%d):		%d%%\n"
+        "---> Restauracao (%d):		%d%%\n"
+        "---> Balnearios (%d):		%d%%\n"
 		"--------------------------------------\n"
 		"Taxas de utilização da atração:\n"//qual a atracao que as pessoas vao mais
 		"---> Natacao:		        %d%%\n"
@@ -687,9 +688,9 @@ void imprimeDados() {
         tempoSimulado, numPessoas, numPessoasSairam, numDesistencias,
         numPraca, numNatacao, numMergulho, numTobogas, numEnfermaria, numRestauracao, numBalnearios,
         espParque, espNatacao, espMergulho, espTobogas, espEnfermaria, espRestauracao, espBalnearios,
-		ratioFilaParque, ratioFilaNatacao, ratioFilaMergulho, ratioFilaTobogas, ratioFilaEnfermaria,
-		ratioFilaRestauracao, ratioFilaBalnearios, ratioEntrarNatacao, ratioEntrarMergulho, ratioEntrarTobogas,
-		ratioEntrarEnfermaria, ratioEntrarRestauracao, ratioEntrarBalnearios);
+		entraramFilaParque, ratioFilaParque, entraramFilaNatacao, ratioFilaNatacao, entraramFilaMergulho, ratioFilaMergulho, entraramFilaTobogas, 
+		ratioFilaTobogas, entraramFilaEnfermaria, ratioFilaEnfermaria, entraramFilaRestauracao, ratioFilaRestauracao, entraramFilaBalnearios, ratioFilaBalnearios, 
+		ratioEntrarNatacao, ratioEntrarMergulho, ratioEntrarTobogas, ratioEntrarEnfermaria, ratioEntrarRestauracao, ratioEntrarBalnearios);
 
     // Imprime a informação na consola
     printf("%s", informacao);

@@ -114,32 +114,39 @@ int configuracao(char *file) {
 
     // Atribui os valores lidos do arquivo à estrutura de configuração "conf"
     conf.numeroAtracoes = atoi(valores[0]);
-    conf.tempoEntrarPraca = atoi(valores[1]);
-    conf.tamanhoFilaParque = atoi(valores[2]);
-    conf.tempoEsperaNatacao = atoi(valores[3]);
-    conf.tamanhoFilaNatacao = atoi(valores[4]);
-    conf.numeroMaximoNatacao = atoi(valores[5]);
-    conf.tempoEsperaMergulho = atoi(valores[6]);
-    conf.tamanhoFilaMergulho = atoi(valores[7]);
-    conf.numeroMaximoMergulho = atoi(valores[8]);
-    conf.tempoEsperaTobogas = atoi(valores[9]);
-    conf.tamanhoFilaTobogas = atoi(valores[10]);
-    conf.numeroMaximoTobogas = atoi(valores[11]);
-    conf.tempoEsperaEnfermaria = atoi(valores[12]);
-    conf.tamanhoFilaEnfermaria = atoi(valores[13]);
-    conf.numeroMaximoEnfermaria = atoi(valores[14]);
-    conf.tempoEsperaRestauracao = atoi(valores[15]);
-    conf.tamanhoFilaRestauracao = atoi(valores[16]);
-    conf.numeroMaximoRestauracao = atoi(valores[17]);
-    conf.tempoEsperaBalnearios = atoi(valores[18]);
-    conf.tamanhoFilaBalnearios = atoi(valores[19]);
-    conf.numeroMaximoBalnearios = atoi(valores[20]);
-    conf.probabilidadeMagoar = strtof(valores[21], &fim);
-    conf.probabilidadeDesistir = strtof(valores[22], &fim);
-    conf.probabilidadeMudarZona = strtof(valores[23], &fim);
-    conf.probabilidadeCurar = strtof(valores[24], &fim);
-    conf.tempoSimulacao = atoi(valores[25]);
-    conf.tempoChegadaPessoas = atoi(valores[26]);
+    conf.tempoEsperaFilaParque = atoi(valores[1]);
+    conf.tempoEntrarPraca = atoi(valores[2]);
+    conf.tamanhoFilaParque = atoi(valores[3]);
+    conf.tempoEsperaFilaNatacao = atoi(valores[4]);
+    conf.tempoNatacao = atoi(valores[5]);
+    conf.tamanhoFilaNatacao = atoi(valores[6]);
+    conf.numeroMaximoNatacao = atoi(valores[7]);
+    conf.tempoEsperaFilaMergulho = atoi(valores[8]);
+    conf.tempoMergulho = atoi(valores[9]);
+    conf.tamanhoFilaMergulho = atoi(valores[10]);
+    conf.numeroMaximoMergulho = atoi(valores[11]);
+    conf.tempoEsperaFilaTobogas = atoi(valores[12]);
+    conf.tempoTobogas = atoi(valores[13]);
+    conf.tamanhoFilaTobogas = atoi(valores[14]);
+    conf.numeroMaximoTobogas = atoi(valores[15]);
+    conf.tempoEsperaFilaEnfermaria = atoi(valores[16]);
+    conf.tempoEnfermaria = atoi(valores[17]);
+    conf.tamanhoFilaEnfermaria = atoi(valores[18]);
+    conf.numeroMaximoEnfermaria = atoi(valores[19]);
+    conf.tempoEsperaFilaRestauracao = atoi(valores[20]);
+    conf.tempoRestauracao = atoi(valores[21]);
+    conf.tamanhoFilaRestauracao = atoi(valores[22]);
+    conf.numeroMaximoRestauracao = atoi(valores[23]);
+    conf.tempoEsperaFilaBalnearios = atoi(valores[24]);
+    conf.tempoBalnearios = atoi(valores[25]);
+    conf.tamanhoFilaBalnearios = atoi(valores[26]);
+    conf.numeroMaximoBalnearios = atoi(valores[27]);
+    conf.probabilidadeMagoar = strtof(valores[28], &fim);
+    conf.probabilidadeDesistir = strtof(valores[29], &fim);
+    conf.probabilidadeMudarZona = strtof(valores[30], &fim);
+    conf.probabilidadeCurar = strtof(valores[31], &fim);
+    conf.tempoSimulacao = atoi(valores[32]);
+    conf.tempoChegadaPessoas = atoi(valores[33]);
 
     conf.quantidadePessoasParque = conf.tamanhoFilaNatacao + conf.numeroMaximoNatacao + 
                                     conf.tamanhoFilaMergulho + conf.numeroMaximoMergulho + 
@@ -285,8 +292,7 @@ void Fila (struct pessoa *pessoa) {
             pthread_mutex_unlock(&mutexFilas);
 
             pthread_mutex_lock(&mutexSimulacao);
-            //Fazer dependendo do tempo que chegou e de quantas pessoas estão na fila!!!!!!
-            tempoDeEspera = randomEntreNumeros(1, 10);
+            tempoDeEspera = conf.tempoEntrarPraca*praca.numeroPessoasNaFila;
             pthread_mutex_unlock(&mutexSimulacao);
             
             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, PRACA);
@@ -346,7 +352,7 @@ void Fila (struct pessoa *pessoa) {
                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, BALNEARIOS);
                 printf(CIANO_CLARO "A pessoa com ID %d entrou nos balneários | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
-                sleep(conf.tempoEsperaBalnearios);
+                sleep(conf.tempoBalnearios);
                 
             } else {
 
@@ -359,8 +365,7 @@ void Fila (struct pessoa *pessoa) {
                     pthread_mutex_unlock(&mutexFilas);
 
                     pthread_mutex_lock(&mutexSimulacao);
-                    //Fazer dependendo do tempo que chegou e de quantas pessoas estão na fila!!!!!!
-                    tempoDeEspera = randomEntreNumeros(1,10);
+                    tempoDeEspera = conf.tempoEsperaFilaBalnearios * balnearios.numeroPessoasNaFila;
                     pthread_mutex_unlock(&mutexSimulacao);
                     
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, BALNEARIOS);
@@ -407,7 +412,7 @@ void Fila (struct pessoa *pessoa) {
                             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, BALNEARIOS);
                             printf(CIANO_CLARO "A pessoa com ID %d entrou nos balneários depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
-                            sleep(conf.tempoEsperaBalnearios);
+                            sleep(conf.tempoBalnearios);
                         }
                     }
 
@@ -443,7 +448,7 @@ void Fila (struct pessoa *pessoa) {
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, NATACAO);
                     printf(CIANO_CLARO "A pessoa com ID %d entrou na atração de natação | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     
-                    sleep(conf.tempoEsperaNatacao);
+                    sleep(conf.tempoNatacao);
 
                     if((tempoSimulado <= conf.tempoSimulacao) && calcularProbabilidade(conf.probabilidadeMagoar)){
 
@@ -474,8 +479,7 @@ void Fila (struct pessoa *pessoa) {
                         pthread_mutex_unlock(&mutexFilas);
 
                         pthread_mutex_lock(&mutexSimulacao);
-                        //Fazer dependendo do tempo que chegou e de quantas pessoas estão na fila!!!!!!
-                        tempoDeEspera = randomEntreNumeros(1,10);
+                        tempoDeEspera = conf.tempoEsperaFilaNatacao * natacao.numeroPessoasNaFila;
                         pthread_mutex_unlock(&mutexSimulacao);
 
                         enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, NATACAO);
@@ -524,7 +528,7 @@ void Fila (struct pessoa *pessoa) {
                                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, NATACAO);
                                 printf(CIANO_CLARO "A pessoa com ID %d entrou na atração de natação depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
-                                sleep(conf.tempoEsperaNatacao);
+                                sleep(conf.tempoNatacao);
 
                                 if(calcularProbabilidade(conf.probabilidadeMagoar)){
                             
@@ -570,7 +574,7 @@ void Fila (struct pessoa *pessoa) {
 
         } else {
 
-            if((pessoa->altura <= 200 && pessoa->altura >= 140) && (pessoa->idade <= 55 && pessoa->idade >= 10)){
+            if((pessoa->altura <= 200 && pessoa->altura >= 100) && (pessoa->idade <= 55 && pessoa->idade >= 10)){
 
                 if(mergulho.numeroAtualPessoas < conf.numeroMaximoMergulho){
                     sem_wait(&semaforoMergulho);
@@ -582,7 +586,7 @@ void Fila (struct pessoa *pessoa) {
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, MERGULHO);
                     printf(CIANO_CLARO "A pessoa com ID %d entrou na atração de mergulho | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     
-                    sleep(conf.tempoEsperaMergulho);
+                    sleep(conf.tempoMergulho);
 
                     if((tempoSimulado <= conf.tempoSimulacao) && calcularProbabilidade(conf.probabilidadeMagoar)){
                         
@@ -612,8 +616,7 @@ void Fila (struct pessoa *pessoa) {
                         pthread_mutex_unlock(&mutexFilas);
 
                         pthread_mutex_lock(&mutexSimulacao);
-                        //Fazer dependendo do tempo que chegou e de quantas pessoas estão na fila!!!!!!
-                        tempoDeEspera = randomEntreNumeros(1,10);
+                        tempoDeEspera = conf.tempoEsperaFilaMergulho * mergulho.numeroPessoasNaFila;
                         pthread_mutex_unlock(&mutexSimulacao);
 
                         enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, MERGULHO);
@@ -662,7 +665,7 @@ void Fila (struct pessoa *pessoa) {
                                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, MERGULHO);
                                 printf(CIANO_CLARO "A pessoa com ID %d entrou na atração de mergulho depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                                 
-                                sleep(conf.tempoEsperaMergulho);
+                                sleep(conf.tempoMergulho);
 
                                 if(calcularProbabilidade(conf.probabilidadeMagoar)){
                                 
@@ -721,7 +724,7 @@ void Fila (struct pessoa *pessoa) {
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, TOBOGAS);
                     printf(CIANO_CLARO "A pessoa com ID %d entrou na atração de tobogãs | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                     
-                    sleep(conf.tempoEsperaTobogas);
+                    sleep(conf.tempoTobogas);
 
                     if((tempoSimulado <= conf.tempoSimulacao) && calcularProbabilidade(conf.probabilidadeMagoar)){
                     
@@ -751,8 +754,7 @@ void Fila (struct pessoa *pessoa) {
                         pthread_mutex_unlock(&mutexFilas);
 
                         pthread_mutex_lock(&mutexSimulacao);
-                        //Fazer dependendo do tempo que chegou e de quantas pessoas estão na fila!!!!!!
-                        tempoDeEspera = randomEntreNumeros(1,10);
+                        tempoDeEspera = conf.tempoEsperaFilaTobogas * tobogas.numeroPessoasNaFila;
                         pthread_mutex_unlock(&mutexSimulacao);
 
                         enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, TOBOGAS);
@@ -801,7 +803,7 @@ void Fila (struct pessoa *pessoa) {
                                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, TOBOGAS);
                                 printf(CIANO_CLARO "A pessoa com ID %d entrou na atração de tobogãs depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                                 
-                                sleep(conf.tempoEsperaTobogas);
+                                sleep(conf.tempoTobogas);
 
                                 if(tempoSimulado<conf.tempoSimulacao && calcularProbabilidade(conf.probabilidadeMagoar)){
                                     
@@ -857,7 +859,7 @@ void Fila (struct pessoa *pessoa) {
                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, RESTAURACAO);
                 printf(CIANO_CLARO "A pessoa com ID %d entrou na restauração | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
-                sleep(conf.tempoEsperaRestauracao);
+                sleep(conf.tempoRestauracao);
                 
             } else {
 
@@ -870,8 +872,7 @@ void Fila (struct pessoa *pessoa) {
                     pthread_mutex_unlock(&mutexFilas);
 
                     pthread_mutex_lock(&mutexSimulacao);
-                    //Fazer dependendo do tempo que chegou e de quantas pessoas estão na fila!!!!!!
-                    tempoDeEspera = randomEntreNumeros(1,10);
+                    tempoDeEspera = conf.tempoEsperaFilaRestauracao * restauracao.numeroPessoasNaFila;
                     pthread_mutex_unlock(&mutexSimulacao);
 
                     enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR_FILA, RESTAURACAO);
@@ -920,7 +921,7 @@ void Fila (struct pessoa *pessoa) {
                             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, RESTAURACAO);
                             printf(CIANO_CLARO "A pessoa com ID %d entrou na restauração depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
-                            sleep(conf.tempoEsperaRestauracao);
+                            sleep(conf.tempoRestauracao);
 
                         }
                     }
@@ -1058,7 +1059,7 @@ void enviarPessoa(void *ptr) {
                     printf(ROXO "A pessoa com ID %d entrou na enfermaria | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                     enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, ENTRAR, ENFERMARIA);
 
-                    sleep(2);
+                    sleep(conf.tempoEnfermaria);
                     
                     if(calcularProbabilidade(conf.probabilidadeCurar)){ 
                         
@@ -1105,13 +1106,12 @@ void enviarPessoa(void *ptr) {
                         enfermaria.numeroPessoasNaFila++;
                         pthread_mutex_unlock(&mutexFilas);
 
+                        pthread_mutex_lock(&mutexSimulacao);
+                        int tempoDeEspera = conf.tempoEsperaFilaEnfermaria * enfermaria.numeroPessoasNaFila;
+                        pthread_mutex_unlock(&mutexSimulacao);
+
                         printf(CIANO "A pessoa com ID %d chegou à fila para entrar na enfermaria | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                         enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, ENTRAR_FILA, ENFERMARIA);
-
-                        pthread_mutex_lock(&mutexSimulacao);
-                        //Fazer dependendo do tempo que chegou e de quantas pessoas estão na fila!!!!!!
-                        int tempoDeEspera = randomEntreNumeros(1,10);
-                        pthread_mutex_unlock(&mutexSimulacao);
 
                         sleep(tempoDeEspera);
                         
@@ -1145,7 +1145,7 @@ void enviarPessoa(void *ptr) {
                             printf(ROXO "A pessoa com ID %d entrou na enfermaria depois de esperar na fila | Tempo: %d\n" RESET, person.idPessoa, tempoSimulado);
                             enviarDados(NAO_ACABOU, person.idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, ENFERMARIA);
 
-                            sleep(conf.tempoEsperaEnfermaria);
+                            sleep(conf.tempoEnfermaria);
 
                             if(calcularProbabilidade(conf.probabilidadeCurar)){ 
                                 person.magoar = FALSE;

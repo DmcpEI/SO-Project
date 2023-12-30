@@ -25,7 +25,7 @@
 #define ACABOU 1
 
 //Tamanhos
-#define TAMANHO_CONFIG 28
+#define TAMANHO_CONFIG 34
 #define TAMANHO_BUFFER 2048
 #define TAMANHO_TASK 1000000
 
@@ -65,27 +65,33 @@
 #define CINZA "\x1B[90m"
 
 struct configuracao{
-	
-	int quantidadePessoasParque; //Quantidade máxima de pessoas no parque
+
 	int numeroAtracoes;
+	int tempoEsperaFilaParque;
 	int tempoEntrarPraca;
-	int tamanhoFilaParque;	
-	int tempoEsperaNatacao;
-	int tamanhoFilaNatacao;	
+	int tamanhoFilaParque;
+	int tempoEsperaFilaNatacao;
+	int tempoNatacao;
+	int tamanhoFilaNatacao;
 	int numeroMaximoNatacao;
-	int tempoEsperaMergulho;
+	int tempoEsperaFilaMergulho;
+	int tempoMergulho;
 	int tamanhoFilaMergulho;
 	int numeroMaximoMergulho;
-	int tempoEsperaTobogas;
-	int tamanhoFilaTobogas;	
+	int tempoEsperaFilaTobogas;
+	int tempoTobogas;
+	int tamanhoFilaTobogas;
 	int numeroMaximoTobogas;
-	int tempoEsperaEnfermaria;
-	int tamanhoFilaEnfermaria;	
+	int tempoEsperaFilaEnfermaria;
+	int tempoEnfermaria;
+	int tamanhoFilaEnfermaria;
 	int numeroMaximoEnfermaria;
-	int tempoEsperaRestauracao;
+	int tempoEsperaFilaRestauracao;
+	int tempoRestauracao;
 	int tamanhoFilaRestauracao;
 	int numeroMaximoRestauracao;
-	int tempoEsperaBalnearios;
+	int tempoEsperaFilaBalnearios;
+	int tempoBalnearios;
 	int tamanhoFilaBalnearios;
 	int numeroMaximoBalnearios;
 	float probabilidadeMagoar;
@@ -94,6 +100,9 @@ struct configuracao{
 	float probabilidadeCurar; //probabilidade de se curar ao ir à enfermaria
 	int tempoSimulacao; //Tempo da simulação
 	int tempoChegadaPessoas; //Tempo entre a chegada de uma pessoa e da próxima ao parque
+
+	int quantidadePessoasParque; //Quantidade máxima de pessoas no parque
+
 };
 
 // Praça

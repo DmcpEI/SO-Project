@@ -458,7 +458,20 @@ void Fila (struct pessoa *pessoa) {
                     
                     sleep(conf.tempoNatacao);
 
-                    if((tempoSimulado <= conf.tempoSimulacao) && calcularProbabilidade(conf.probabilidadeMagoar)){
+                    if((tempoSimulado > conf.tempoSimulacao)) {
+
+                        sem_post(&semaforoNatacao);
+
+                        pthread_mutex_lock(&mutexFilas);
+                        natacao.numeroAtualPessoas--;
+                        pthread_mutex_unlock(&mutexFilas);
+
+                        enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, NATACAO);
+                        printf(VERMELHO "A pessoa com ID %d teve que sair da atração de natação porque o parque está a fechar | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
+                        pessoa->zonaAtual = PRACA;
+
+                    } else if (calcularProbabilidade(conf.probabilidadeMagoar)) {
 
                         printf(ROXO "A pessoa com ID %d magoou-se e tem de ir para a enfermaria | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
                         
@@ -538,7 +551,20 @@ void Fila (struct pessoa *pessoa) {
 
                                 sleep(conf.tempoNatacao);
 
-                                if(calcularProbabilidade(conf.probabilidadeMagoar)){
+                                if((tempoSimulado > conf.tempoSimulacao)) {
+
+                                    sem_post(&semaforoNatacao);
+
+                                    pthread_mutex_lock(&mutexFilas);
+                                    natacao.numeroAtualPessoas--;
+                                    pthread_mutex_unlock(&mutexFilas);
+
+                                    enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, NATACAO);
+                                    printf(VERMELHO "A pessoa com ID %d teve que sair da atração de natação porque o parque está a fechar | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
+                                    pessoa->zonaAtual = PRACA;
+
+                                }else if(calcularProbabilidade(conf.probabilidadeMagoar)){
                             
                                     sem_post(&semaforoNatacao);
                                     sem_wait(&semaforoParque);
@@ -596,7 +622,20 @@ void Fila (struct pessoa *pessoa) {
                     
                     sleep(conf.tempoMergulho);
 
-                    if((tempoSimulado <= conf.tempoSimulacao) && calcularProbabilidade(conf.probabilidadeMagoar)){
+                    if((tempoSimulado > conf.tempoSimulacao)) {
+
+                        sem_post(&semaforoMergulho);
+
+                        pthread_mutex_lock(&mutexFilas);
+                        mergulho.numeroAtualPessoas--;
+                        pthread_mutex_unlock(&mutexFilas);
+
+                        enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, MERGULHO);
+                        printf(VERMELHO "A pessoa com ID %d teve que sair da atração de mergulho porque o parque está a fechar | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
+                        pessoa->zonaAtual = PRACA;
+
+                    } else if(calcularProbabilidade(conf.probabilidadeMagoar)){
                         
                         sem_post(&semaforoMergulho);
                         sem_wait(&semaforoParque);
@@ -675,7 +714,20 @@ void Fila (struct pessoa *pessoa) {
                                 
                                 sleep(conf.tempoMergulho);
 
-                                if(calcularProbabilidade(conf.probabilidadeMagoar)){
+                                if((tempoSimulado > conf.tempoSimulacao)) {
+
+                                    sem_post(&semaforoMergulho);
+
+                                    pthread_mutex_lock(&mutexFilas);
+                                    mergulho.numeroAtualPessoas--;
+                                    pthread_mutex_unlock(&mutexFilas);
+
+                                    enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, TOBOGAS);
+                                    printf(VERMELHO "A pessoa com ID %d teve que sair da natação porque o parque está a fechar | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
+                                    pessoa->zonaAtual = PRACA;
+
+                                }else if(calcularProbabilidade(conf.probabilidadeMagoar)){
                                 
                                     sem_post(&semaforoMergulho);
                                     sem_wait(&semaforoParque);
@@ -734,7 +786,20 @@ void Fila (struct pessoa *pessoa) {
                     
                     sleep(conf.tempoTobogas);
 
-                    if((tempoSimulado <= conf.tempoSimulacao) && calcularProbabilidade(conf.probabilidadeMagoar)){
+                    if((tempoSimulado > conf.tempoSimulacao)) {
+
+                        sem_post(&semaforoTobogas);
+
+                        pthread_mutex_lock(&mutexFilas);
+                        tobogas.numeroAtualPessoas--;
+                        pthread_mutex_unlock(&mutexFilas);
+
+                        enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, TOBOGAS);
+                        printf(VERMELHO "A pessoa com ID %d teve que sair da atração de tobogãs porque o parque está a fechar | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
+                        pessoa->zonaAtual = PRACA;
+
+                    }else if(calcularProbabilidade(conf.probabilidadeMagoar)){
                     
                         sem_post(&semaforoTobogas);
                         sem_wait(&semaforoParque);
@@ -813,7 +878,20 @@ void Fila (struct pessoa *pessoa) {
                                 
                                 sleep(conf.tempoTobogas);
 
-                                if(tempoSimulado<conf.tempoSimulacao && calcularProbabilidade(conf.probabilidadeMagoar)){
+                                if((tempoSimulado > conf.tempoSimulacao)) {
+
+                                    sem_post(&semaforoTobogas);
+
+                                    pthread_mutex_lock(&mutexFilas);
+                                    tobogas.numeroAtualPessoas--;
+                                    pthread_mutex_unlock(&mutexFilas);
+
+                                    enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR, TOBOGAS);
+                                    printf(VERMELHO "A pessoa com ID %d teve que sair da atração de tobogãs porque o parque está a fechar | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+
+                                    pessoa->zonaAtual = PRACA;
+
+                                }else if(calcularProbabilidade(conf.probabilidadeMagoar)){
                                     
                                     sem_post(&semaforoTobogas);
                                     sem_wait(&semaforoParque);

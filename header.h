@@ -80,29 +80,27 @@ struct configuracao{
 	int numeroMaximoMergulho;
 	int tempoEsperaFilaTobogas;
 	int tempoTobogas;
-	int tamanhoFilaTobogas;
-	int numeroMaximoTobogas;
-	int tempoEsperaFilaEnfermaria;
-	int tempoEnfermaria;
-	int tamanhoFilaEnfermaria;
-	int numeroMaximoEnfermaria;
-	int tempoEsperaFilaRestauracao;
-	int tempoRestauracao;
-	int tamanhoFilaRestauracao;
-	int numeroMaximoRestauracao;
-	int tempoEsperaFilaBalnearios;
-	int tempoBalnearios;
-	int tamanhoFilaBalnearios;
-	int numeroMaximoBalnearios;
-	float probabilidadeMagoar;
-	float probabilidadeDesistir;
-	float probabilidadeMudarZona; //Probabilidade de querer mudar de zona depois de ter andado na atração
-	float probabilidadeCurar; //probabilidade de se curar ao ir à enfermaria
-	int tempoSimulacao; //Tempo da simulação
-	int tempoChegadaPessoas; //Tempo entre a chegada de uma pessoa e da próxima ao parque
-
-	int quantidadePessoasParque; //Quantidade máxima de pessoas no parque
-
+	int tamanhoFilaTobogas; // Tamanho
+	int numeroMaximoTobogas; // Numero maximo de pessoas nos tobogãs
+	int tempoEsperaFilaEnfermaria; // Tempo de espera na fila da Enfermaria
+	int tempoEnfermaria; // Tempo passado na Enfermaria
+	int tamanhoFilaEnfermaria; // Tamanho da fila da enfermaria 
+	int numeroMaximoEnfermaria; // Numero maximo na enfermaria
+	int tempoEsperaFilaRestauracao; // Tempo de espera na fila da restauração
+	int tempoRestauracao; // Tempo que uma pessoa passa na restauração
+	int tamanhoFilaRestauracao; // Tamanho da fila da restauração
+	int numeroMaximoRestauracao; // Numero maximo de pessoas na restauração
+	int tempoEsperaFilaBalnearios; // Tempo de espera na fila dos balnearios
+	int tempoBalnearios; // Tempo que uma pessoa passa nos balnearios
+	int tamanhoFilaBalnearios; // Tamanho da fila dos balnearios
+	int numeroMaximoBalnearios; // Numero maximo de pessoas nos balnearios
+	float probabilidadeMagoar; // Probabilidade de se magoar
+	float probabilidadeDesistir; // Probabilidade de desistir da atração
+	float probabilidadeMudarZona; // Probabilidade de querer mudar de zona depois de ter andado na atração
+	float probabilidadeCurar; // Probabilidade de se curar ao ir à enfermaria
+	int tempoSimulacao; // Tempo da simulação
+	int tempoChegadaPessoas; // Tempo entre a chegada de uma pessoa e da próxima ao parque
+	int quantidadePessoasParque; // Quantidade máxima de pessoas no parque
 };
 
 // Praça
@@ -114,77 +112,59 @@ struct configuracao{
 // Balnearios
 
 struct praca{
-	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na praça do parque
-	//int tempoMaxZona;
-	sem_t fila; //Fila de espera do Parque
+	int numeroPessoasNaFila; // Numero de pessoas à espera para entrar na praça do parque
+	sem_t fila; // Fila de espera do Parque
 };
 
 struct natacao{
-	int numeroAtualPessoas; //Número atual de pessoas na zona de natacao
-	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona de natacao
-	//int idadeMinima; //Idade mínima para aceder à natacao
-	//int alturaMinima; //Altura mínima para aceder à natacao
-	//int tempoMaxZona;
-	//float probMagoar; //Probabilidade de se magoar na natacao
-	sem_t fila; //Fila de espera da natacao 
+	int numeroAtualPessoas; // Número atual de pessoas na zona de natacao
+	int numeroPessoasNaFila; // Numero de pessoas à espera para entrar na zona de natacao
+	sem_t fila; // Fila de espera da natacao 
 };
 
 struct mergulho{
-	int numeroAtualPessoas; //Número atual de pessoas na zona de mergulho
-	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona de mergulho
-	//int idadeMinima; //Idade mínima para aceder à zona
-	//int alturaMinima; //Altura mínima para aceder à zona
-	//int tempoMaxZona;
-	//float probMagoar; //Probabilidade de se magoar na zona
-	sem_t fila; //Fila de espera da zona 
+	int numeroAtualPessoas; // Número atual de pessoas na zona de mergulho
+	int numeroPessoasNaFila; // Numero de pessoas à espera para entrar na zona de mergulho
+	sem_t fila; // Fila de espera da zona 
 };
 
 struct tobogas{
-	int numeroAtualPessoas; //Número atual de pessoas na zona de tobogas
-	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona de tobogas
-	//int idadeMinima; //Idade mínima para aceder aos tobogas
-	//int alturaMinima; //Altura mínima para aceder aos tobogas
-	//int tempoMaxZona;
-	//float probMagoar; //Probabilidade de se magoar nos tobogas
-	sem_t fila; //Fila de espera da zona de tobogas
+	int numeroAtualPessoas; // Número atual de pessoas na zona de tobogas
+	int numeroPessoasNaFila; // Numero de pessoas à espera para entrar na zona de tobogas
+	sem_t fila; // Fila de espera da zona de tobogas
 };
 
 struct enfermaria{
-	int numeroAtualPessoas; //Número atual de pessoas na zona da enfermaria
-	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona da enfermaria
-	//int tempoMaxZona;
-	sem_t fila; //Fila de espera da zona da enfermaria 
+	int numeroAtualPessoas; // Número atual de pessoas na zona da enfermaria
+	int numeroPessoasNaFila; // Numero de pessoas à espera para entrar na zona da enfermaria
+	sem_t fila; // Fila de espera da zona da enfermaria 
 };
 
 struct restauracao{
-	int numeroAtualPessoas; //Número atual de pessoas na zona de restauração
-	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona de restauração
-	//int tempoMaxZona;
-	//float probMagoar; //Probabilidade de se magoar na zona de restauração
-	sem_t fila; //Fila de espera da zona 
+	int numeroAtualPessoas; // Número atual de pessoas na zona de restauração
+	int numeroPessoasNaFila; // Numero de pessoas à espera para entrar na zona de restauração
+	sem_t fila; // Fila de espera da zona 
 };
 
 struct balnearios{
-	int numeroAtualPessoas; //Número atual de pessoas na zona de balneários
-	int numeroPessoasNaFila; //Numero de pessoas à espera para entrar na zona de balneários
-	//int tempoMaxZona;
-	//float probMagoar; //Probabilidade de se magoar na zona de balneários
-	sem_t fila; //Fila de espera da zona de balneários
+	int numeroAtualPessoas; // Número atual de pessoas na zona de balneários
+	int numeroPessoasNaFila; // Numero de pessoas à espera para entrar na zona de balneários
+	sem_t fila; // Fila de espera da zona de balneários
 };
 
 struct pessoa {
 
-	int idPessoa; //Id da pessoa
-	int genero; //Gênero da pessoa (0 - Mulher / 1 - Homem)
-	int idade; //Idade da pessoa
-	int altura; //Altura da pessoa em centímetros
-	int magoar; //Se se magoou ou não (0 - Não se magoou / 1 - Magoou-se)
-	int zonaAtual; //Id da zona atual (0 - Bilheteria / ...)
-	int tempoDeChegadaFila; //Tempo que a pessoa está na fila à espera 
-	int desistir; //Se a pessoa desistiu da fila em que está (0 - não desistiu / 1 - desistiu)
-	int visitas[5];
-	int totalVisitadas;
-	bool dentroParque;
+	int idPessoa; // Id da pessoa
+	int genero; // Gênero da pessoa (0 - Mulher / 1 - Homem)
+	int idade; // Idade da pessoa
+	int altura; // Altura da pessoa em centímetros
+	int magoar; // Se se magoou ou não (0 - Não se magoou / 1 - Magoou-se)
+	int zonaAtual; // Id da zona atual (0 - Bilheteria / ...)
+	int tempoDeChegadaFila; // Tempo que a pessoa está na fila à espera 
+	int desistir; // Se a pessoa desistiu da fila em que está (0 - não desistiu / 1 - desistiu)
+	int visitas[5]; // Se já visitou uma atração guarda aqui (sem repetir)
+	int totalVisitadas; // Guarda quantas visitou (pode repetir)
+	bool dentroParque; // Variavel para saber se está no parque
 
 };
 

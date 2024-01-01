@@ -446,18 +446,10 @@ void Fila (struct pessoa *pessoa) {
                 // Verifica se há espaço na fila dos balneários
                 if (balnearios.numeroPessoasNaFila < conf.tamanhoFilaBalnearios) {
 
-                sem_wait(&balnearios.fila);
-                sem_wait(&balnearios.fila);
-                printf("\033[0;33mA pessoa com ID %d chegou à fila para entrar nos balneários\n\033[0m", pessoa->idPessoa);
                     sem_wait(&balnearios.fila);
-                printf("\033[0;33mA pessoa com ID %d chegou à fila para entrar nos balneários\n\033[0m", pessoa->idPessoa);
 
                     // Incrementa o número de pessoas na fila dos balneários
-                pthread_mutex_lock(&mutexFilas);
-                pthread_mutex_lock(&mutexFilas);
-                //pessoa->tempoDeChegadaFila = tempoSimulado;
                     pthread_mutex_lock(&mutexFilas);
-                //pessoa->tempoDeChegadaFila = tempoSimulado;
                     balnearios.numeroPessoasNaFila++;
                     pthread_mutex_unlock(&mutexFilas);
 
@@ -523,13 +515,7 @@ void Fila (struct pessoa *pessoa) {
                             pthread_mutex_lock(&mutexFilas);
                             balnearios.numeroPessoasNaFila--;
                             balnearios.numeroAtualPessoas++;
-                    pthread_mutex_unlock(&mutexFilas);
-                    pthread_mutex_unlock(&mutexFilas);
-                    printf("\033[0;32m A pessoa com ID %d entrou nos balneários depois de esperar na fila\n\033[0m", pessoa->idPessoa);
-                    //enviarInformação
                             pthread_mutex_unlock(&mutexFilas);
-                    printf("\033[0;32m A pessoa com ID %d entrou nos balneários depois de esperar na fila\n\033[0m", pessoa->idPessoa);
-                    //enviarInformação
                             
                             // Envia dados sobre a entrada nos balneários após a espera na fila para o monitor
                             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, BALNEARIOS);
@@ -655,18 +641,10 @@ void Fila (struct pessoa *pessoa) {
                     // Verifica se há espaço na fila da atração de natação
                     if (natacao.numeroPessoasNaFila < conf.tamanhoFilaNatacao) {
 
-                sem_wait(&natacao.fila);
-                sem_wait(&natacao.fila);
-                printf("\033[0;33mA pessoa com ID %d chegou à fila para entrar na atração de natação\n\033[0m", pessoa->idPessoa);
                         sem_wait(&natacao.fila);
-                printf("\033[0;33mA pessoa com ID %d chegou à fila para entrar na atração de natação\n\033[0m", pessoa->idPessoa);
 
                         // Incrementa o número de pessoas na fila da atração de natação
-                pthread_mutex_lock(&mutexFilas);
-                pthread_mutex_lock(&mutexFilas);
-                //pessoa->tempoDeChegadaFila = tempoSimulado;
                         pthread_mutex_lock(&mutexFilas);
-                //pessoa->tempoDeChegadaFila = tempoSimulado;
                         natacao.numeroPessoasNaFila++;
                         pthread_mutex_unlock(&mutexFilas);
 
@@ -893,18 +871,10 @@ void Fila (struct pessoa *pessoa) {
                     // Verifica se há espaço na fila da atração de mergulho
                     if (mergulho.numeroPessoasNaFila < conf.tamanhoFilaMergulho) {
 
-                sem_wait(&mergulho.fila);
-                sem_wait(&mergulho.fila);
-                printf("\033[0;33mA pessoa com ID %d chegou à fila para entrar na atração de mergulho\n\033[0m", pessoa->idPessoa);
                         sem_wait(&mergulho.fila);
-                printf("\033[0;33mA pessoa com ID %d chegou à fila para entrar na atração de mergulho\n\033[0m", pessoa->idPessoa);
 
                         // Incrementa o número de pessoas na fila da atração de mergulho
-                pthread_mutex_lock(&mutexFilas);
-                pthread_mutex_lock(&mutexFilas);
-                //pessoa->tempoDeChegadaFila = tempoSimulado;
                         pthread_mutex_lock(&mutexFilas);
-                //pessoa->tempoDeChegadaFila = tempoSimulado;
                         mergulho.numeroPessoasNaFila++;
                         pthread_mutex_unlock(&mutexFilas);
 
@@ -1133,18 +1103,10 @@ void Fila (struct pessoa *pessoa) {
                     // Verifica se há espaço na fila da atração de tobogãs
                     if (tobogas.numeroPessoasNaFila < conf.tamanhoFilaTobogas) {
 
-                sem_wait(&tobogas.fila);
-                sem_wait(&tobogas.fila);
-                printf("\033[0;33mA pessoa com ID %d chegou à fila para entrar na atração de tobogãs\n\033[0m", pessoa->idPessoa);
                         sem_wait(&tobogas.fila);
-                printf("\033[0;33mA pessoa com ID %d chegou à fila para entrar na atração de tobogãs\n\033[0m", pessoa->idPessoa);
 
                         // Incrementa o número de pessoas na fila da atração de tobogãs
-                pthread_mutex_lock(&mutexFilas);
-                pthread_mutex_lock(&mutexFilas);
-                //pessoa->tempoDeChegadaFila = tempoSimulado;
                         pthread_mutex_lock(&mutexFilas);
-                //pessoa->tempoDeChegadaFila = tempoSimulado;
                         tobogas.numeroPessoasNaFila++;
                         pthread_mutex_unlock(&mutexFilas);
 
@@ -1211,13 +1173,7 @@ void Fila (struct pessoa *pessoa) {
                                 pthread_mutex_lock(&mutexFilas);
                                 tobogas.numeroPessoasNaFila--;
                                 tobogas.numeroAtualPessoas++;
-                    pthread_mutex_unlock(&mutexFilas);
-                    pthread_mutex_unlock(&mutexFilas);
-                    printf("\033[0;32m A pessoa com ID %d entrou na atração de tobogãs depois de esperar na fila\n\033[0m", pessoa->idPessoa);
-                    //enviarInformação
                                 pthread_mutex_unlock(&mutexFilas);
-                    printf("\033[0;32m A pessoa com ID %d entrou na atração de tobogãs depois de esperar na fila\n\033[0m", pessoa->idPessoa);
-                    //enviarInformação
                                 
                                 // Envia dados sobre a entrada na atração de tobogãs após a espera na fila para o monitor
                                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, TOBOGAS);
@@ -1352,18 +1308,10 @@ void Fila (struct pessoa *pessoa) {
                 // Verifica se há espaço na fila da restauração
                 if (restauracao.numeroPessoasNaFila < conf.tamanhoFilaRestauracao) {
 
-                sem_wait(&restauracao.fila);
-                sem_wait(&restauracao.fila);
-                printf("\033[0;33mA pessoa com ID %d chegou à fila para entrar na restauração\n\033[0m", pessoa->idPessoa);
                     sem_wait(&restauracao.fila);
-                printf("\033[0;33mA pessoa com ID %d chegou à fila para entrar na restauração\n\033[0m", pessoa->idPessoa);
 
                     // Incrementa o número de pessoas na fila da restauração
-                pthread_mutex_lock(&mutexFilas);
-                pthread_mutex_lock(&mutexFilas);
-                //pessoa->tempoDeChegadaFila = tempoSimulado;
                     pthread_mutex_lock(&mutexFilas);
-                //pessoa->tempoDeChegadaFila = tempoSimulado;
                     restauracao.numeroPessoasNaFila++;
                     pthread_mutex_unlock(&mutexFilas);
 
@@ -1550,55 +1498,23 @@ void enviarPessoa(void *ptr) {
 
                     if (person.zonaAtual == BALNEARIOS) {
 
-                    sem_post(&semaforoParque);
-                    sem_post(&semaforoParque);
-                    //Ver se da erro aqui pq semaforo so fecha no inicio do while (Fila)
-                    printf("A pessoa com ID %d entrou nos balneários", person.idPessoa);
-                    //enviaInformação
                         sem_post(&semaforoParque);
-                    //Ver se da erro aqui pq semaforo so fecha no inicio do while (Fila)
-                    printf("A pessoa com ID %d entrou nos balneários", person.idPessoa);
-                    //enviaInformação
 
                     } else if (person.zonaAtual == NATACAO) {
 
-                    sem_post(&semaforoParque);
-                    sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d entrou na atração de natação", person.idPessoa);
-                    //enviaInformação
                         sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d entrou na atração de natação", person.idPessoa);
-                    //enviaInformação
 
                     } else if (person.zonaAtual == MERGULHO) {
 
-                    sem_post(&semaforoParque);
-                    sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d entrou na atração de natação", person.idPessoa);
-                    //enviaInformação
                         sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d entrou na atração de natação", person.idPessoa);
-                    //enviaInformação
                         
                     } else if (person.zonaAtual == TOBOGAS) {
 
-                    sem_post(&semaforoParque);
-                    sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d entrou nos balneários", person.idPessoa);
-                    //enviaInformação
                         sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d entrou nos balneários", person.idPessoa);
-                    //enviaInformação
                         
                     } else if (person.zonaAtual == RESTAURACAO) {
 
-                    sem_post(&semaforoParque);
-                    sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d entrou nos balneários", person.idPessoa);
-                    //enviaInformação
                         sem_post(&semaforoParque);
-                    printf("A pessoa com ID %d entrou nos balneários", person.idPessoa);
-                    //enviaInformação
                         
                     }
                 
@@ -2212,19 +2128,15 @@ void simulador(char* config) {
             // Verifica se tem espaço na fila do parque
             if (praca.numeroPessoasNaFila <= conf.tamanhoFilaParque) {
 
+                // Cria uma nova thread para representar uma pessoa
                 pthread_mutex_lock(&mutexSimulacao);
 
-            // Cria uma nova thread para representar uma pessoa
-            // Cria uma nova thread para representar uma pessoa
-            pthread_mutex_lock(&mutexSimulacao);
-                // Cria uma nova thread para representar uma pessoa
-            pthread_mutex_lock(&mutexSimulacao);
-                if (pthread_create(&idThread[idPessoa], NULL, enviarPessoa, NULL) != 0) {
+                    if (pthread_create(&idThread[idPessoa], NULL, enviarPessoa, NULL) != 0) {
 
-                    perror("Erro na criação da thread");
-                    exit(1);
+                        perror("Erro na criação da thread");
+                        exit(1);
 
-                }
+                    }
 
                 pthread_mutex_unlock(&mutexSimulacao);
 

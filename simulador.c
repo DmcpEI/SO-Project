@@ -305,21 +305,37 @@ void Fila (struct pessoa *pessoa) {
                 
                 if(pessoasParque<conf.quantidadePessoasParque){
 
-                    sem_post(&praca.fila);
-                    sem_wait(&semaforoParque);
+                    if (tempoSimulado > conf.tempoSimulacao){
+                        sem_post(&praca.fila);
 
-                    pthread_mutex_lock(&mutexFilas);
-                    praca.numeroPessoasNaFila--;
-                    pessoasParque++;
-                    pthread_mutex_unlock(&mutexFilas);
+                        pthread_mutex_lock(&mutexFilas);
+                        praca.numeroPessoasNaFila--;
+                        pthread_mutex_unlock(&mutexFilas);
 
-                    pessoa->zonaAtual = PRACA;
-                    pessoa->dentroParque = TRUE;
+                        enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA, PRACA);
+                        printf(VERMELHO_CLARO "A pessoa com ID %d desistiu de entrar no parque porque este estava a fechar | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
 
-                    enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, PRACA);
-                    printf(VERDE_CLARO "A pessoa com ID %d entrou no parque depois de esperar %d segundos | Tempo: %d\n" RESET, pessoa->idPessoa, tempoDeEspera, tempoSimulado);
-                    
-                    sleep(conf.tempoEntrarPraca);
+                        pessoa->desistir = TRUE;
+
+                    } else {
+
+                        sem_post(&praca.fila);
+                        sem_wait(&semaforoParque);
+
+                        pthread_mutex_lock(&mutexFilas);
+                        praca.numeroPessoasNaFila--;
+                        pessoasParque++;
+                        pthread_mutex_unlock(&mutexFilas);
+
+                        pessoa->zonaAtual = PRACA;
+                        pessoa->dentroParque = TRUE;
+
+                        enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, PRACA);
+                        printf(VERDE_CLARO "A pessoa com ID %d entrou no parque depois de esperar %d segundos | Tempo: %d\n" RESET, pessoa->idPessoa, tempoDeEspera, tempoSimulado);
+                        
+                        sleep(conf.tempoEntrarPraca);
+
+                    }
 
                 }else {
                     

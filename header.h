@@ -20,6 +20,7 @@
 #define TRUE 1
 #define FALSE 0
 
+//Gêneros
 #define MULHER 0
 #define HOMEM 1
 

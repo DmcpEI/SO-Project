@@ -20,6 +20,9 @@
 #define TRUE 1
 #define FALSE 0
 
+#define MULHER 0
+#define HOMEM 1
+
 //Acabou a simulação
 #define NAO_ACABOU 0
 #define ACABOU 1

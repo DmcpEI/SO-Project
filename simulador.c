@@ -416,7 +416,11 @@ void Fila (struct pessoa *pessoa) {
                 // Envia dados sobre a entrada nos balneários para o monitor
                 enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, ENTRAR, BALNEARIOS);
                 // Imprime mensagem indicando a entrada nos balneários
-                printf(CIANO_CLARO "A pessoa com ID %d entrou nos balneários | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                if (pessoa->genero == MULHER) {
+                    printf(CIANO_CLARO "A pessoa com ID %d entrou nos balneários femininos| Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                } else {
+                    printf(CIANO_CLARO "A pessoa com ID %d entrou nos balneários masculinos| Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                }
 
                 // Aguarda um tempo específico nos balneários
                 sleep(conf.tempoBalnearios);
@@ -520,7 +524,11 @@ void Fila (struct pessoa *pessoa) {
                             // Envia dados sobre a entrada nos balneários após a espera na fila para o monitor
                             enviarDados(NAO_ACABOU, pessoa->idPessoa, tempoSimulado, SAIR_FILA_ENTRAR, BALNEARIOS);
                             // Imprime mensagem indicando a entrada nos balneários após a espera
-                            printf(CIANO_CLARO "A pessoa com ID %d entrou nos balneários depois de esperar na fila | Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                            if (pessoa->genero == MULHER) {
+                                printf(CIANO_CLARO "A pessoa com ID %d entrou nos balneários femininos depois de esperar na fila| Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                            } else {
+                                printf(CIANO_CLARO "A pessoa com ID %d entrou nos balneários masculinos depois de esperar na fila| Tempo: %d\n" RESET, pessoa->idPessoa, tempoSimulado);
+                            }
 
                             // Aguarda o tempo de permanência nos balneários
                             sleep(conf.tempoBalnearios);
